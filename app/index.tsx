@@ -6,8 +6,6 @@ import { useState } from 'react';
 import { useRef } from 'react';
 import { useEffect } from 'react';
 
-
-
 import Header from '../components/Header';
 
 export default function Index() {
@@ -20,7 +18,6 @@ export default function Index() {
   useEffect(() => {
   let timeout: ReturnType<typeof setTimeout>;
 
-  // Trigger typing only after greeting fades out
   const listener = scrollY.addListener(({ value }) => {
       if (value > 60 && !showTyping) {
         setShowTyping(true);
@@ -29,12 +26,11 @@ export default function Index() {
           if (i <= fullText.length) {
             setTypedText(fullText.slice(0, i));
             i++;
-            timeout = setTimeout(typeNext, 40); // type speed
+            timeout = setTimeout(typeNext, 40);
           }
         };
         typeNext();
       } else if (value <= 60 && showTyping) {
-        // reset when scrolling back up
         setShowTyping(false);
         setTypedText('');
       }
@@ -85,7 +81,7 @@ export default function Index() {
             Welcome, dear
           </AnimatedText>
           <AnimatedText style={[styles.greeting2, { opacity: greetingOpacity }]}>
-            Abcedefg
+            Olive
           </AnimatedText>
         </View>
 
@@ -202,16 +198,16 @@ const styles = StyleSheet.create({
 
   greeting1: {
     fontSize: 38,
-    fontFamily: 'Playfair-Bold',
+    fontFamily: 'Playfair-Regular',
     textAlign: 'right',
-    color: 'white',
+    color: 'gold',
   },
 
   greeting2: {
-    fontSize: 50,
-    color: 'goldenrod',
+    fontSize: 40,
+    color: 'white',
     textAlign: 'right',
-    fontFamily: 'Playfair-Regular',
+    fontFamily: 'Playfair-BoldItalic',
   },
 
   searchContainer: {
@@ -276,12 +272,12 @@ const styles = StyleSheet.create({
   },
 
   typedSentence: {
-  fontSize: 18,
+  fontSize: 20,
   fontFamily: 'Playfair-Italic',
   color: 'ghostwhite',
   textAlign: 'left',
-  paddingHorizontal: 20,
-  marginBottom: 80,
+  paddingHorizontal: 2,
+  marginBottom: 75,
   zIndex: 3,
 },
 

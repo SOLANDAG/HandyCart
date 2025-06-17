@@ -4,10 +4,16 @@ export default function RootLayout() {
   return (
   <Stack>
     <Stack.Screen name="index" options={{
-      headerTitle: "HandyCart",  headerShown: false,
+      headerShown: false,
     }} />
+
     <Stack.Screen name="about" options={{
-      headerTitle: "About",  headerShown: false,
+      headerShown: false,
     }}/>
+
+    <Stack.Screen name="profile" options={{
+      headerShown: false,
+    }}/>
+
   </Stack>);
 }

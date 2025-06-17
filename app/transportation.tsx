@@ -6,7 +6,7 @@ export default function Index() {
     <View
       style={styles.container}
     >
-      <Text style={styles.text}>PROFILE</Text>
+      <Text style={styles.text}>SETTINGS</Text>
       
       <Link href={"/"} style={styles.button}>Home</Link>
     </View>

@@ -11,7 +11,19 @@ export default function RootLayout() {
       headerShown: false,
     }}/>
 
+    <Stack.Screen name="settings" options={{
+      headerShown: false,
+    }}/>
+
     <Stack.Screen name="profile" options={{
+      headerShown: false,
+    }}/>
+
+    <Stack.Screen name="transportation" options={{
+      headerShown: false,
+    }}/>
+
+    <Stack.Screen name="grocery" options={{
       headerShown: false,
     }}/>
 

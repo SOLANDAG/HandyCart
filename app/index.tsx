@@ -4,11 +4,47 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
 import { useRef } from 'react';
+import { useEffect } from 'react';
+
+
 
 import Header from '../components/Header';
 
 export default function Index() {
   const scrollY = useRef(new Animated.Value(0)).current;
+
+  const [typedText, setTypedText] = useState("");
+  const fullText = "What do we have in mind today?";
+  const [showTyping, setShowTyping] = useState(false);
+
+  useEffect(() => {
+  let timeout: ReturnType<typeof setTimeout>;
+
+  // Trigger typing only after greeting fades out
+  const listener = scrollY.addListener(({ value }) => {
+      if (value > 60 && !showTyping) {
+        setShowTyping(true);
+        let i = 0;
+        const typeNext = () => {
+          if (i <= fullText.length) {
+            setTypedText(fullText.slice(0, i));
+            i++;
+            timeout = setTimeout(typeNext, 40); // type speed
+          }
+        };
+        typeNext();
+      } else if (value <= 60 && showTyping) {
+        // reset when scrolling back up
+        setShowTyping(false);
+        setTypedText('');
+      }
+    });
+
+    return () => {
+      scrollY.removeListener(listener);
+      if (timeout) clearTimeout(timeout);
+    };
+  }, [scrollY, showTyping]);
 
   const AnimatedText = Animated.createAnimatedComponent(Text);
 
@@ -52,6 +88,15 @@ export default function Index() {
             Abcedefg
           </AnimatedText>
         </View>
+
+        {typedText.length > 0 && (
+          <Text style={styles.typedSentence}>{typedText}</Text>
+        )}
+
+        {showTyping && (
+          <Text style={styles.typedSentence}>{typedText}</Text>
+        )}
+
 
         <View style={styles.searchWrapper}>
           <View style={styles.searchContainer}>
@@ -114,15 +159,15 @@ export default function Index() {
       
       <View style={styles.footer}>
         <Link href={"/settings"}>
-          <Ionicons name="settings" size={40} color="black" />
+          <Ionicons name="settings" size={40} color="saddlebrown" />
         </Link>
 
         <Link href={"/"}>
-          <Ionicons name="home" size={40} color="black" />
+          <Ionicons name="home" size={40} color="saddlebrown" />
         </Link>
 
         <Link href={"/profile"}>
-          <Ionicons name="finger-print" size={40} color="black" />
+          <Ionicons name="finger-print" size={40} color="saddlebrown" />
         </Link>
       </View>
     </View>
@@ -152,7 +197,7 @@ const styles = StyleSheet.create({
   greetingTextWrapper: {
     zIndex: 1,
     paddingHorizontal: 20,
-    marginBottom: 60
+    marginBottom: 30
   },
 
   greeting1: {
@@ -173,10 +218,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#F0F0F0',
-    borderRadius: 3,
+    borderRadius: 10,
     paddingHorizontal: 12,
     paddingVertical: 8,
-    marginTop: 40,
   },
 
   searchIcon: {
@@ -191,7 +235,7 @@ const styles = StyleSheet.create({
 
   container: {
     flex: 1,
-    backgroundColor: "beige",
+    backgroundColor: "white",
   },
   content: {
     padding: 16,
@@ -210,18 +254,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 
-  icon: {
-    width: 50,
-    height: 50,
-  },
-
   footer: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
     height: 80,
-    backgroundColor: 'burlywood',
+    backgroundColor: 'beige',
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
@@ -234,6 +273,16 @@ const styles = StyleSheet.create({
   left: 20,
   right: 20,
   zIndex: 2,
-  }
+  },
+
+  typedSentence: {
+  fontSize: 18,
+  fontFamily: 'Playfair-Italic',
+  color: 'ghostwhite',
+  textAlign: 'left',
+  paddingHorizontal: 20,
+  marginBottom: 80,
+  zIndex: 3,
+},
 
 });

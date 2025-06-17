@@ -12,6 +12,8 @@ export default function RootLayout() {
       'Playfair-Regular': require('../assets/fonts/PlayfairDisplay-Regular.ttf'),
       'Playfair-Bold': require('../assets/fonts/PlayfairDisplay-Bold.ttf'),
       'Playfair-Black': require('../assets/fonts/PlayfairDisplay-Black.ttf'),
+      'Playfair-BoldItalic': require('../assets/fonts/PlayfairDisplay-BoldItalic.ttf'),
+      'Playfair-Italic': require('../assets/fonts/PlayfairDisplay-Italic.ttf'),
     }).then(() => setFontsLoaded(true));
   }, []);
 

@@ -8,7 +8,7 @@ export default function Header() {
   return (
     <View style={styles.header}>
       <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
-        <Ionicons name="menu" size={28} color="black" />
+        <Ionicons name="menu" size={28} color="saddlebrown" />
       </TouchableOpacity>
 
       <View style={styles.logoContainer}>
@@ -20,7 +20,7 @@ export default function Header() {
       </View>
 
       <TouchableOpacity onPress={() => console.log("Cart pressed")}>
-        <Ionicons name="star" size={28} color="black" />
+        <Ionicons name="star" size={28} color="gold" />
       </TouchableOpacity>
     </View>
   );
@@ -28,7 +28,7 @@ export default function Header() {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: 'white',
+    backgroundColor: 'beige',
     height: 80,
     paddingHorizontal: 20,
     paddingTop: 40,

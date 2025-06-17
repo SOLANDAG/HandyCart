@@ -1,6 +1,28 @@
 import { Stack } from "expo-router";
+import * as Font from 'expo-font';
+import { useEffect, useState } from 'react';
+import { View, ActivityIndicator } from 'react-native';
 
 export default function RootLayout() {
+
+  const [fontsLoaded, setFontsLoaded] = useState(false);
+
+  useEffect(() => {
+    Font.loadAsync({
+      'Playfair-Regular': require('../assets/fonts/PlayfairDisplay-Regular.ttf'),
+      'Playfair-Bold': require('../assets/fonts/PlayfairDisplay-Bold.ttf'),
+      'Playfair-Black': require('../assets/fonts/PlayfairDisplay-Black.ttf'),
+    }).then(() => setFontsLoaded(true));
+  }, []);
+
+  if (!fontsLoaded) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
   return (
   <Stack>
     <Stack.Screen name="index" options={{

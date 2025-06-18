@@ -118,35 +118,92 @@ export default function Index() {
 }
 
 const styles = StyleSheet.create({
-  greetingSection: { height: '33%', width: '100%', overflow: 'hidden' },
+  greetingSection: {
+    height: '33%',
+    width: '100%',
+    overflow: 'hidden' },
 
-  imageBackground: { flex: 1, justifyContent: 'center', paddingHorizontal: 20 },
+  imageBackground: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingHorizontal: 20 },
 
-  gradientOverlay: { position: 'absolute', top: 0, bottom: 0, right: 0 },
+  gradientOverlay: {
+    position: 'absolute',
+    top: 0, bottom: 0,
+    right: 0 },
 
-  greetingTextWrapper: { zIndex: 1, paddingHorizontal: 20, marginBottom: 50 },
+  greetingTextWrapper: {
+    zIndex: 1,
+    paddingHorizontal: 20,
+    marginBottom: 50 },
 
-  greeting1: { fontSize: 38, fontFamily: 'Playfair-Regular', textAlign: 'right', color: 'gold' },
+  greeting1: {
+    fontSize: 38,
+    fontFamily: 'Playfair-Regular',
+    textAlign: 'right',
+    color: 'gold' },
 
-  greeting2: { fontSize: 40, color: 'white', textAlign: 'right', fontFamily: 'Playfair-BoldItalic' },
+  greeting2: {
+    fontSize: 40,
+    color: 'white',
+    textAlign: 'right',
+    fontFamily: 'Playfair-BoldItalic' },
 
-  searchContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#F0F0F0', borderRadius: 50, paddingHorizontal: 12, paddingVertical: 8 },
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F0F0F0',
+    borderRadius: 50,
+    paddingHorizontal: 12,
+    paddingVertical: 8 },
 
-  searchIcon: { marginRight: 8 },
+  searchIcon: {
+    marginRight: 8 },
 
-  searchInput: { flex: 1, fontSize: 16, color: 'black' },
+  searchInput: {
+    flex: 1,
+    fontSize: 16,
+    color: 'black' },
   
-  container: { flex: 1, backgroundColor: 'white' },
+  container: {
+    flex: 1,
+    backgroundColor: 'white' },
 
-  content: { padding: 16, alignItems: 'center', paddingBottom: 100 },
+  content: {
+    padding: 16,
+    alignItems: 'center',
+    paddingBottom: 100 },
 
-  text: { color: 'grey', fontSize: 22, marginBottom: 20 },
+  text: {
+    color: 'grey',
+    fontSize: 22,
+    marginBottom: 20 },
 
-  linkButton: { marginBottom: 10, padding: 10, backgroundColor: '#eee', borderRadius: 10 },
+  linkButton: {
+    marginBottom: 10,
+    padding: 10,
+    backgroundColor: '#eee',
+    borderRadius: 10 },
 
-  linkText: { fontSize: 20, color: 'saddlebrown', fontWeight: '600' },
+  linkText: {
+    fontSize: 20,
+    color: 'saddlebrown',
+    fontWeight: '600' },
 
-  searchWrapper: { position: 'absolute', bottom: 18, left: 15, right: 15, zIndex: 2 },
-  
-  typedSentence: { fontSize: 20, fontFamily: 'Playfair-Italic', color: 'ghostwhite', textAlign: 'left', paddingHorizontal: 8, marginBottom: 95, zIndex: 3 },
+  searchWrapper: {
+    position: 'absolute',
+    bottom: 18,
+    left: 15,
+    right: 15,
+    zIndex: 2 },
+
+  typedSentence: {
+    fontSize: 20,
+    fontFamily: 'Playfair-Italic',
+    color: 'ghostwhite',
+    textAlign: 'left',
+    paddingHorizontal: 8,
+    marginBottom: 95,
+    zIndex: 3 },
 });

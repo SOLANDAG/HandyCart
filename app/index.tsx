@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Text, View, StyleSheet, Animated, ImageBackground, TextInput, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import Header from '../components/Header';
 import { useNavigation } from '@react-navigation/native';
 import type { DrawerNavigationProp } from '@react-navigation/drawer';
 import type { DrawerParamList } from '../types/navigation';
@@ -55,7 +54,6 @@ export default function Index() {
 
   return (
     <View style={styles.container}>
-      <Header />
       <Animated.View style={{ height: headerHeight, overflow: 'hidden' }}>
         <ImageBackground
           source={require('../assets/images/background.png')}
@@ -106,10 +104,6 @@ export default function Index() {
 
         <TouchableOpacity style={styles.linkButton} onPress={() => navigation.navigate('Transportation')}>
           <Text style={styles.linkText}>Transportation</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.linkButton} onPress={() => navigation.navigate('About')}>
-          <Text style={styles.linkText}>About</Text>
         </TouchableOpacity>
 
       </Animated.ScrollView>

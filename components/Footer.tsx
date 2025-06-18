@@ -12,36 +12,38 @@ export default function Footer() {
 
   const isHome = currentRouteName === 'Home';
   const isProfile = currentRouteName === 'Profile';
-  const isAbout = currentRouteName === 'About';
+  const isCart = currentRouteName === 'Cart';
+  const isMessages = currentRouteName === 'Messages';
+  const isEmergency = currentRouteName === 'Emergency';
 
   return (
     <View style={styles.footerContainer}>
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Home')}>
-        <Ionicons
-          name={isHome ? 'home' : 'home-outline'}
-          size={32}
-          color="saddlebrown"
-        />
-        <Text style={styles.label}>Home</Text>
-      </TouchableOpacity>
 
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Profile')}>
-        <Ionicons
-          name={isProfile ? 'person' : 'person-outline'}
-          size={32}
-          color="saddlebrown"
-        />
+        <Ionicons name={isProfile ? 'person' : 'person-outline'} size={32} color="saddlebrown" />
         <Text style={styles.label}>Profile</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('About')}>
-        <Ionicons
-          name={isAbout ? 'information-circle' : 'information-circle-outline'}
-          size={32}
-          color="saddlebrown"
-        />
-        <Text style={styles.label}>About</Text>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Cart')}>
+        <Ionicons name={isCart ? 'cart' : 'cart-outline'} size={32} color="saddlebrown" />
+        <Text style={styles.label}>Cart</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Home')}>
+        <Ionicons name={isHome ? 'home' : 'home-outline'} size={32} color="saddlebrown" />
+        <Text style={styles.label}>Home</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Messages')}>
+        <Ionicons name={isMessages ? 'chatbubble' : 'chatbubble-outline'} size={32} color="saddlebrown" />
+        <Text style={styles.label}>Messages</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Emergency')}>
+        <Ionicons name={isEmergency ? 'warning' : 'warning-outline'} size={32} color="saddlebrown" />
+        <Text style={styles.label}>SOS</Text>
+      </TouchableOpacity>
+
     </View>
   );
 }

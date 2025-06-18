@@ -1,3 +1,4 @@
+import { Link } from "expo-router";
 import { Text, View, StyleSheet } from "react-native";
 
 export default function Index() {
@@ -5,7 +6,7 @@ export default function Index() {
     <View
       style={styles.container}
     >
-      <Text style={styles.text}>PROFILE</Text>
+      <Text style={styles.text}>MESSAGES</Text>
       
     </View>
   );

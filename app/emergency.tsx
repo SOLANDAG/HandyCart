@@ -6,9 +6,8 @@ export default function Index() {
     <View
       style={styles.container}
     >
-      <Text style={styles.text}>ABOUT</Text>
+      <Text style={styles.text}>EMERGENCY</Text>
       
-      <Link href={"/"} style={styles.button}>Home</Link>
     </View>
   );
 }

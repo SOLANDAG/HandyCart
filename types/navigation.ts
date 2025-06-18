@@ -3,7 +3,9 @@ export type DrawerParamList = {
   Grocery: undefined;
   Transportation: undefined;
   Profile: undefined;
-  About: undefined;
+  Cart: undefined;
+  Messages: undefined;
+  Emergency: undefined;
 };
 
 export type HomeStackParamList = {
@@ -22,6 +24,14 @@ export type ProfileStackParamList = {
   ProfileMain: undefined;
 };
 
-export type AboutStackParamList = {
-  AboutMain: undefined;
+export type CartStackParamList = {
+  CartMain: undefined;
+};
+
+export type MessagesStackParamList = {
+  MessagesMain: undefined;
+};
+
+export type EmergencyStackParamList = {
+  EmergencyMain: undefined;
 };

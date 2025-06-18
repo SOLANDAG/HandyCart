@@ -1,12 +1,12 @@
 import { Text, View, StyleSheet } from "react-native";
 
-export default function Cart() {
+export default function Index() {
   return (
     <View
       style={styles.container}
     >
-      <Text style={styles.text}>CART</Text>
-
+      <Text style={styles.text}>DELIVERY</Text>
+      
     </View>
   );
 }

@@ -34,8 +34,6 @@ const CartStack = createStackNavigator<CartStackParamList>();
 const MessagesStack = createStackNavigator<MessagesStackParamList>();
 const EmergencyStack = createStackNavigator<EmergencyStackParamList>();
 
-// WRAPPERS
-
 function HomeStackScreen() {
   return (
     <>

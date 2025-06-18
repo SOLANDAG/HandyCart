@@ -1,15 +1,12 @@
 import { Link } from "expo-router";
 import { Text, View, StyleSheet } from "react-native";
 
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-
 export default function Index() {
   return (
     <View
       style={styles.container}
     >
-      <Text style={styles.text}>PROFILE</Text>
+      <Text style={styles.text}>ABOUT</Text>
       
       <Link href={"/"} style={styles.button}>Home</Link>
     </View>

@@ -1,10 +1,9 @@
-import { Stack } from "expo-router";
 import * as Font from 'expo-font';
 import { useEffect, useState } from 'react';
 import { View, ActivityIndicator } from 'react-native';
+import DrawerNavigator from '../components/DrawerNavigator';
 
 export default function RootLayout() {
-
   const [fontsLoaded, setFontsLoaded] = useState(false);
 
   useEffect(() => {
@@ -25,31 +24,5 @@ export default function RootLayout() {
     );
   }
 
-  return (
-  <Stack>
-    <Stack.Screen name="index" options={{
-      headerShown: false,
-    }} />
-
-    <Stack.Screen name="about" options={{
-      headerShown: false,
-    }}/>
-
-    <Stack.Screen name="settings" options={{
-      headerShown: false,
-    }}/>
-
-    <Stack.Screen name="profile" options={{
-      headerShown: false,
-    }}/>
-
-    <Stack.Screen name="transportation" options={{
-      headerShown: false,
-    }}/>
-
-    <Stack.Screen name="grocery" options={{
-      headerShown: false,
-    }}/>
-
-  </Stack>);
+  return <DrawerNavigator />;
 }

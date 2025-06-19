@@ -45,7 +45,8 @@ export default function DrawerNavigator() {
     >
 
       {[
-        
+        { name: 'Home', component: HomeScreen },
+                
         { name: 'Grocery', component: GroceryScreen },
         { name: 'Food', component: FoodScreen },
         { name: 'Ride', component: RideScreen },
@@ -54,7 +55,6 @@ export default function DrawerNavigator() {
 
         { name: 'Order', component: OrderScreen },
         { name: 'Cart', component: CartScreen },
-        { name: 'Home', component: HomeScreen },
         { name: 'Chats', component: ChatsScreen },
         { name: 'Emergency', component: EmergencyScreen }
       ].map(({ name, component }) => (

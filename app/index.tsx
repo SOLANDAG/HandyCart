@@ -57,38 +57,40 @@ export default function Index() {
 
   return (
     <View style={styles.container}>
-      <Animated.View style={{ height: headerHeight, overflow: 'hidden' }}>
-        <ImageBackground
-          source={require('../assets/images/background.png')}
-          style={styles.imageBackground}
-          resizeMode="cover"
-        >
-          <LinearGradient
-            colors={['rgba(20, 11, 2, 0.75)', 'transparent']}
-            start={{ x: 1, y: 0 }}
-            end={{ x: 0, y: 0 }}
-            style={[styles.gradientOverlay, { width: '200%' }]}
-          />
-          <View style={styles.greetingTextWrapper}>
-            <AnimatedText style={[styles.greeting1, { opacity: greetingOpacity }]}>Welcome, dear</AnimatedText>
-            <AnimatedText style={[styles.greeting2, { opacity: greetingOpacity }]}>Username</AnimatedText>
-          </View>
-          {typedText.length > 0 && <Text style={styles.typedSentence}>{typedText}</Text>}
-          {showTyping && <Text style={styles.typedSentence}>{typedText}</Text>}
-          <View style={styles.searchWrapper}>
-            <View style={styles.searchContainer}>
-              <Ionicons name="search" size={30} color="gray" style={styles.searchIcon} />
-              <TextInput
-                placeholder="Search"
-                placeholderTextColor="gray"
-                style={styles.searchInput}
-                onChangeText={(text) => setQuery(text)}
-                value={query}
-              />
+      <View style={styles.shadowWrapper}>
+        <Animated.View style={{ height: headerHeight, overflow: 'hidden' }}>
+          <ImageBackground
+            source={require('../assets/images/background.png')}
+            style={styles.imageBackground}
+            resizeMode="cover"
+          >
+            <LinearGradient
+              colors={['rgba(20, 11, 2, 0.75)', 'transparent']}
+              start={{ x: 1, y: 0 }}
+              end={{ x: 0, y: 0 }}
+              style={[styles.gradientOverlay, { width: '200%' }]}
+            />
+            <View style={styles.greetingTextWrapper}>
+              <AnimatedText style={[styles.greeting1, { opacity: greetingOpacity }]}>Welcome, dear</AnimatedText>
+              <AnimatedText style={[styles.greeting2, { opacity: greetingOpacity }]}>Username</AnimatedText>
             </View>
-          </View>
-        </ImageBackground>
-      </Animated.View>
+            {typedText.length > 0 && <Text style={styles.typedSentence}>{typedText}</Text>}
+            {showTyping && <Text style={styles.typedSentence}>{typedText}</Text>}
+            <View style={styles.searchWrapper}>
+              <View style={styles.searchContainer}>
+                <Ionicons name="search" size={30} color="gray" style={styles.searchIcon} />
+                <TextInput
+                  placeholder="Search"
+                  placeholderTextColor="gray"
+                  style={styles.searchInput}
+                  onChangeText={(text) => setQuery(text)}
+                  value={query}
+                />
+              </View>
+            </View>
+          </ImageBackground>
+        </Animated.View>
+      </View>
 
       <Animated.ScrollView
         contentContainerStyle={styles.content}
@@ -140,7 +142,7 @@ function CategoryButton({ image, label, onPress, gradientColors }: any) {
       width: width - 32,
       height: (width - 32) / IMAGE_ASPECT_RATIO,
       marginBottom: 20,
-      borderRadius: 15,
+      borderRadius: 8,
       overflow: 'hidden',
       alignSelf: 'center',
       elevation: 5,
@@ -162,21 +164,94 @@ function CategoryButton({ image, label, onPress, gradientColors }: any) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: 'beige' },
+  container: {
+    flex: 1,
+    backgroundColor: 'beige'
+  },
 
-  imageBackground: { flex: 1, justifyContent: 'center', paddingHorizontal: 20 },
-  gradientOverlay: { position: 'absolute', top: 0, bottom: 0, right: 0, left: 0 },
+  imageBackground: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingHorizontal: 20
+  },
 
-  greetingTextWrapper: { zIndex: 1, paddingHorizontal: 20, marginBottom: 50 },
-  greeting1: { fontSize: 38, fontFamily: 'Playfair-Regular', textAlign: 'right', color: 'gold' },
-  greeting2: { fontSize: 40, color: 'white', textAlign: 'right', fontFamily: 'Playfair-BoldItalic' },
+  gradientOverlay: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 0
+  },
 
-  searchWrapper: { position: 'absolute', bottom: 18, left: 15, right: 15, zIndex: 2 },
-  searchContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#F0F0F0', borderRadius: 50, paddingHorizontal: 12, paddingVertical: 8 },
-  searchIcon: { marginRight: 8 },
-  searchInput: { flex: 1, fontSize: 16, color: 'black' },
+  greetingTextWrapper: {
+    zIndex: 1,
+    paddingHorizontal: 20,
+    marginBottom: 50
+  },
 
-  typedSentence: { fontSize: 20, fontFamily: 'Playfair-Italic', color: 'ghostwhite', textAlign: 'left', paddingHorizontal: 8, marginBottom: 90, zIndex: 3 },
+  greeting1: {
+    fontSize: 38,
+    fontFamily: 'Playfair-Regular',
+    textAlign: 'right',
+    color: 'gold'
+  },
 
-  content: { padding: 16, alignItems: 'center', paddingBottom: 100 },
+  greeting2: {
+    fontSize: 40,
+    color: 'white',
+    textAlign: 'right',
+    fontFamily: 'Playfair-BoldItalic'
+  },
+
+  searchWrapper: {
+    position: 'absolute',
+    bottom: 18,
+    left: 15,
+    right: 15,
+    zIndex: 2
+  },
+
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F0F0F0',
+    borderRadius: 50,
+    paddingHorizontal: 12,
+    paddingVertical: 8
+  },
+
+  searchIcon: {
+    marginRight: 8
+  },
+
+  searchInput: {
+    flex: 1,
+    fontSize: 16,
+    color: 'black'
+  },
+
+  typedSentence: {
+    fontSize: 20,
+    fontFamily: 'Playfair-Italic',
+    color: 'ghostwhite',
+    textAlign: 'left',
+    paddingHorizontal: 8,
+    marginBottom: 90,
+    zIndex: 3
+  },
+
+  content: {
+    padding: 16,
+    alignItems: 'center',
+    paddingBottom: 100
+  },
+
+  shadowWrapper: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 10,
+    backgroundColor: 'transparent',
+  }
 });

@@ -11,7 +11,7 @@ export default function Header() {
     <View style={styles.headerWrapper}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
-          <Ionicons name="menu" size={28} color="brown" />
+          <Ionicons name="menu" size={28} color="saddlebrown" />
         </TouchableOpacity>
 
         <View style={styles.logoContainer}>
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
 
   appName: {
     fontSize: 20,
-    color: 'saddlebrown',
+    color: 'brown',
     fontFamily: 'Playfair-Black',
   },
 });

@@ -1,12 +1,12 @@
 import { Text, View, StyleSheet } from "react-native";
 
-export default function Index() {
+export default function Payment() {
   return (
     <View
       style={styles.container}
     >
-      <Text style={styles.text}>DELIVERY</Text>
-      
+      <Text style={styles.text}>PAYMENT</Text>
+
     </View>
   );
 }

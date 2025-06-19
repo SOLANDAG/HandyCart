@@ -11,17 +11,16 @@ export default function Footer() {
   const currentRouteName = state.routes[state.index].name;
 
   const isHome = currentRouteName === 'Home';
-  const isProfile = currentRouteName === 'Profile';
+  const isOrder = currentRouteName === 'Order';
   const isCart = currentRouteName === 'Cart';
-  const isMessages = currentRouteName === 'Messages';
+  const isChats = currentRouteName === 'Chats';
   const isEmergency = currentRouteName === 'Emergency';
 
   return (
     <View style={styles.footerContainer}>
-
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Profile')}>
-        <Ionicons name={isProfile ? 'person' : 'person-outline'} size={32} color="saddlebrown" />
-        <Text style={styles.label}>Profile</Text>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Order')}>
+        <Ionicons name={isOrder ? 'cube' : 'cube-outline'} size={32} color="saddlebrown" />
+        <Text style={styles.label}>Order</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Cart')}>
@@ -34,16 +33,15 @@ export default function Footer() {
         <Text style={styles.label}>Home</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Messages')}>
-        <Ionicons name={isMessages ? 'chatbubble' : 'chatbubble-outline'} size={32} color="saddlebrown" />
-        <Text style={styles.label}>Messages</Text>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Chats')}>
+        <Ionicons name={isChats ? 'chatbubble' : 'chatbubble-outline'} size={32} color="saddlebrown" />
+        <Text style={styles.label}>Chats</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Emergency')}>
         <Ionicons name={isEmergency ? 'warning' : 'warning-outline'} size={32} color="saddlebrown" />
         <Text style={styles.label}>SOS</Text>
       </TouchableOpacity>
-
     </View>
   );
 }
@@ -51,9 +49,7 @@ export default function Footer() {
 const styles = StyleSheet.create({
   footerContainer: {
     position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
+    bottom: 0, left: 0, right: 0,
     backgroundColor: 'beige',
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -68,14 +64,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 4,
   },
-  button: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  label: {
-    fontSize: 12,
-    color: 'saddlebrown',
-    marginTop: 5,
-    fontWeight: '600'
-  },
+  button: { alignItems: 'center', justifyContent: 'center' },
+  label: { fontSize: 12, color: 'saddlebrown', marginTop: 5, fontWeight: '600' },
 });

@@ -1,12 +1,11 @@
-import { Link } from "expo-router";
 import { Text, View, StyleSheet } from "react-native";
 
-export default function Index() {
+export default function Order() {
   return (
     <View
       style={styles.container}
     >
-      <Text style={styles.text}>MESSAGES</Text>
+      <Text style={styles.text}>ORDER</Text>
       
     </View>
   );

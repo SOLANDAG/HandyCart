@@ -1,11 +1,11 @@
 import { Text, View, StyleSheet } from "react-native";
 
-export default function About() {
+export default function Chats() {
   return (
     <View
       style={styles.container}
     >
-      <Text style={styles.text}>ABOUT</Text>
+      <Text style={styles.text}>Chats</Text>
       
     </View>
   );

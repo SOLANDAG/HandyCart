@@ -1,154 +1,132 @@
 import React from 'react';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { createStackNavigator } from '@react-navigation/stack';
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem
+} from '@react-navigation/drawer';
 import { Ionicons } from '@expo/vector-icons';
+import { View, Text, StyleSheet, Image } from 'react-native';
 
 import HomeScreen from '../app/index';
 import GroceryScreen from '../app/grocery';
 import TransportationScreen from '../app/transportation';
-import ProfileScreen from '../app/profile';
+import OrderScreen from '../app/order';
 import CartScreen from '../app/cart';
-import MessagesScreen from '../app/messages';
+import ChatsScreen from '../app/chats';
 import EmergencyScreen from '../app/emergency';
-import Header from './Header';
-import Footer from './Footer';
 
-import type {
-  DrawerParamList,
-  HomeStackParamList,
-  GroceryStackParamList,
-  TransportationStackParamList,
-  ProfileStackParamList,
-  CartStackParamList,
-  MessagesStackParamList,
-  EmergencyStackParamList
-} from '../types/navigation';
+import ProfileScreen from '../app/profile';
+import SettingsScreen from '../app/settings';
+import HistoryScreen from '../app/history';
+import PaymentScreen from '../app/payment';
+import AboutScreen from '../app/about';
+import HelpScreen from '../app/help';
+
+import LayoutWrapper from './LayoutWrapper';
+import type { DrawerParamList } from '../types/navigation';
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
-
-const HomeStack = createStackNavigator<HomeStackParamList>();
-const GroceryStack = createStackNavigator<GroceryStackParamList>();
-const TransportationStack = createStackNavigator<TransportationStackParamList>();
-const ProfileStack = createStackNavigator<ProfileStackParamList>();
-const CartStack = createStackNavigator<CartStackParamList>();
-const MessagesStack = createStackNavigator<MessagesStackParamList>();
-const EmergencyStack = createStackNavigator<EmergencyStackParamList>();
-
-function HomeStackScreen() {
-  return (
-    <>
-      <Header />
-      <HomeStack.Navigator screenOptions={{ headerShown: false }}>
-        <HomeStack.Screen name="HomeMain" component={HomeScreen} />
-      </HomeStack.Navigator>
-      <Footer />
-    </>
-  );
-}
-
-function GroceryStackScreen() {
-  return (
-    <>
-      <Header />
-      <GroceryStack.Navigator screenOptions={{ headerShown: false }}>
-        <GroceryStack.Screen name="GroceryMain" component={GroceryScreen} />
-      </GroceryStack.Navigator>
-      <Footer />
-    </>
-  );
-}
-
-function TransportationStackScreen() {
-  return (
-    <>
-      <Header />
-      <TransportationStack.Navigator screenOptions={{ headerShown: false }}>
-        <TransportationStack.Screen name="TransportationMain" component={TransportationScreen} />
-      </TransportationStack.Navigator>
-      <Footer />
-    </>
-  );
-}
-
-function ProfileStackScreen() {
-  return (
-    <>
-      <Header />
-      <ProfileStack.Navigator screenOptions={{ headerShown: false }}>
-        <ProfileStack.Screen name="ProfileMain" component={ProfileScreen} />
-      </ProfileStack.Navigator>
-      <Footer />
-    </>
-  );
-}
-
-function CartStackScreen() {
-  return (
-    <>
-      <Header />
-      <CartStack.Navigator screenOptions={{ headerShown: false }}>
-        <CartStack.Screen name="CartMain" component={CartScreen} />
-      </CartStack.Navigator>
-      <Footer />
-    </>
-  );
-}
-
-function MessagesStackScreen() {
-  return (
-    <>
-      <Header />
-      <MessagesStack.Navigator screenOptions={{ headerShown: false }}>
-        <MessagesStack.Screen name="MessagesMain" component={MessagesScreen} />
-      </MessagesStack.Navigator>
-      <Footer />
-    </>
-  );
-}
-
-function EmergencyStackScreen() {
-  return (
-    <>
-      <Header />
-      <EmergencyStack.Navigator screenOptions={{ headerShown: false }}>
-        <EmergencyStack.Screen name="EmergencyMain" component={EmergencyScreen} />
-      </EmergencyStack.Navigator>
-      <Footer />
-    </>
-  );
-}
 
 export default function DrawerNavigator() {
   return (
     <Drawer.Navigator
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={{
         headerShown: false,
         drawerActiveTintColor: 'saddlebrown',
         drawerLabelStyle: { fontSize: 18 },
-        drawerType: 'front'
+        drawerType: 'front',
       }}
     >
-      <Drawer.Screen name="Home" component={HomeStackScreen} options={{
-        drawerIcon: ({ color, size }) => (<Ionicons name="home-outline" size={size} color={color} />),
-      }} />
-      <Drawer.Screen name="Grocery" component={GroceryStackScreen} options={{
-        drawerIcon: ({ color, size }) => (<Ionicons name="cart-outline" size={size} color={color} />),
-      }} />
-      <Drawer.Screen name="Transportation" component={TransportationStackScreen} options={{
-        drawerIcon: ({ color, size }) => (<Ionicons name="car-outline" size={size} color={color} />),
-      }} />
-      <Drawer.Screen name="Profile" component={ProfileStackScreen} options={{
-        drawerIcon: ({ color, size }) => (<Ionicons name="person-outline" size={size} color={color} />),
-      }} />
-      <Drawer.Screen name="Cart" component={CartStackScreen} options={{
-        drawerIcon: ({ color, size }) => (<Ionicons name="cart-outline" size={size} color={color} />),
-      }} />
-      <Drawer.Screen name="Messages" component={MessagesStackScreen} options={{
-        drawerIcon: ({ color, size }) => (<Ionicons name="chatbubble-outline" size={size} color={color} />),
-      }} />
-      <Drawer.Screen name="Emergency" component={EmergencyStackScreen} options={{
-        drawerIcon: ({ color, size }) => (<Ionicons name="warning-outline" size={size} color={color} />),
-      }} />
+
+      {[
+        { name: 'Home', component: HomeScreen },
+        { name: 'Grocery', component: GroceryScreen },
+        { name: 'Transportation', component: TransportationScreen },
+        { name: 'Order', component: OrderScreen },
+        { name: 'Cart', component: CartScreen },
+        { name: 'Chats', component: ChatsScreen },
+        { name: 'Emergency', component: EmergencyScreen }
+      ].map(({ name, component }) => (
+        <Drawer.Screen
+          key={name}
+          name={name as keyof DrawerParamList}
+          options={{ drawerItemStyle: { display: 'none' } }}
+          children={() => <LayoutWrapper>{React.createElement(component)}</LayoutWrapper>}
+        />
+      ))}
+
+      <Drawer.Screen
+        name="Profile"
+        options={{
+          drawerIcon: ({ color, size }) => <Ionicons name="person-outline" size={size} color={color} />
+        }}
+        children={() => <LayoutWrapper><ProfileScreen /></LayoutWrapper>}
+      />
+      <Drawer.Screen
+        name="Settings"
+        options={{
+          drawerIcon: ({ color, size }) => <Ionicons name="settings-outline" size={size} color={color} />
+        }}
+        children={() => <LayoutWrapper><SettingsScreen /></LayoutWrapper>}
+      />
+      <Drawer.Screen
+        name="History"
+        options={{
+          drawerIcon: ({ color, size }) => <Ionicons name="time-outline" size={size} color={color} />
+        }}
+        children={() => <LayoutWrapper><HistoryScreen /></LayoutWrapper>}
+      />
+      <Drawer.Screen
+        name="Payment"
+        options={{
+          drawerIcon: ({ color, size }) => <Ionicons name="card-outline" size={size} color={color} />
+        }}
+        children={() => <LayoutWrapper><PaymentScreen /></LayoutWrapper>}
+      />
+      <Drawer.Screen
+        name="About"
+        options={{
+          drawerIcon: ({ color, size }) => <Ionicons name="information-circle-outline" size={size} color={color} />
+        }}
+        children={() => <LayoutWrapper><AboutScreen /></LayoutWrapper>}
+      />
+      <Drawer.Screen
+        name="Help"
+        options={{
+          drawerIcon: ({ color, size }) => <Ionicons name="help-circle-outline" size={size} color={color} />
+        }}
+        children={() => <LayoutWrapper><HelpScreen /></LayoutWrapper>}
+      />
     </Drawer.Navigator>
   );
 }
+
+function CustomDrawerContent(props: any) {
+  return (
+    <DrawerContentScrollView {...props} contentContainerStyle={styles.drawerContent}>
+      <View style={styles.profileSection}>
+        <Image source={require('../assets/images/profile-placeholder.png')} style={styles.profileImage} />
+        <Text style={styles.username}>Username</Text> 
+      </View>
+
+      <DrawerItemList {...props} />
+
+      <DrawerItem
+        label="Log Out"
+        labelStyle={styles.logoutLabel}
+        icon={({ color, size }) => <Ionicons name="log-out-outline" size={size} color="saddlebrown" />}
+        onPress={() => console.log('Log Out pressed')}
+      />
+    </DrawerContentScrollView>
+  );
+}
+
+const styles = StyleSheet.create({
+  drawerContent: { flex: 1 },
+  profileSection: { alignItems: 'center', marginVertical: 30 },
+  profileImage: { width: 80, height: 80, borderRadius: 40, marginBottom: 10 },
+  username: { fontSize: 18, fontWeight: 'bold', color: 'saddlebrown' },
+  logoutLabel: { fontSize: 18, color: 'saddlebrown' }
+});

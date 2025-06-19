@@ -5,7 +5,7 @@ export default function Chats() {
     <View
       style={styles.container}
     >
-      <Text style={styles.text}>Chats</Text>
+      <Text style={styles.text}>CHATS</Text>
       
     </View>
   );

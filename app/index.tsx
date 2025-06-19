@@ -68,7 +68,7 @@ export default function Index() {
           />
           <View style={styles.greetingTextWrapper}>
             <AnimatedText style={[styles.greeting1, { opacity: greetingOpacity }]}>Welcome, dear</AnimatedText>
-            <AnimatedText style={[styles.greeting2, { opacity: greetingOpacity }]}>Olive</AnimatedText>
+            <AnimatedText style={[styles.greeting2, { opacity: greetingOpacity }]}>Username</AnimatedText>
           </View>
           {typedText.length > 0 && <Text style={styles.typedSentence}>{typedText}</Text>}
           {showTyping && <Text style={styles.typedSentence}>{typedText}</Text>}

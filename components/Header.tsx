@@ -11,12 +11,12 @@ export default function Header() {
     <View style={styles.headerWrapper}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
-          <Ionicons name="menu" size={28} color="saddlebrown" />
+          <Ionicons name="menu" size={28} color="brown" />
         </TouchableOpacity>
 
         <View style={styles.logoContainer}>
           <Image
-            source={require('../assets/images/handyCart2.png')}
+            source={require('../assets/images/handyCart1.png')}
             style={styles.logo}
           />
           <Text style={styles.appName}>HandyCart</Text>
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   },
 
   header: {
-    backgroundColor: 'beige',
+    backgroundColor: 'white',
     borderRadius: 10,
     paddingHorizontal: 20,
     paddingTop: 40,

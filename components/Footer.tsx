@@ -19,27 +19,27 @@ export default function Footer() {
   return (
     <View style={styles.footerContainer}>
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Order')}>
-        <Ionicons name={isOrder ? 'cube' : 'cube-outline'} size={32} color="saddlebrown" />
+        <Ionicons name={isOrder ? 'cube' : 'cube-outline'} size={32} color="brown" />
         <Text style={styles.label}>Order</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Cart')}>
-        <Ionicons name={isCart ? 'cart' : 'cart-outline'} size={32} color="saddlebrown" />
+        <Ionicons name={isCart ? 'cart' : 'cart-outline'} size={32} color="brown" />
         <Text style={styles.label}>Cart</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Home')}>
-        <Ionicons name={isHome ? 'home' : 'home-outline'} size={32} color="saddlebrown" />
+        <Ionicons name={isHome ? 'home' : 'home-outline'} size={32} color="brown" />
         <Text style={styles.label}>Home</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Chats')}>
-        <Ionicons name={isChats ? 'chatbubble' : 'chatbubble-outline'} size={32} color="saddlebrown" />
+        <Ionicons name={isChats ? 'chatbubble' : 'chatbubble-outline'} size={32} color="brown" />
         <Text style={styles.label}>Chats</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Emergency')}>
-        <Ionicons name={isEmergency ? 'warning' : 'warning-outline'} size={32} color="saddlebrown" />
+        <Ionicons name={isEmergency ? 'warning' : 'warning-outline'} size={32} color="brown" />
         <Text style={styles.label}>SOS</Text>
       </TouchableOpacity>
     </View>
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   footerContainer: {
     position: 'absolute',
     bottom: 0, left: 0, right: 0,
-    backgroundColor: 'beige',
+    backgroundColor: 'white',
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
@@ -65,5 +65,5 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
   },
   button: { alignItems: 'center', justifyContent: 'center' },
-  label: { fontSize: 12, color: 'saddlebrown', marginTop: 5, fontWeight: '600' },
+  label: { fontSize: 12, color: 'brown', marginTop: 5, fontWeight: '600' },
 });

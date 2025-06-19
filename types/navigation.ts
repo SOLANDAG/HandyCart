@@ -1,13 +1,16 @@
 export type DrawerParamList = {
   Grocery: undefined;
-  Transportation: undefined;
-
+  Food: undefined;
+  Ride: undefined;
+  Medicine: undefined;
+  Laundry: undefined;
   
   Order: undefined;
   Cart: undefined;
   Home: undefined;
   Chats: undefined;
   Emergency: undefined;
+
   Profile: undefined;
   Settings: undefined;
   History: undefined;
@@ -16,11 +19,16 @@ export type DrawerParamList = {
   Help: undefined;
 };
 
-export type HomeStackParamList = { HomeMain: undefined; };
+
 export type GroceryStackParamList = { GroceryMain: undefined; };
-export type TransportationStackParamList = { TransportationMain: undefined; };
+export type FoodStackParamList = { FoodMain: undefined; };
+export type RideStackParamList = { RideMain: undefined; };
+export type MedicineStackParamList = { MedicineMain: undefined; };
+export type LaundryStackParamList = { LaundryMain: undefined; };
+
 export type OrderStackParamList = { OrderMain: undefined; };
 export type CartStackParamList = { CartMain: undefined; };
+export type HomeStackParamList = { HomeMain: undefined; };
 export type ChatsStackParamList = { ChatsMain: undefined; };
 export type EmergencyStackParamList = { EmergencyMain: undefined; };
 

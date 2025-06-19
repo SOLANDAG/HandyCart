@@ -8,9 +8,13 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { View, Text, StyleSheet, Image } from 'react-native';
 
-import HomeScreen from '../app/index';
 import GroceryScreen from '../app/grocery';
-import TransportationScreen from '../app/transportation';
+import FoodScreen from '../app/food';
+import RideScreen from '../app/ride';
+import MedicineScreen from '../app/medicine';
+import LaundryScreen from '../app/laundry';
+
+import HomeScreen from '../app/index';
 import OrderScreen from '../app/order';
 import CartScreen from '../app/cart';
 import ChatsScreen from '../app/chats';
@@ -41,11 +45,16 @@ export default function DrawerNavigator() {
     >
 
       {[
-        { name: 'Home', component: HomeScreen },
+        
         { name: 'Grocery', component: GroceryScreen },
-        { name: 'Transportation', component: TransportationScreen },
+        { name: 'Food', component: FoodScreen },
+        { name: 'Ride', component: RideScreen },
+        { name: 'Medicine', component: MedicineScreen },
+        { name: 'Laundry', component: LaundryScreen },
+
         { name: 'Order', component: OrderScreen },
         { name: 'Cart', component: CartScreen },
+        { name: 'Home', component: HomeScreen },
         { name: 'Chats', component: ChatsScreen },
         { name: 'Emergency', component: EmergencyScreen }
       ].map(({ name, component }) => (

@@ -1,10 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Text, View, StyleSheet, Animated, ImageBackground, TextInput, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, Animated, ImageBackground, TextInput, TouchableOpacity, Dimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import type { DrawerNavigationProp } from '@react-navigation/drawer';
 import type { DrawerParamList } from '../types/navigation';
+
+const { width } = Dimensions.get('window');
+const IMAGE_ASPECT_RATIO = 3 / 1;
 
 export default function Index() {
   const navigation = useNavigation<DrawerNavigationProp<DrawerParamList>>();
@@ -12,6 +15,8 @@ export default function Index() {
   const [typedText, setTypedText] = useState("");
   const fullText = "What do we have in mind for today?";
   const [showTyping, setShowTyping] = useState(false);
+  const AnimatedText = Animated.createAnimatedComponent(Text);
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     let timeout: ReturnType<typeof setTimeout>;
@@ -39,7 +44,6 @@ export default function Index() {
     };
   }, [scrollY, showTyping]);
 
-  const AnimatedText = Animated.createAnimatedComponent(Text);
   const headerHeight = scrollY.interpolate({
     inputRange: [0, 100],
     outputRange: [220, 120],
@@ -50,7 +54,6 @@ export default function Index() {
     outputRange: [1, 0],
     extrapolate: 'clamp',
   });
-  const [query, setQuery] = useState("");
 
   return (
     <View style={styles.container}>
@@ -96,108 +99,84 @@ export default function Index() {
         )}
         scrollEventThrottle={16}
       >
-        <Text style={styles.text}>HandyCart</Text>
-
-        <TouchableOpacity style={styles.linkButton} onPress={() => navigation.navigate('Grocery')}>
-          <Text style={styles.linkText}>Grocery</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.linkButton} onPress={() => navigation.navigate('Transportation')}>
-          <Text style={styles.linkText}>Transportation</Text>
-        </TouchableOpacity>
-
+        <CategoryButton
+          image={require('../assets/images/grocery.png')}
+          label="Grocery"
+          onPress={() => navigation.navigate('Grocery')}
+          gradientColors={['rgb(11, 83, 238)', 'transparent']}
+        />
+        <CategoryButton
+          image={require('../assets/images/food.png')}
+          label="Food"
+          onPress={() => navigation.navigate('Food')}
+          gradientColors={['crimson', 'transparent']}
+        />
+        <CategoryButton
+          image={require('../assets/images/ride.png')}
+          label="Ride"
+          onPress={() => navigation.navigate('Ride')}
+          gradientColors={['chocolate', 'transparent']}
+        />
+        <CategoryButton
+          image={require('../assets/images/medicine.png')}
+          label="Medicine"
+          onPress={() => navigation.navigate('Medicine')}
+          gradientColors={['olivedrab', 'transparent']}
+        />
+        <CategoryButton
+          image={require('../assets/images/laundry.png')}
+          label="Laundry"
+          onPress={() => navigation.navigate('Laundry')}
+          gradientColors={['rebeccapurple', 'transparent']}
+        />
       </Animated.ScrollView>
     </View>
   );
 }
 
+function CategoryButton({ image, label, onPress, gradientColors }: any) {
+  return (
+    <TouchableOpacity onPress={onPress} activeOpacity={0.8} style={{
+      width: width - 32,
+      height: (width - 32) / IMAGE_ASPECT_RATIO,
+      marginBottom: 20,
+      borderRadius: 15,
+      overflow: 'hidden',
+      alignSelf: 'center',
+      elevation: 5,
+      backgroundColor: '#ccc'
+    }}>
+      <ImageBackground source={image} style={{ flex: 1, justifyContent: 'center' }} resizeMode="cover">
+        <LinearGradient
+          colors={gradientColors}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}
+        />
+        <Text style={{ fontSize: 45, color: 'white', fontWeight: 'bold', paddingLeft: 20, fontFamily: 'Quicksand-Regular' }}>
+          {label}
+        </Text>
+      </ImageBackground>
+    </TouchableOpacity>
+  );
+}
+
 const styles = StyleSheet.create({
-  greetingSection: {
-    height: '33%',
-    width: '100%',
-    overflow: 'hidden' },
+  container: { flex: 1, backgroundColor: 'beige' },
 
-  imageBackground: {
-    flex: 1,
-    justifyContent: 'center',
-    paddingHorizontal: 20 },
+  imageBackground: { flex: 1, justifyContent: 'center', paddingHorizontal: 20 },
+  gradientOverlay: { position: 'absolute', top: 0, bottom: 0, right: 0, left: 0 },
 
-  gradientOverlay: {
-    position: 'absolute',
-    top: 0, bottom: 0,
-    right: 0 },
+  greetingTextWrapper: { zIndex: 1, paddingHorizontal: 20, marginBottom: 50 },
+  greeting1: { fontSize: 38, fontFamily: 'Playfair-Regular', textAlign: 'right', color: 'gold' },
+  greeting2: { fontSize: 40, color: 'white', textAlign: 'right', fontFamily: 'Playfair-BoldItalic' },
 
-  greetingTextWrapper: {
-    zIndex: 1,
-    paddingHorizontal: 20,
-    marginBottom: 50 },
+  searchWrapper: { position: 'absolute', bottom: 18, left: 15, right: 15, zIndex: 2 },
+  searchContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#F0F0F0', borderRadius: 50, paddingHorizontal: 12, paddingVertical: 8 },
+  searchIcon: { marginRight: 8 },
+  searchInput: { flex: 1, fontSize: 16, color: 'black' },
 
-  greeting1: {
-    fontSize: 38,
-    fontFamily: 'Playfair-Regular',
-    textAlign: 'right',
-    color: 'gold' },
+  typedSentence: { fontSize: 20, fontFamily: 'Playfair-Italic', color: 'ghostwhite', textAlign: 'left', paddingHorizontal: 8, marginBottom: 90, zIndex: 3 },
 
-  greeting2: {
-    fontSize: 40,
-    color: 'white',
-    textAlign: 'right',
-    fontFamily: 'Playfair-BoldItalic' },
-
-  searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#F0F0F0',
-    borderRadius: 50,
-    paddingHorizontal: 12,
-    paddingVertical: 8 },
-
-  searchIcon: {
-    marginRight: 8 },
-
-  searchInput: {
-    flex: 1,
-    fontSize: 16,
-    color: 'black' },
-  
-  container: {
-    flex: 1,
-    backgroundColor: 'white' },
-
-  content: {
-    padding: 16,
-    alignItems: 'center',
-    paddingBottom: 100 },
-
-  text: {
-    color: 'grey',
-    fontSize: 22,
-    marginBottom: 20 },
-
-  linkButton: {
-    marginBottom: 10,
-    padding: 10,
-    backgroundColor: '#eee',
-    borderRadius: 10 },
-
-  linkText: {
-    fontSize: 20,
-    color: 'saddlebrown',
-    fontWeight: '600' },
-
-  searchWrapper: {
-    position: 'absolute',
-    bottom: 18,
-    left: 15,
-    right: 15,
-    zIndex: 2 },
-
-  typedSentence: {
-    fontSize: 20,
-    fontFamily: 'Playfair-Italic',
-    color: 'ghostwhite',
-    textAlign: 'left',
-    paddingHorizontal: 8,
-    marginBottom: 95,
-    zIndex: 3 },
+  content: { padding: 16, alignItems: 'center', paddingBottom: 100 },
 });

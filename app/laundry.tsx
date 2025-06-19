@@ -1,12 +1,12 @@
 import { Text, View, StyleSheet } from "react-native";
 
-export default function Transportation() {
+export default function Laundry() {
   return (
     <View
       style={styles.container}
     >
-      <Text style={styles.text}>TRANSPORTATION</Text>
-
+      <Text style={styles.text}>LAUNDRY</Text>
+      
     </View>
   );
 }

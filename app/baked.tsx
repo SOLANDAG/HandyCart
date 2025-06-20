@@ -1,12 +1,12 @@
 import { Text, View, StyleSheet } from "react-native";
 
-export default function Ride() {
+export default function Help() {
   return (
     <View
       style={styles.container}
     >
-      <Text style={styles.text}>RIDE</Text>
-
+      <Text style={styles.text}>HELP</Text>
+      
     </View>
   );
 }

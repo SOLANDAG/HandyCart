@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Text, View, StyleSheet, Animated, ImageBackground, TextInput, TouchableOpacity, Dimensions } from 'react-native';
+import { Text, View, StyleSheet, Animated, ImageBackground, TextInput, TouchableOpacity, Dimensions, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -7,7 +7,9 @@ import type { DrawerNavigationProp } from '@react-navigation/drawer';
 import type { DrawerParamList } from '../types/navigation';
 
 const { width } = Dimensions.get('window');
-const IMAGE_ASPECT_RATIO = 3 / 1;
+const BUTTON_WIDTH = width * 0.44;
+const BUTTON_HEIGHT = width * 0.52;
+
 
 export default function Index() {
   const navigation = useNavigation<DrawerNavigationProp<DrawerParamList>>();
@@ -101,157 +103,162 @@ export default function Index() {
         )}
         scrollEventThrottle={16}
       >
-        <CategoryButton
-          image={require('../assets/images/grocery.png')}
-          label="Grocery"
-          onPress={() => navigation.navigate('Grocery')}
-          gradientColors={['rgb(11, 83, 238)', 'transparent']}
-        />
-        <CategoryButton
-          image={require('../assets/images/food.png')}
-          label="Food"
-          onPress={() => navigation.navigate('Food')}
-          gradientColors={['crimson', 'transparent']}
-        />
-        <CategoryButton
-          image={require('../assets/images/ride.png')}
-          label="Ride"
-          onPress={() => navigation.navigate('Ride')}
-          gradientColors={['chocolate', 'transparent']}
-        />
-        <CategoryButton
-          image={require('../assets/images/medicine.png')}
-          label="Medicine"
-          onPress={() => navigation.navigate('Medicine')}
-          gradientColors={['olivedrab', 'transparent']}
-        />
-        <CategoryButton
-          image={require('../assets/images/laundry.png')}
-          label="Laundry"
-          onPress={() => navigation.navigate('Laundry')}
-          gradientColors={['rebeccapurple', 'transparent']}
-        />
+        <View style={styles.gridContainer}>
+          <CategoryButton
+            label="Vegetables"
+            image={require('../assets/images/groceryitems/vegetables.png')}
+            onPress={() => navigation.navigate('Vegetables')}
+          />
+          <CategoryButton
+            label="Fruits"
+            image={require('../assets/images/groceryitems/fruits.png')}
+            onPress={() => navigation.navigate('Fruits')}
+          />
+          <CategoryButton
+            label="Meat"
+            image={require('../assets/images/groceryitems/meat.png')}
+            onPress={() => navigation.navigate('Meat')}
+          />
+          <CategoryButton
+            label="Seafood"
+            image={require('../assets/images/groceryitems/seafood.png')}
+            onPress={() => navigation.navigate('Seafood')}
+          />
+          <CategoryButton
+            label="Beverages"
+            image={require('../assets/images/groceryitems/beverages.png')}
+            onPress={() => navigation.navigate('Beverages')}
+          />
+          <CategoryButton
+            label="Canned Goods"
+            image={require('../assets/images/groceryitems/canned.png')}
+            onPress={() => navigation.navigate('Cannedgoods')}
+          />
+          <CategoryButton
+            label="Dairy"
+            image={require('../assets/images/groceryitems/dairy.png')}
+            onPress={() => navigation.navigate('Dairy')}
+          />
+          <CategoryButton
+            label="Deli"
+            image={require('../assets/images/groceryitems/deli.png')}
+            onPress={() => navigation.navigate('Deli')}
+          />
+          <CategoryButton
+            label="Condiments"
+            image={require('../assets/images/groceryitems/condiments.png')}
+            onPress={() => navigation.navigate('Condiments')}
+          />
+          <CategoryButton
+            label="Snacks"
+            image={require('../assets/images/groceryitems/snacks.png')}
+            onPress={() => navigation.navigate('Snacks')}
+          />
+          <CategoryButton
+            label="Baked Goods"
+            image={require('../assets/images/groceryitems/baked.png')}
+            onPress={() => navigation.navigate('Bakedgoods')}
+          />
+          <CategoryButton
+            label="Grains"
+            image={require('../assets/images/groceryitems/grains.png')}
+            onPress={() => navigation.navigate('Grains')}
+          />
+          <CategoryButton
+            label="Hygiene"
+            image={require('../assets/images/groceryitems/hygiene.png')}
+            onPress={() => navigation.navigate('Hygiene')}
+          />
+          <CategoryButton
+            label="Household"
+            image={require('../assets/images/groceryitems/household.png')}
+            onPress={() => navigation.navigate('Household')}
+          />
+          <CategoryButton
+            label="Healthcare"
+            image={require('../assets/images/groceryitems/healthcare.png')}
+            onPress={() => navigation.navigate('Healthcare')}
+          />
+          <CategoryButton
+            label="Baby Care"
+            image={require('../assets/images/groceryitems/baby.png')}
+            onPress={() => navigation.navigate('Babycare')}
+          />
+          <CategoryButton
+            label="Pet Care"
+            image={require('../assets/images/groceryitems/pet.png')}
+            onPress={() => navigation.navigate('Petcare')}
+          />
+          <CategoryButton
+            label="Pantry Staples"
+            image={require('../assets/images/groceryitems/pantry.png')}
+            onPress={() => navigation.navigate('Pantrystaples')}
+          />
+        </View>
       </Animated.ScrollView>
     </View>
   );
 }
 
-function CategoryButton({ image, label, onPress, gradientColors }: any) {
+function CategoryButton({ image, label, onPress }: any) {
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.8} style={{
-      width: width - 32,
-      height: (width - 32) / IMAGE_ASPECT_RATIO,
-      marginBottom: 20,
-      borderRadius: 8,
-      overflow: 'hidden',
-      alignSelf: 'center',
-      elevation: 5,
-      backgroundColor: '#ccc'
-    }}>
-      <ImageBackground source={image} style={{ flex: 1, justifyContent: 'center' }} resizeMode="cover">
-        <LinearGradient
-          colors={gradientColors}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-          style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}
-        />
-        <Text style={{ fontSize: 45, color: 'white', fontWeight: 'bold', paddingLeft: 20, fontFamily: 'Quicksand-Regular' }}>
-          {label}
-        </Text>
-      </ImageBackground>
+    <TouchableOpacity onPress={onPress} activeOpacity={0.8} style={styles.categoryButton}>
+      <Image source={image} style={styles.categoryImage} resizeMode="contain" />
+      <Text style={styles.categoryLabel}>{label}</Text>
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'beige'
-  },
+  container: { flex: 1, backgroundColor: 'brown' },
 
-  imageBackground: {
-    flex: 1,
-    justifyContent: 'center',
-    paddingHorizontal: 20
-  },
+  imageBackground: { flex: 1, justifyContent: 'center', paddingHorizontal: 20 },
+  gradientOverlay: { position: 'absolute', top: 0, bottom: 0, right: 0, left: 0 },
 
-  gradientOverlay: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    right: 0,
-    left: 0
-  },
+  greetingTextWrapper: { zIndex: 1, paddingHorizontal: 20, marginBottom: 50 },
+  greeting1: { fontSize: 38, fontFamily: 'Playfair-Regular', textAlign: 'right', color: 'gold' },
+  greeting2: { fontSize: 40, color: 'white', textAlign: 'right', fontFamily: 'Playfair-BoldItalic' },
 
-  greetingTextWrapper: {
-    zIndex: 1,
-    paddingHorizontal: 20,
-    marginBottom: 50
-  },
+  searchWrapper: { position: 'absolute', bottom: 18, left: 15, right: 15, zIndex: 2 },
+  searchContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#F0F0F0', borderRadius: 50, paddingHorizontal: 12, paddingVertical: 8 },
+  searchIcon: { marginRight: 8 },
+  searchInput: { flex: 1, fontSize: 16, color: 'black' },
 
-  greeting1: {
-    fontSize: 38,
-    fontFamily: 'Playfair-Regular',
-    textAlign: 'right',
-    color: 'gold'
-  },
+  typedSentence: { fontSize: 20, fontFamily: 'Playfair-Italic', color: 'ghostwhite', textAlign: 'left', paddingHorizontal: 8, marginBottom: 90, zIndex: 3 },
 
-  greeting2: {
-    fontSize: 40,
-    color: 'white',
-    textAlign: 'right',
-    fontFamily: 'Playfair-BoldItalic'
-  },
-
-  searchWrapper: {
-    position: 'absolute',
-    bottom: 18,
-    left: 15,
-    right: 15,
-    zIndex: 2
-  },
-
-  searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#F0F0F0',
-    borderRadius: 50,
-    paddingHorizontal: 12,
-    paddingVertical: 8
-  },
-
-  searchIcon: {
-    marginRight: 8
-  },
-
-  searchInput: {
-    flex: 1,
-    fontSize: 16,
-    color: 'black'
-  },
-
-  typedSentence: {
-    fontSize: 20,
-    fontFamily: 'Playfair-Italic',
-    color: 'ghostwhite',
-    textAlign: 'left',
-    paddingHorizontal: 8,
-    marginBottom: 90,
-    zIndex: 3
-  },
-
-  content: {
-    padding: 16,
-    alignItems: 'center',
-    paddingBottom: 100
-  },
+  content: { padding: 16, alignItems: 'center', paddingBottom: 100 },
 
   shadowWrapper: {
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 10,
-    backgroundColor: 'transparent',
+    shadowColor: '#000', shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.2, shadowRadius: 8, elevation: 10, backgroundColor: 'transparent',
+  },
+
+  gridContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    paddingHorizontal: 0,
+  },
+
+  categoryButton: {
+    width: BUTTON_WIDTH,
+    height: BUTTON_HEIGHT,
+    borderRadius: 5,
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
+    elevation: 3,
+  },
+
+  categoryImage: {
+    width: '60%',
+    height: '60%',
+    marginBottom: 8,
+  },
+
+  categoryLabel: {
+    fontSize: 16,
+    color: 'saddlebrown',
+    fontFamily: 'Quicksand-Bold'
   }
 });

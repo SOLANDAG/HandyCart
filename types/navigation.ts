@@ -1,16 +1,32 @@
 export type DrawerParamList = {
-  Grocery: undefined;
-  Food: undefined;
-  Ride: undefined;
-  Medicine: undefined;
-  Laundry: undefined;
+  ///// GROCERY ITEMS /////
+  Fruits: undefined;
+  Vegetables: undefined;
+  Cannedgoods: undefined;
+  Dairy: undefined;
+  Meat: undefined;
+  Seafood: undefined;
+  Deli: undefined;
+  Condiments: undefined;
+  Snacks: undefined;
+  Bakedgoods: undefined;
+  Beverages: undefined;
+  Grains: undefined;
+  Hygiene: undefined;
+  Household: undefined;
+  Healthcare: undefined;
+  Babycare: undefined;
+  Petcare: undefined;
+  Pantrystaples: undefined;
   
+  ///// FOOTER /////
   Order: undefined;
   Cart: undefined;
   Home: undefined;
   Chats: undefined;
   Emergency: undefined;
 
+  ///// SIDEBAR /////
   Profile: undefined;
   Settings: undefined;
   History: undefined;
@@ -19,19 +35,34 @@ export type DrawerParamList = {
   Help: undefined;
 };
 
+///// GROCERY ITEMS /////
+export type FruitsStackParamList = { FruitsMain: undefined; };
+export type VegetablesStackParamList = { VegetablesMain: undefined; };
+export type CannedgoodsStackParamList = { CannedgoodsMain: undefined; };
+export type DairyStackParamList = { DairyMain: undefined; };
+export type MeatStackParamList = { MeatMain: undefined; };
+export type SeafoodStackParamList = { SeafoodMain: undefined; };
+export type DeliStackParamList = { DeliMain: undefined; };
+export type CondimentsStackParamList = { CondimentsMain: undefined; };
+export type SnacksStackParamList = { SnacksMain: undefined; };
+export type BakedgoodsStackParamList = { BakedgoodsMain: undefined; };
+export type BeveragesStackParamList = { BeveragesMain: undefined; };
+export type GrainsStackParamList = { GrainsMain: undefined; };
+export type HygieneStackParamList = { HygieneMain: undefined; };
+export type HouseholdStackParamList = { HouseholdMain: undefined; };
+export type HealthcareStackParamList = { HealthcareMain: undefined; };
+export type BabycareStackParamList = { BabycareMain: undefined; };
+export type PetcareStackParamList = { PetcareMain: undefined; };
+export type PantrystaplesStackParamList = { PantrystaplesMain: undefined; };
 
-export type GroceryStackParamList = { GroceryMain: undefined; };
-export type FoodStackParamList = { FoodMain: undefined; };
-export type RideStackParamList = { RideMain: undefined; };
-export type MedicineStackParamList = { MedicineMain: undefined; };
-export type LaundryStackParamList = { LaundryMain: undefined; };
-
+///// FOOTER /////
 export type OrderStackParamList = { OrderMain: undefined; };
 export type CartStackParamList = { CartMain: undefined; };
 export type HomeStackParamList = { HomeMain: undefined; };
 export type ChatsStackParamList = { ChatsMain: undefined; };
 export type EmergencyStackParamList = { EmergencyMain: undefined; };
 
+///// SIDEBAR /////
 export type ProfileStackParamList = { ProfileMain: undefined; };
 export type SettingsStackParamList = { SettingsMain: undefined; };
 export type HistoryStackParamList = { HistoryMain: undefined; };

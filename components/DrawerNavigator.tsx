@@ -8,18 +8,34 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { View, Text, StyleSheet, Image } from 'react-native';
 
-import GroceryScreen from '../app/grocery';
-import FoodScreen from '../app/food';
-import RideScreen from '../app/ride';
-import MedicineScreen from '../app/medicine';
-import LaundryScreen from '../app/laundry';
+///// GROCERY ITEMS /////
+import FruitsScreen from '../app/fruits';
+import VegetablesScreen from '../app/vegetables';
+import CannedgoodsScreen from '../app/canned';
+import DairyScreen from '../app/dairy';
+import MeatScreen from '../app/meat';
+import SeafoodScreen from '../app/seafood';
+import DeliScreen from '../app/deli';
+import CondimentsScreen from '../app/condiments';
+import SnacksScreen from '../app/snacks';
+import BakedgoodsScreen from '../app/baked';
+import BeveragesScreen from '../app/beverages';
+import GrainsScreen from '../app/grains';
+import HygieneScreen from '../app/hygiene';
+import HouseholdScreen from '../app/household';
+import HealthcareScreen from '../app/healthcare';
+import BabycareScreen from '../app/baby';
+import PetcareScreen from '../app/pet';
+import PantrystaplesScreen from '../app/pantry';
 
+///// FOOTER /////
 import HomeScreen from '../app/index';
 import OrderScreen from '../app/order';
 import CartScreen from '../app/cart';
 import ChatsScreen from '../app/chats';
 import EmergencyScreen from '../app/emergency';
 
+///// SIDEBAR /////
 import ProfileScreen from '../app/profile';
 import SettingsScreen from '../app/settings';
 import HistoryScreen from '../app/history';
@@ -45,14 +61,30 @@ export default function DrawerNavigator() {
     >
 
       {[
+        ///// MAIN SCREEN, WHICH IS THE GROCERY /////
         { name: 'Home', component: HomeScreen },
-                
-        { name: 'Grocery', component: GroceryScreen },
-        { name: 'Food', component: FoodScreen },
-        { name: 'Ride', component: RideScreen },
-        { name: 'Medicine', component: MedicineScreen },
-        { name: 'Laundry', component: LaundryScreen },
 
+        ///// GROCERY ITEMS ///// (rename these to the grocery item labels)
+        { name: 'Fruits', component: FruitsScreen },
+        { name: 'Vegetables', component: VegetablesScreen },
+        { name: 'Cannedgoods', component: CannedgoodsScreen },
+        { name: 'Dairy', component: DairyScreen },
+        { name: 'Meat', component: MeatScreen },
+        { name: 'Seafood', component: SeafoodScreen },
+        { name: 'Deli', component: DeliScreen },
+        { name: 'Condiments', component: CondimentsScreen },
+        { name: 'Snacks', component: SnacksScreen },
+        { name: 'Bakedgoods', component: BakedgoodsScreen },
+        { name: 'Beverages', component: BeveragesScreen },
+        { name: 'Grains', component: GrainsScreen },
+        { name: 'Hygiene', component: HygieneScreen },
+        { name: 'Household', component: HouseholdScreen },
+        { name: 'Healthcare', component: HealthcareScreen },
+        { name: 'Babycare', component: BabycareScreen },
+        { name: 'Petcare', component: PetcareScreen },
+        { name: 'Pantrystaples', component: PantrystaplesScreen },
+
+        ///// FOOTER /////
         { name: 'Order', component: OrderScreen },
         { name: 'Cart', component: CartScreen },
         { name: 'Chats', component: ChatsScreen },

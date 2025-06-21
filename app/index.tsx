@@ -1,13 +1,13 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Text, View, StyleSheet, Animated, ImageBackground, TextInput, TouchableOpacity, Dimensions, Image } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
 import type { DrawerNavigationProp } from '@react-navigation/drawer';
+import { useNavigation } from '@react-navigation/native';
+import { LinearGradient } from 'expo-linear-gradient';
+import React, { useEffect, useRef, useState } from 'react';
+import { Animated, Dimensions, Image, ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import type { DrawerParamList } from '../types/navigation';
 
 const { width } = Dimensions.get('window');
-const BUTTON_WIDTH = width * 0.44;
+const BUTTON_WIDTH = width * 0.445;
 const BUTTON_HEIGHT = width * 0.52;
 
 
@@ -210,7 +210,7 @@ function CategoryButton({ image, label, onPress }: any) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: 'brown' },
+  container: { flex: 1, backgroundColor: 'beige' },
 
   imageBackground: { flex: 1, justifyContent: 'center', paddingHorizontal: 20 },
   gradientOverlay: { position: 'absolute', top: 0, bottom: 0, right: 0, left: 0 },
@@ -248,6 +248,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
     elevation: 3,
+
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
   },
 
   categoryImage: {

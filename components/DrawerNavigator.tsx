@@ -59,12 +59,11 @@ export default function DrawerNavigator() {
         drawerType: 'front',
       }}
     >
-
       {[
-        ///// MAIN SCREEN, WHICH IS THE GROCERY /////
+        ///// MAIN SCREEN, WHICH IS THE GROCERY INDEX PAGE /////
         { name: 'Home', component: HomeScreen },
 
-        ///// GROCERY ITEMS ///// (rename these to the grocery item labels)
+        ///// GROCERY ITEMS /////
         { name: 'Fruits', component: FruitsScreen },
         { name: 'Vegetables', component: VegetablesScreen },
         { name: 'Cannedgoods', component: CannedgoodsScreen },

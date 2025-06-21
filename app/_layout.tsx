@@ -1,7 +1,8 @@
 import * as Font from 'expo-font';
 import { useEffect, useState } from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 import DrawerNavigator from '../components/DrawerNavigator';
+import { CartProvider } from '../components/context/CartContext';
 
 export default function RootLayout() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
@@ -34,5 +35,9 @@ export default function RootLayout() {
     );
   }
 
-  return <DrawerNavigator />;
+  return (
+    <CartProvider>
+      <DrawerNavigator />
+    </CartProvider>
+  );
 }

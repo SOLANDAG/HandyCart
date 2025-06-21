@@ -1,33 +1,41 @@
 import React, { createContext, ReactNode, useContext, useState } from 'react';
 
-export type CartItem = {
+export interface CartItem {
   id: number;
   name: string;
   price: number;
   image: any;
   quantity: number;
-};
+}
 
-type CartContextType = {
+export interface FavoriteItem {
+  id: number;
+  name: string;
+  price: number;
+  image: any;
+}
+
+interface CartContextProps {
   cartItems: CartItem[];
+  favorites: FavoriteItem[];
   addToCart: (item: CartItem) => void;
   removeFromCart: (id: number) => void;
   decreaseFromCart: (id: number) => void;
-  clearCart: () => void;
-};
+  toggleFavorite: (item: FavoriteItem) => void;
+  isFavorite: (id: number) => boolean;
+}
 
-const CartContext = createContext<CartContextType | undefined>(undefined);
+const CartContext = createContext<CartContextProps | undefined>(undefined);
 
-export const CartProvider = ({ children }: { children: ReactNode }) => {
+export function CartProvider({ children }: { children: ReactNode }) {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [favorites, setFavorites] = useState<FavoriteItem[]>([]);
 
   const addToCart = (item: CartItem) => {
     setCartItems(prev => {
-      const existing = prev.find(i => i.id === item.id);
-      if (existing) {
-        return prev.map(i =>
-          i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
-        );
+      const existingItem = prev.find(ci => ci.id === item.id);
+      if (existingItem) {
+        return prev.map(ci => ci.id === item.id ? { ...ci, quantity: ci.quantity + 1 } : ci);
       } else {
         return [...prev, { ...item, quantity: 1 }];
       }
@@ -41,28 +49,37 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const decreaseFromCart = (id: number) => {
     setCartItems(prev =>
       prev.map(item =>
-        item.id === id
-          ? { ...item, quantity: item.quantity > 1 ? item.quantity - 1 : 1 }
-          : item
-      )
+        item.id === id ? { ...item, quantity: item.quantity - 1 } : item
+      ).filter(item => item.quantity > 0)
     );
   };
 
-  const clearCart = () => {
-    setCartItems([]);
+  const toggleFavorite = (item: FavoriteItem) => {
+    setFavorites(prev => {
+      const exists = prev.find(fav => fav.id === item.id);
+      if (exists) {
+        return prev.filter(fav => fav.id !== item.id);
+      } else {
+        return [...prev, item];
+      }
+    });
+  };
+
+  const isFavorite = (id: number) => {
+    return favorites.some(fav => fav.id === id);
   };
 
   return (
-    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, decreaseFromCart, clearCart }}>
+    <CartContext.Provider value={{ cartItems, favorites, addToCart, removeFromCart, decreaseFromCart, toggleFavorite, isFavorite }}>
       {children}
     </CartContext.Provider>
   );
-};
+}
 
-export const useCart = () => {
+export function useCart() {
   const context = useContext(CartContext);
   if (!context) {
-    throw new Error('useCart must be used inside CartProvider');
+    throw new Error('useCart must be used within a CartProvider');
   }
   return context;
-};
+}

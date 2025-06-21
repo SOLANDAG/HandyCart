@@ -9,8 +9,7 @@ const CARD_HEIGHT = 300;
 
 export default function Deli() {
   const [search, setSearch] = useState('');
-  const [favorites, setFavorites] = useState<number[]>([]);
-  const { addToCart } = useCart();
+  const { addToCart, toggleFavorite, isFavorite } = useCart();
 
   const products = [
     { id: 8001, name: 'Ham', description: 'Sliced smoked ham.', price: 300, weight: '500 g', rating: 4.8, sold: 700, image: require('../assets/images/img-placeholder.png') },
@@ -20,11 +19,7 @@ export default function Deli() {
     { id: 8005, name: 'Pastrami', description: 'Seasoned pastrami beef.', price: 550, weight: '500 g', rating: 4.4, sold: 250, image: require('../assets/images/img-placeholder.png') },
     { id: 8006, name: 'Bologna', description: 'Classic bologna sausage.', price: 280, weight: '500 g', rating: 4.3, sold: 600, image: require('../assets/images/img-placeholder.png') },
   ];
-
-  const toggleFavorite = (id: number) => {
-    setFavorites(prev => prev.includes(id) ? prev.filter(favId => favId !== id) : [...prev, id]);
-  };
-
+  
   return (
     <View style={styles.container}>
       <View style={styles.searchWrapper}>
@@ -77,11 +72,16 @@ export default function Deli() {
                     <Text style={styles.cartButtonText}>Add to Cart</Text>
                   </TouchableOpacity>
 
-                  <TouchableOpacity onPress={() => toggleFavorite(item.id)}>
+                  <TouchableOpacity onPress={() => toggleFavorite({
+                    id: item.id,
+                    name: item.name,
+                    price: item.price,
+                    image: item.image
+                  })}>
                     <Ionicons
-                      name={favorites.includes(item.id) ? 'heart' : 'heart-outline'}
+                      name={isFavorite(item.id) ? 'heart' : 'heart-outline'}
                       size={22}
-                      color={favorites.includes(item.id) ? 'crimson' : 'saddlebrown'}
+                      color={isFavorite(item.id) ? 'crimson' : 'saddlebrown'}
                     />
                   </TouchableOpacity>
                 </View>

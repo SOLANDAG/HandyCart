@@ -9,8 +9,7 @@ const CARD_HEIGHT = 300;
 
 export default function Seafood() {
   const [search, setSearch] = useState('');
-  const [favorites, setFavorites] = useState<number[]>([]);
-  const { addToCart } = useCart();
+  const { addToCart, toggleFavorite, isFavorite } = useCart();
 
   const products = [
     { id: 4001, name: 'Salmon', description: 'Fresh Atlantic salmon.', price: 700, weight: '1 Kg', rating: 4.8, sold: 800, image: require('../assets/images/img-placeholder.png') },
@@ -20,10 +19,6 @@ export default function Seafood() {
     { id: 4005, name: 'Tuna', description: 'Sashimi-grade tuna.', price: 850, weight: '1 Kg', rating: 4.9, sold: 300, image: require('../assets/images/img-placeholder.png') },
     { id: 4006, name: 'Lobster', description: 'Live whole lobster.', price: 1500, weight: '1 Pc', rating: 4.6, sold: 200, image: require('../assets/images/img-placeholder.png') },
   ];
-
-  const toggleFavorite = (id: number) => {
-    setFavorites(prev => prev.includes(id) ? prev.filter(favId => favId !== id) : [...prev, id]);
-  };
 
   return (
     <View style={styles.container}>
@@ -77,11 +72,16 @@ export default function Seafood() {
                     <Text style={styles.cartButtonText}>Add to Cart</Text>
                   </TouchableOpacity>
 
-                  <TouchableOpacity onPress={() => toggleFavorite(item.id)}>
+                  <TouchableOpacity onPress={() => toggleFavorite({
+                    id: item.id,
+                    name: item.name,
+                    price: item.price,
+                    image: item.image
+                  })}>
                     <Ionicons
-                      name={favorites.includes(item.id) ? 'heart' : 'heart-outline'}
+                      name={isFavorite(item.id) ? 'heart' : 'heart-outline'}
                       size={22}
-                      color={favorites.includes(item.id) ? 'crimson' : 'saddlebrown'}
+                      color={isFavorite(item.id) ? 'crimson' : 'saddlebrown'}
                     />
                   </TouchableOpacity>
                 </View>

@@ -1,50 +1,53 @@
-import React from 'react';
+import { Ionicons } from '@expo/vector-icons';
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
-  DrawerItemList,
-  DrawerItem
+  DrawerItem,
+  DrawerItemList
 } from '@react-navigation/drawer';
-import { Ionicons } from '@expo/vector-icons';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import React from 'react';
+import { Image, StyleSheet, Text, View } from 'react-native';
+
+///// HEADER /////
+import FavoritesScreen from '../app/favorites';
 
 ///// GROCERY ITEMS /////
-import FruitsScreen from '../app/fruits';
-import VegetablesScreen from '../app/vegetables';
-import CannedgoodsScreen from '../app/canned';
-import DairyScreen from '../app/dairy';
-import MeatScreen from '../app/meat';
-import SeafoodScreen from '../app/seafood';
-import DeliScreen from '../app/deli';
-import CondimentsScreen from '../app/condiments';
-import SnacksScreen from '../app/snacks';
+import BabycareScreen from '../app/baby';
 import BakedgoodsScreen from '../app/baked';
 import BeveragesScreen from '../app/beverages';
+import CannedgoodsScreen from '../app/canned';
+import CondimentsScreen from '../app/condiments';
+import DairyScreen from '../app/dairy';
+import DeliScreen from '../app/deli';
+import FruitsScreen from '../app/fruits';
 import GrainsScreen from '../app/grains';
-import HygieneScreen from '../app/hygiene';
-import HouseholdScreen from '../app/household';
 import HealthcareScreen from '../app/healthcare';
-import BabycareScreen from '../app/baby';
-import PetcareScreen from '../app/pet';
+import HouseholdScreen from '../app/household';
+import HygieneScreen from '../app/hygiene';
+import MeatScreen from '../app/meat';
 import PantrystaplesScreen from '../app/pantry';
+import PetcareScreen from '../app/pet';
+import SeafoodScreen from '../app/seafood';
+import SnacksScreen from '../app/snacks';
+import VegetablesScreen from '../app/vegetables';
 
 ///// FOOTER /////
-import HomeScreen from '../app/index';
-import OrderScreen from '../app/order';
 import CartScreen from '../app/cart';
 import ChatsScreen from '../app/chats';
 import EmergencyScreen from '../app/emergency';
+import HomeScreen from '../app/index';
+import OrderScreen from '../app/order';
 
 ///// SIDEBAR /////
-import ProfileScreen from '../app/profile';
-import SettingsScreen from '../app/settings';
-import HistoryScreen from '../app/history';
-import PaymentScreen from '../app/payment';
 import AboutScreen from '../app/about';
 import HelpScreen from '../app/help';
+import HistoryScreen from '../app/history';
+import PaymentScreen from '../app/payment';
+import ProfileScreen from '../app/profile';
+import SettingsScreen from '../app/settings';
 
-import LayoutWrapper from './LayoutWrapper';
 import type { DrawerParamList } from '../types/navigation';
+import LayoutWrapper from './LayoutWrapper';
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
 
@@ -62,6 +65,9 @@ export default function DrawerNavigator() {
       {[
         ///// MAIN SCREEN, WHICH IS THE GROCERY INDEX PAGE /////
         { name: 'Home', component: HomeScreen },
+
+        ///// HEADER /////
+        { name: 'Favorites', component: FavoritesScreen },
 
         ///// GROCERY ITEMS /////
         { name: 'Fruits', component: FruitsScreen },

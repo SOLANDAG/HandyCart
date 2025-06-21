@@ -9,8 +9,7 @@ const CARD_HEIGHT = 300;
 
 export default function Hygiene() {
   const [search, setSearch] = useState('');
-  const [favorites, setFavorites] = useState<number[]>([]);
-  const { addToCart } = useCart();
+  const { addToCart, toggleFavorite, isFavorite } = useCart();
 
   const products = [
     { id: 13001, name: 'Shampoo', description: 'Refreshing hair shampoo.', price: 180, weight: '400 ml', rating: 4.8, sold: 1000, image: require('../assets/images/img-placeholder.png') },
@@ -20,11 +19,7 @@ export default function Hygiene() {
     { id: 13005, name: 'Deodorant', description: 'Long-lasting deodorant.', price: 100, weight: '50 ml', rating: 4.4, sold: 700, image: require('../assets/images/img-placeholder.png') },
     { id: 13006, name: 'Facial Cleanser', description: 'Gentle facial cleanser.', price: 200, weight: '150 ml', rating: 4.3, sold: 500, image: require('../assets/images/img-placeholder.png') },
   ];
-
-  const toggleFavorite = (id: number) => {
-    setFavorites(prev => prev.includes(id) ? prev.filter(favId => favId !== id) : [...prev, id]);
-  };
-
+  
   return (
     <View style={styles.container}>
       <View style={styles.searchWrapper}>
@@ -77,11 +72,16 @@ export default function Hygiene() {
                     <Text style={styles.cartButtonText}>Add to Cart</Text>
                   </TouchableOpacity>
 
-                  <TouchableOpacity onPress={() => toggleFavorite(item.id)}>
+                  <TouchableOpacity onPress={() => toggleFavorite({
+                    id: item.id,
+                    name: item.name,
+                    price: item.price,
+                    image: item.image
+                  })}>
                     <Ionicons
-                      name={favorites.includes(item.id) ? 'heart' : 'heart-outline'}
+                      name={isFavorite(item.id) ? 'heart' : 'heart-outline'}
                       size={22}
-                      color={favorites.includes(item.id) ? 'crimson' : 'saddlebrown'}
+                      color={isFavorite(item.id) ? 'crimson' : 'saddlebrown'}
                     />
                   </TouchableOpacity>
                 </View>

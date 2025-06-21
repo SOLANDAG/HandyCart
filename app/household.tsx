@@ -9,8 +9,7 @@ const CARD_HEIGHT = 300;
 
 export default function Household() {
   const [search, setSearch] = useState('');
-  const [favorites, setFavorites] = useState<number[]>([]);
-  const { addToCart } = useCart();
+  const { addToCart, toggleFavorite, isFavorite } = useCart();
 
   const products = [
     { id: 14001, name: 'Laundry Detergent', description: 'Powerful stain remover.', price: 300, weight: '2 Kg', rating: 4.8, sold: 1100, image: require('../assets/images/img-placeholder.png') },
@@ -20,11 +19,7 @@ export default function Household() {
     { id: 14005, name: 'Multipurpose Cleaner', description: 'Cleans all surfaces.', price: 200, weight: '1 L', rating: 4.4, sold: 800, image: require('../assets/images/img-placeholder.png') },
     { id: 14006, name: 'Toilet Cleaner', description: 'Kills germs and removes stains.', price: 90, weight: '500 ml', rating: 4.3, sold: 600, image: require('../assets/images/img-placeholder.png') },
   ];
-
-  const toggleFavorite = (id: number) => {
-    setFavorites(prev => prev.includes(id) ? prev.filter(favId => favId !== id) : [...prev, id]);
-  };
-
+  
   return (
     <View style={styles.container}>
       <View style={styles.searchWrapper}>
@@ -77,11 +72,16 @@ export default function Household() {
                     <Text style={styles.cartButtonText}>Add to Cart</Text>
                   </TouchableOpacity>
 
-                  <TouchableOpacity onPress={() => toggleFavorite(item.id)}>
+                  <TouchableOpacity onPress={() => toggleFavorite({
+                    id: item.id,
+                    name: item.name,
+                    price: item.price,
+                    image: item.image
+                  })}>
                     <Ionicons
-                      name={favorites.includes(item.id) ? 'heart' : 'heart-outline'}
+                      name={isFavorite(item.id) ? 'heart' : 'heart-outline'}
                       size={22}
-                      color={favorites.includes(item.id) ? 'crimson' : 'saddlebrown'}
+                      color={isFavorite(item.id) ? 'crimson' : 'saddlebrown'}
                     />
                   </TouchableOpacity>
                 </View>

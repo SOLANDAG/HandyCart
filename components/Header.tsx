@@ -1,7 +1,7 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation, DrawerActions } from '@react-navigation/native';
 import type { DrawerNavigationProp } from '@react-navigation/drawer';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import type { DrawerParamList } from '../types/navigation';
 
 export default function Header() {
@@ -22,9 +22,10 @@ export default function Header() {
           <Text style={styles.appName}>HandyCart</Text>
         </View>
 
-        <TouchableOpacity onPress={() => console.log("Favorites pressed")}>
+        <TouchableOpacity onPress={() => navigation.navigate('Favorites')}>
           <Ionicons name="star" size={28} color="gold" />
         </TouchableOpacity>
+
       </View>
     </View>
   );

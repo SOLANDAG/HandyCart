@@ -1,4 +1,7 @@
 export type DrawerParamList = {
+  ///// HEADER /////
+  Favorites: undefined;
+
   ///// GROCERY ITEMS /////
   Fruits: undefined;
   Vegetables: undefined;
@@ -34,6 +37,9 @@ export type DrawerParamList = {
   About: undefined;
   Help: undefined;
 };
+
+///// HEADER /////
+export type FavoritesStackParamList = { FavoritesMain: undefined; };
 
 ///// GROCERY ITEMS /////
 export type FruitsStackParamList = { FruitsMain: undefined; };

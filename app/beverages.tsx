@@ -9,8 +9,7 @@ const CARD_HEIGHT = 300;
 
 export default function Beverages() {
   const [search, setSearch] = useState('');
-  const [favorites, setFavorites] = useState<number[]>([]);
-  const { addToCart } = useCart();
+  const { addToCart, toggleFavorite, isFavorite } = useCart();
 
   const products = [
     { id: 5001, name: 'Orange Juice', description: 'Fresh squeezed orange juice.', price: 150, weight: '1 L', rating: 4.7, sold: 1000, image: require('../assets/images/img-placeholder.png') },
@@ -20,11 +19,7 @@ export default function Beverages() {
     { id: 5005, name: 'Iced Tea', description: 'Cool and sweet iced tea.', price: 100, weight: '1 L', rating: 4.3, sold: 900, image: require('../assets/images/img-placeholder.png') },
     { id: 5006, name: 'Bottled Water', description: 'Pure and refreshing bottled water.', price: 30, weight: '1 L', rating: 4.9, sold: 2000, image: require('../assets/images/img-placeholder.png') },
   ];
-
-  const toggleFavorite = (id: number) => {
-    setFavorites(prev => prev.includes(id) ? prev.filter(favId => favId !== id) : [...prev, id]);
-  };
-
+  
   return (
     <View style={styles.container}>
       <View style={styles.searchWrapper}>
@@ -77,11 +72,16 @@ export default function Beverages() {
                     <Text style={styles.cartButtonText}>Add to Cart</Text>
                   </TouchableOpacity>
 
-                  <TouchableOpacity onPress={() => toggleFavorite(item.id)}>
+                  <TouchableOpacity onPress={() => toggleFavorite({
+                    id: item.id,
+                    name: item.name,
+                    price: item.price,
+                    image: item.image
+                  })}>
                     <Ionicons
-                      name={favorites.includes(item.id) ? 'heart' : 'heart-outline'}
+                      name={isFavorite(item.id) ? 'heart' : 'heart-outline'}
                       size={22}
-                      color={favorites.includes(item.id) ? 'crimson' : 'saddlebrown'}
+                      color={isFavorite(item.id) ? 'crimson' : 'saddlebrown'}
                     />
                   </TouchableOpacity>
                 </View>

@@ -9,8 +9,7 @@ const CARD_HEIGHT = 300;
 
 export default function Healthcare() {
   const [search, setSearch] = useState('');
-  const [favorites, setFavorites] = useState<number[]>([]);
-  const { addToCart } = useCart();
+  const { addToCart, toggleFavorite, isFavorite } = useCart();
 
   const products = [
     { id: 15001, name: 'Vitamin C', description: 'Immune support supplement.', price: 250, weight: '100 tablets', rating: 4.8, sold: 900, image: require('../assets/images/img-placeholder.png') },
@@ -20,10 +19,6 @@ export default function Healthcare() {
     { id: 15005, name: 'Bandages', description: 'Adhesive bandages for wounds.', price: 90, weight: '20 pcs', rating: 4.4, sold: 500, image: require('../assets/images/img-placeholder.png') },
     { id: 15006, name: 'Thermometer', description: 'Digital body thermometer.', price: 350, weight: '1 unit', rating: 4.3, sold: 400, image: require('../assets/images/img-placeholder.png') },
   ];
-
-  const toggleFavorite = (id: number) => {
-    setFavorites(prev => prev.includes(id) ? prev.filter(favId => favId !== id) : [...prev, id]);
-  };
 
   return (
     <View style={styles.container}>
@@ -77,11 +72,16 @@ export default function Healthcare() {
                     <Text style={styles.cartButtonText}>Add to Cart</Text>
                   </TouchableOpacity>
 
-                  <TouchableOpacity onPress={() => toggleFavorite(item.id)}>
+                  <TouchableOpacity onPress={() => toggleFavorite({
+                    id: item.id,
+                    name: item.name,
+                    price: item.price,
+                    image: item.image
+                  })}>
                     <Ionicons
-                      name={favorites.includes(item.id) ? 'heart' : 'heart-outline'}
+                      name={isFavorite(item.id) ? 'heart' : 'heart-outline'}
                       size={22}
-                      color={favorites.includes(item.id) ? 'crimson' : 'saddlebrown'}
+                      color={isFavorite(item.id) ? 'crimson' : 'saddlebrown'}
                     />
                   </TouchableOpacity>
                 </View>

@@ -45,9 +45,15 @@ import HistoryScreen from '../app/history';
 import PaymentScreen from '../app/payment';
 import ProfileScreen from '../app/profile';
 import SettingsScreen from '../app/settings';
+import LogoutScreen from '../app/logout';
+
+///// USER AUTHENTICATION /////
+import LoginScreen from '../app/login';
+import RegisterScreen from '../app/register';
 
 import type { DrawerParamList } from '../types/navigation';
 import LayoutWrapper from './LayoutWrapper';
+
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
 
@@ -93,7 +99,12 @@ export default function DrawerNavigator() {
         { name: 'Order', component: OrderScreen },
         { name: 'Cart', component: CartScreen },
         { name: 'Chats', component: ChatsScreen },
-        { name: 'Emergency', component: EmergencyScreen }
+        { name: 'Emergency', component: EmergencyScreen },
+
+        ///// USER AUTHENTICATION /////
+        { name: 'Login', component: LoginScreen },
+        { name: 'Register', component: RegisterScreen }
+
       ].map(({ name, component }) => (
         <Drawer.Screen
           key={name}
@@ -145,6 +156,14 @@ export default function DrawerNavigator() {
         }}
         children={() => <LayoutWrapper><HelpScreen /></LayoutWrapper>}
       />
+      <Drawer.Screen
+        name="Logout"
+        options={{
+          drawerIcon: ({ size }) => <Ionicons name="log-out-outline" size={size} color="saddlebrown" />
+        }}
+        children={() => <LayoutWrapper><LogoutScreen /></LayoutWrapper>}
+      />
+
     </Drawer.Navigator>
   );
 }
@@ -159,12 +178,6 @@ function CustomDrawerContent(props: any) {
 
       <DrawerItemList {...props} />
 
-      <DrawerItem
-        label="Log Out"
-        labelStyle={styles.logoutLabel}
-        icon={({ color, size }) => <Ionicons name="log-out-outline" size={size} color="saddlebrown" />}
-        onPress={() => console.log('Log Out pressed')}
-      />
     </DrawerContentScrollView>
   );
 }

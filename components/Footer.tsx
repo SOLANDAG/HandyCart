@@ -1,6 +1,8 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import * as Location from 'expo-location';
+import * as SMS from 'expo-sms';
 import { useNavigation, useNavigationState } from '@react-navigation/native';
 import type { DrawerNavigationProp } from '@react-navigation/drawer';
 import type { DrawerParamList } from '../types/navigation';
@@ -14,7 +16,34 @@ export default function Footer() {
   const isOrder = currentRouteName === 'Order';
   const isCart = currentRouteName === 'Cart';
   const isChats = currentRouteName === 'Chats';
-  const isEmergency = currentRouteName === 'Emergency';
+
+  const sendSOS = async () => {
+    try {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permission denied', 'Location access is needed for SOS.');
+        return;
+      }
+
+      const location = await Location.getCurrentPositionAsync({});
+      const { latitude, longitude } = location.coords;
+
+      const message = `🚨 SOS!!! My location: https://maps.google.com/?q=${latitude},${longitude}`;
+
+      const isAvailable = await SMS.isAvailableAsync();
+      if (isAvailable) {
+        await SMS.sendSMSAsync(
+          ['09171234567'], // Replace with your emergency contact(s)
+          message
+        );
+      } else {
+        Alert.alert('SMS not available', 'Your device cannot send SMS.');
+      }
+    } catch (error) {
+      console.error(error);
+      Alert.alert('SOS failed', 'An error occurred while sending SOS.');
+    }
+  };
 
   return (
     <View style={styles.footerContainer}>
@@ -38,8 +67,8 @@ export default function Footer() {
         <Text style={styles.label}>Chats</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Emergency')}>
-        <Ionicons name={isEmergency ? 'warning' : 'warning-outline'} size={32} color="saddlebrown" />
+      <TouchableOpacity style={styles.button} onPress={sendSOS}>
+        <Ionicons name="warning-outline" size={32} color="saddlebrown" />
         <Text style={styles.label}>SOS</Text>
       </TouchableOpacity>
     </View>
@@ -68,7 +97,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
-
   label: {
     fontSize: 12,
     color: 'saddlebrown',

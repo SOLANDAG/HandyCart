@@ -1,31 +1,103 @@
-import { Text, View, StyleSheet } from "react-native";
+import React from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function Help() {
+  const handleContactSupport = () => {
+    Alert.alert('Contact Us', 'You can reach us at support@handycart.app 📩');
+  };
+
   return (
-    <View
-      style={styles.container}
-    >
-      <Text style={styles.text}>HELP</Text>
-      
-    </View>
+    <ScrollView style={styles.container}>
+      <Text style={styles.heading}>🛠️ How to Use HandyCart</Text>
+
+      <View style={styles.section}>
+        <Text style={styles.title}>📦 Placing an Order</Text>
+        <Text style={styles.text}>
+          Go to the <Text style={styles.bold}>Order</Text> tab, browse items, tap "Add to Cart", then check out.
+        </Text>
+      </View>
+
+      <View style={styles.section}>
+        <Text style={styles.title}>🛒 Viewing the Cart</Text>
+        <Text style={styles.text}>
+          Tap the <Text style={styles.bold}>Cart</Text> icon in the footer. You can edit or remove items before finalizing your order.
+        </Text>
+      </View>
+
+      <View style={styles.section}>
+        <Text style={styles.title}>💬 Talking to a Rider</Text>
+        <Text style={styles.text}>
+          Use the <Text style={styles.bold}>Chats</Text> tab to message your delivery rider in real-time.
+        </Text>
+      </View>
+
+      <View style={styles.section}>
+        <Text style={styles.title}>🚨 Emergency Alerts</Text>
+        <Text style={styles.text}>
+          Tap the <Text style={styles.bold}>SOS</Text> button in the footer to send an emergency SMS with your location.
+        </Text>
+      </View>
+
+      <TouchableOpacity style={styles.supportBtn} onPress={handleContactSupport}>
+        <Ionicons name="mail-outline" size={20} color="white" />
+        <Text style={styles.supportText}>Contact Support</Text>
+      </TouchableOpacity>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-    backgroundColor: "brown",
+    backgroundColor: '#FFF8EC',
+    padding: 20,
   },
-
+  heading: {
+    fontSize: 22,
+    fontWeight: '700',
+    color: 'saddlebrown',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  section: {
+    marginBottom: 25,
+    backgroundColor: '#FFFFFF',
+    padding: 15,
+    borderRadius: 12,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: '700',
+    marginBottom: 8,
+    color: '#654321',
+  },
   text: {
-    color: 'white',
+    fontSize: 14,
+    color: '#333',
   },
-
-  button: {
-    fontSize: 20,
-    textDecorationLine: "underline",
-    color: "#fff",
-  }
+  bold: {
+    fontWeight: '600',
+    color: 'saddlebrown',
+  },
+  supportBtn: {
+    marginTop: 30,
+    backgroundColor: 'saddlebrown',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  supportText: {
+    color: 'white',
+    fontWeight: '600',
+    fontSize: 14,
+    marginLeft: 8,
+  },
 });

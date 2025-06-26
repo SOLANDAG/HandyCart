@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Text, Alert, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase_config';
+
+import { login } from '../components/registration/auth_service';
 
 export default function LoginScreen() {
     const [email, setEmail] = useState('');
@@ -11,8 +11,12 @@ export default function LoginScreen() {
 
     const handleLogin = async () => {
         try {
-            await signInWithEmailAndPassword(auth, email, password);
-            Alert.alert('Success', 'You are logged in!');
+            const userCredential = await login(email, password);
+            Alert.alert('Success', `You are logged in! User ${userCredential.user.email}`);
+            
+            // move to home
+            navigation.navigate('Home' as never);
+        
         } catch (error: any) {
             Alert.alert('Login failed', error.message);
         }

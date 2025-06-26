@@ -14,16 +14,16 @@ export default function LogoutScreen() {
             await signOut(auth);
             Alert.alert('Logged out', 'You have been logged out.');
             
-            // navigation.reset({
-            //     index: 0,
-            //     routes: [{ name: 'Login' as never }],
-            // });
-            navigation.dispatch(
-                CommonActions.reset({
-                    index: 0,
-                    routes: [{name: 'Login' as never}],
-                })
-            )
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'Login' as never }],
+            });
+            // navigation.dispatch(
+            //     CommonActions.reset({
+            //         index: 0,
+            //         routes: [{name: 'Login' as never}],
+            //     })
+            // )
         
         } catch (err: any) {
             Alert.alert('Error', err.message);

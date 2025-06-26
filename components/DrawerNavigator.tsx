@@ -99,12 +99,12 @@ export default function DrawerNavigator() {
         { name: 'Order', component: OrderScreen },
         { name: 'Cart', component: CartScreen },
         { name: 'Chats', component: ChatsScreen },
+        // { name: 'Emergency', component: EmergencyScreen }
         { name: 'Emergency', component: EmergencyScreen },
 
         ///// USER AUTHENTICATION /////
         { name: 'Login', component: LoginScreen },
         { name: 'Register', component: RegisterScreen }
-
       ].map(({ name, component }) => (
         <Drawer.Screen
           key={name}

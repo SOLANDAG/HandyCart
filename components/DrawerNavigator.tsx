@@ -8,6 +8,9 @@ import {
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 
+// test for usercred
+import { getCurrentUser } from '../components/registration/auth_service';
+
 ///// HEADER /////
 import FavoritesScreen from '../app/favorites';
 
@@ -99,7 +102,6 @@ export default function DrawerNavigator() {
         { name: 'Order', component: OrderScreen },
         { name: 'Cart', component: CartScreen },
         { name: 'Chats', component: ChatsScreen },
-        // { name: 'Emergency', component: EmergencyScreen }
         { name: 'Emergency', component: EmergencyScreen },
 
         ///// USER AUTHENTICATION /////

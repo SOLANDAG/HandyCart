@@ -11,8 +11,8 @@ export default function LoginScreen() {
 
     const handleLogin = async () => {
         try {
-            const userCredential = await login(email, password);
-            Alert.alert('Success', `You are logged in! User ${userCredential.user.email}`);
+            const { profile } = await login(email, password);
+            Alert.alert('Success', `You are logged in! Welcome ${profile?.username || 'Guest'}`);
             
             // move to home
             navigation.navigate('Home' as never);

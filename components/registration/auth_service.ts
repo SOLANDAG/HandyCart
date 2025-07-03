@@ -5,14 +5,33 @@ import {
   onAuthStateChanged,
   User 
 } from "firebase/auth";
-import { auth } from '../../firebase_config';
+import { auth, db } from '../../firebase_config';
+import { setDoc, getDoc, doc } from "firebase/firestore";
 
-export const register = async (email: string, password: string) => {
-  return await createUserWithEmailAndPassword(auth, email, password);
+export const register = async (email: string, password: string, username: string) => {
+  const userCred = await createUserWithEmailAndPassword(auth, email, password);
+  const uid = userCred.user.uid;
+
+  await setDoc(doc(db, 'users', uid), {
+    email,
+    username,
+    createdAt: new Date().toISOString(),
+  });
+
+  return userCred;
 };
 
 export const login = async (email: string, password: string) => {
-  return await signInWithEmailAndPassword(auth, email, password);
+  const userCred = await signInWithEmailAndPassword(auth, email, password);
+  const uid = userCred.user.uid;
+
+  const userDoc = await getDoc(doc(db, 'users', uid));
+  const userData = userDoc.exists() ? userDoc.data() : null;
+
+  return {
+    user: userCred.user,
+    profile: userData,
+  };
 };
 
 export const logout = async () => {

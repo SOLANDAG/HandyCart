@@ -13,7 +13,7 @@ export default function RegisterScreen() {
 
     const navigation = useNavigation();
 
-    const isAlphanumeric = (str : string) => /^[a-z0-9]+$/i.test(str);
+    const isAlphanumeric = (str : string) => /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/.test(str);
 
     const handleRegister = async () => {
         if (!email || !username || !password || !confirmPassword) {
@@ -25,7 +25,7 @@ export default function RegisterScreen() {
             return;
         }
         if (!isAlphanumeric(password)) {
-            Alert.alert("Error", "Password must be alphanumerical.");
+            Alert.alert("Error", "Password must contain BOTH letters and numbers.");
             return;
         }
 

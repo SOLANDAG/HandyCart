@@ -1,10 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { View, StyleSheet, Alert, Dimensions } from "react-native";
 import MapView, {Marker, Polyline } from 'react-native-maps';
+import { useNavigation } from '@react-navigation/native';
 
 import * as Location from 'expo-location';
 
 export default function Tracking() {
+    const navigation = useNavigation();
+
     const [ userLocation, setUserLocation ] = useState<Location.LocationObjectCoords | null>(null);
     // This will be the location of the driver
     // Setting it to Mapua Makati for testing
@@ -29,22 +32,17 @@ export default function Tracking() {
             const location = await Location.getCurrentPositionAsync({});
             setUserLocation(location.coords);
 
-            // listener for user location change
-            const locationSubscription = await Location.watchPositionAsync(
+            // check user location change
+            await Location.watchPositionAsync(
                 {
                     accuracy: Location.Accuracy.High,
-                    timeInterval: 2000,
+                    timeInterval: 3000,
                     distanceInterval: 5,
                 }, 
                 (loc) => {
                     setUserLocation(loc.coords);
                 }
             );
-
-            return () => {
-                locationSubscription.remove();
-            };
-
         })();
     },[]);
 
@@ -61,17 +59,26 @@ export default function Tracking() {
                 const dist = Math.sqrt(latDiff * latDiff + longDiff * longDiff);
 
                 // stop if reached
-                if (dist < 0.0001) {
+                if (dist < 0.00015) {
                     clearInterval(interval.current!);
                     setIsDelivered(true);
-                    Alert.alert("Delivery Status", "Your delivery is here!");
+                    // confirm and redirect to Index
+                    Alert.alert("Delivery Status", "Your delivery is here!", [
+                        {
+                            text: "OK",
+                            onPress: () => navigation.navigate('Home' as never)
+                        }
+                    ]);
                     return prev;
                 }
 
-                // const step = 0.05;
-                const step = 0.1;
-                const latNew = prev.latitude + latDiff * step;
-                const longNew = prev.longitude + longDiff * step;
+                // adjust speed if nearby 
+                let step = 0.001;
+                if (dist < 0.001) {
+                    step = 0.0001;
+                }
+                const latNew = prev.latitude + (latDiff / dist) * step;
+                const longNew = prev.longitude + (longDiff / dist) * step;
 
                 return {
                     latitude: latNew,
@@ -83,7 +90,7 @@ export default function Tracking() {
         return () => {
             if (interval.current) clearInterval(interval.current);
         };
-    }, [userLocation, isDelivered]);
+    }, [userLocation, isDelivered, navigation]);
 
     return (
         <View

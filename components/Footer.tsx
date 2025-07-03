@@ -1,8 +1,10 @@
-import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation, useNavigationState } from '@react-navigation/native';
 import type { DrawerNavigationProp } from '@react-navigation/drawer';
+import { useNavigation, useNavigationState } from '@react-navigation/native';
+import * as Location from 'expo-location';
+import * as SMS from 'expo-sms';
+import React from 'react';
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import type { DrawerParamList } from '../types/navigation';
 
 export default function Footer() {
@@ -15,6 +17,30 @@ export default function Footer() {
   const isCart = currentRouteName === 'Cart';
   const isChats = currentRouteName === 'Chats';
   const isEmergency = currentRouteName === 'Emergency';
+
+  const sendSOS = async () => {
+    try {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permission Denied', 'Location access is required for SOS.');
+        return;
+      }
+
+      const location = await Location.getCurrentPositionAsync({});
+      const { latitude, longitude } = location.coords;
+      const message = `🚨 SOS!!! HELP!!!\nMy location: https://maps.google.com/?q=${latitude},${longitude}`;
+
+      const isAvailable = await SMS.isAvailableAsync();
+      if (isAvailable) {
+        await SMS.sendSMSAsync(['09171234567'], message); // replace with chosen contacts once in the SMS
+      } else {
+        Alert.alert('SMS Not Available', 'Your device cannot send SMS.');
+      }
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Error', 'Failed to send SOS.');
+    }
+  };
 
   return (
     <View style={styles.footerContainer}>
@@ -38,8 +64,8 @@ export default function Footer() {
         <Text style={styles.label}>Chats</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Emergency')}>
-        <Ionicons name={isEmergency ? 'warning' : 'warning-outline'} size={32} color="saddlebrown" />
+      <TouchableOpacity style={styles.button} onPress={sendSOS}>
+        <Ionicons name={isEmergency ? 'warning' : 'warning-outline'} size={32} color="crimson" />
         <Text style={styles.label}>SOS</Text>
       </TouchableOpacity>
     </View>
@@ -68,7 +94,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
-
   label: {
     fontSize: 12,
     color: 'saddlebrown',

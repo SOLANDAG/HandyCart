@@ -46,6 +46,7 @@ import AboutScreen from '../app/about';
 import HelpScreen from '../app/help';
 import HistoryScreen from '../app/history';
 import PaymentScreen from '../app/payment';
+import TrackingScreen from '../app/tracking';
 import ProfileScreen from '../app/profile';
 import SettingsScreen from '../app/settings';
 import LogoutScreen from '../app/logout';
@@ -143,6 +144,13 @@ export default function DrawerNavigator() {
           drawerIcon: ({ color, size }) => <Ionicons name="card-outline" size={size} color={color} />
         }}
         children={() => <LayoutWrapper><PaymentScreen /></LayoutWrapper>}
+      />
+      <Drawer.Screen
+        name="Order Tracking"
+        options={{
+          drawerIcon: ({ color, size }) => <Ionicons name="card-outline" size={size} color={color} />
+        }}
+        children={() => <LayoutWrapper><TrackingScreen /></LayoutWrapper>}
       />
       <Drawer.Screen
         name="About"

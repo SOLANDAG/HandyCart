@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import DrawerNavigator from '../components/DrawerNavigator';
 import { CartProvider } from '../components/context/CartContext';
+import { UserProvider } from '../components/context/UserContext';
 
 export default function RootLayout() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
@@ -36,8 +37,10 @@ export default function RootLayout() {
   }
 
   return (
-    <CartProvider>
-      <DrawerNavigator />
-    </CartProvider>
+    <UserProvider>
+      <CartProvider>
+        <DrawerNavigator />
+      </CartProvider>
+    </UserProvider>
   );
 }

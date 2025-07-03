@@ -8,7 +8,7 @@ import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 
 // test for usercred
-import { getCurrentUser } from '../components/registration/auth_service';
+import { useUser } from './context/UserContext';
 
 ///// HEADER /////
 import FavoritesScreen from '../app/favorites';
@@ -170,11 +170,13 @@ export default function DrawerNavigator() {
 }
 
 function CustomDrawerContent(props: any) {
+  const { profile } = useUser();
+
   return (
     <DrawerContentScrollView {...props} contentContainerStyle={styles.drawerContent}>
       <View style={styles.profileSection}>
         <Image source={require('../assets/images/profile-placeholder.png')} style={styles.profileImage} />
-        <Text style={styles.username}>Username</Text> 
+        <Text style={styles.username}>{profile?.username || 'Guest'}</Text> 
       </View>
 
       <DrawerItemList {...props} />

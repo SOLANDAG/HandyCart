@@ -6,6 +6,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Dimensions, Image, ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import type { DrawerParamList } from '../types/navigation';
 
+import { useUser } from '../components/context/UserContext';
+
 const { width } = Dimensions.get('window');
 const BUTTON_WIDTH = width * 0.445;
 const BUTTON_HEIGHT = width * 0.52;
@@ -19,6 +21,8 @@ export default function Index() {
   const [showTyping, setShowTyping] = useState(false);
   const AnimatedText = Animated.createAnimatedComponent(Text);
   const [query, setQuery] = useState("");
+
+  const { profile } = useUser();
 
   useEffect(() => {
     let timeout: ReturnType<typeof setTimeout>;
@@ -74,7 +78,7 @@ export default function Index() {
             />
             <View style={styles.greetingTextWrapper}>
               <AnimatedText style={[styles.greeting1, { opacity: greetingOpacity }]}>Welcome, dear</AnimatedText>
-              <AnimatedText style={[styles.greeting2, { opacity: greetingOpacity }]}>Username</AnimatedText>
+              <AnimatedText style={[styles.greeting2, { opacity: greetingOpacity }]}>{profile?.username || 'Guest'}</AnimatedText>
             </View>
             {typedText.length > 0 && <Text style={styles.typedSentence}>{typedText}</Text>}
             {showTyping && <Text style={styles.typedSentence}>{typedText}</Text>}

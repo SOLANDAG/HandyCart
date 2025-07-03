@@ -2,7 +2,6 @@ import { Ionicons } from '@expo/vector-icons';
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
-  DrawerItem,
   DrawerItemList
 } from '@react-navigation/drawer';
 import React from 'react';

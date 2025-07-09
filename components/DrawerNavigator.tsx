@@ -53,6 +53,9 @@ import LogoutScreen from '../app/logout';
 import LoginScreen from '../app/login';
 import RegisterScreen from '../app/register';
 
+///// testing for Voice command ///
+import TTSScreen from '../app/tts';
+
 import type { DrawerParamList } from '../types/navigation';
 import LayoutWrapper from './LayoutWrapper';
 
@@ -156,6 +159,13 @@ export default function DrawerNavigator() {
           drawerIcon: ({ color, size }) => <Ionicons name="help-circle-outline" size={size} color={color} />
         }}
         children={() => <LayoutWrapper><HelpScreen /></LayoutWrapper>}
+      />
+      <Drawer.Screen
+        name="TTS"
+        options={{
+          drawerIcon: ({ color, size }) => <Ionicons name="help-circle-outline" size={size} color={color} />
+        }}
+        children={() => <LayoutWrapper><TTSScreen /></LayoutWrapper>}
       />
       <Drawer.Screen
         name="Logout"

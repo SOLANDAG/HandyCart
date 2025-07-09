@@ -8,7 +8,7 @@ import { startSTT } from './voice_commands/stt';
 
 export default function Header() {
   const navigation = useNavigation<DrawerNavigationProp<DrawerParamList>>();
-  const { isRecording, startRecording, stopRecording } = startSTT();
+  const { isRecording, startRecording, stopRecording } = startSTT(navigation);
 
   return (
     <View style={styles.headerWrapper}>
@@ -39,11 +39,8 @@ export default function Header() {
               <Ionicons name="mic" size={28} color="black" />
             </TouchableOpacity>
           )}
-
-          
         </View>
         
-
       </View>
     </View>
   );

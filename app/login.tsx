@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Text, Alert, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import type { DrawerNavigationProp } from '@react-navigation/drawer';
+import type { DrawerParamList } from '../types/navigation';
 
 import { login } from '../components/registration/auth_service';
 
 export default function LoginScreen() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const navigation = useNavigation();
+    const navigation = useNavigation<DrawerNavigationProp<DrawerParamList>>();
 
     const handleLogin = async () => {
         try {
@@ -15,7 +17,7 @@ export default function LoginScreen() {
             Alert.alert('Success', `You are logged in! Welcome ${profile?.username || 'Guest'}`);
             
             // move to home
-            navigation.navigate('Home' as never);
+            navigation.navigate('Home');
         
         } catch (error: any) {
             Alert.alert('Login failed', error.message);
@@ -46,7 +48,7 @@ export default function LoginScreen() {
 
         <Button title="Login" onPress={handleLogin} />
 
-        <Button title="Register" onPress={() => navigation.navigate('Register' as never)} />
+        <Button title="Register" onPress={() => navigation.navigate('Register')} />
 
     </View>
     );

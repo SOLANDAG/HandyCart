@@ -5,6 +5,8 @@ import { useNavigation } from '@react-navigation/native';
 
 import * as Location from 'expo-location';
 
+import { performTTS } from '../components/voice_commands/tts';
+
 export default function Order() {
     const navigation = useNavigation();
 
@@ -25,7 +27,8 @@ export default function Order() {
         (async () => {
             const { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
-                Alert.alert("Error", 'Permission to access location was denied');
+                Alert.alert("Error", 'Permission to access location was denied.');
+                performTTS("Location access was denied. Please try again");
                 return;
             }
             // user's current location, this will be the destination
@@ -63,6 +66,7 @@ export default function Order() {
                     clearInterval(interval.current!);
                     setIsDelivered(true);
                     // confirm and redirect to Index
+                    performTTS("Your delivery is here!");
                     Alert.alert("Delivery Status", "Your delivery is here!", [
                         {
                             text: "OK",

@@ -7,6 +7,37 @@ import React from 'react';
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import type { DrawerParamList } from '../types/navigation';
 
+import { performTTS } from '../components/voice_commands/tts';
+
+export const sendSOS = async () => {
+    try {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permission Denied', 'Location access is required for SOS.');
+        performTTS("Location access was denied. SOS failed.");
+        return;
+      }
+
+      const location = await Location.getCurrentPositionAsync({});
+      const { latitude, longitude } = location.coords;
+      const message = `🚨 SOS!!! HELP!!!\nMy location: https://maps.google.com/?q=${latitude},${longitude}`;
+
+      const isAvailable = await SMS.isAvailableAsync();
+      if (isAvailable) {
+        const contact = '09171234567'; // replace with chosen contacts once in the SMS
+        performTTS(`Sending SOS to ${contact}.`); // change this to contact name
+        await SMS.sendSMSAsync([contact], message); 
+      } else {
+        performTTS("Your device cannot send SMS.");
+        Alert.alert('SMS Not Available', 'Your device cannot send SMS.');
+      }
+    } catch (error) {
+      console.error(error);
+      performTTS("Error. Failed to send SOS.");
+      Alert.alert('Error', 'Failed to send SOS.');
+    }
+};
+
 export default function Footer() {
   const navigation = useNavigation<DrawerNavigationProp<DrawerParamList>>();
   const state = useNavigationState(state => state);
@@ -17,30 +48,6 @@ export default function Footer() {
   const isCart = currentRouteName === 'Cart';
   const isChats = currentRouteName === 'Chats';
   const isEmergency = currentRouteName === 'Emergency';
-
-  const sendSOS = async () => {
-    try {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        Alert.alert('Permission Denied', 'Location access is required for SOS.');
-        return;
-      }
-
-      const location = await Location.getCurrentPositionAsync({});
-      const { latitude, longitude } = location.coords;
-      const message = `🚨 SOS!!! HELP!!!\nMy location: https://maps.google.com/?q=${latitude},${longitude}`;
-
-      const isAvailable = await SMS.isAvailableAsync();
-      if (isAvailable) {
-        await SMS.sendSMSAsync(['09171234567'], message); // replace with chosen contacts once in the SMS
-      } else {
-        Alert.alert('SMS Not Available', 'Your device cannot send SMS.');
-      }
-    } catch (error) {
-      console.error(error);
-      Alert.alert('Error', 'Failed to send SOS.');
-    }
-  };
 
   return (
     <View style={styles.footerContainer}>

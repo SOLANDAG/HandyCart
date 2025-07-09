@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import type { DrawerNavigationProp } from '@react-navigation/drawer';
+import type { DrawerParamList } from '../types/navigation';
 
 import { register } from '../components/registration/auth_service';
-
 
 export default function RegisterScreen() {
     const [email, setEmail] = useState("");
@@ -11,7 +12,7 @@ export default function RegisterScreen() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
-    const navigation = useNavigation();
+    const navigation = useNavigation<DrawerNavigationProp<DrawerParamList>>();
 
     const isAlphanumeric = (str : string) => /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/.test(str);
 
@@ -33,7 +34,7 @@ export default function RegisterScreen() {
             const registerUser = await register(email, password, username);
             Alert.alert("Success", `Account created for ${registerUser.user.email}`);
 
-            navigation.navigate('Login' as never);
+            navigation.navigate('Login');
         } catch (error: any) {
             Alert.alert("Error", error.message);
         }

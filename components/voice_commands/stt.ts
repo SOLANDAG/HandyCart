@@ -3,15 +3,17 @@ import { Alert } from 'react-native';
 import { Audio } from 'expo-av';
 
 import { performTTS } from './tts';
+import { processVoiceCommand } from './voiceCommand';
 
 const ASSEMBLYAI_API_KEY = 'd55f34d3bbbe447e8394ca2e0812ca55';
 
-export const startSTT = () => {
+export const startSTT = (navigation: any) => {
   const [isRecording, setIsRecording] = useState(false);
   const [recordingObj, setRecordingObj] = useState(null);
 
   const startRecording = async () => {
     try {
+      performTTS("Recording.");
       await Audio.requestPermissionsAsync();
       await Audio.setAudioModeAsync({
         allowsRecordingIOS: true,
@@ -24,6 +26,7 @@ export const startSTT = () => {
 
       setRecordingObj(recording);
       setIsRecording(true);
+
     } catch (error) {
       Alert.alert('Recording Error', error.message);
       performTTS(error.message);
@@ -37,7 +40,7 @@ export const startSTT = () => {
       const uri = recordingObj.getURI();
       setRecordingObj(null);
 
-      performTTS("Recording stopped. Processing in progress.");
+      performTTS("Recording stopped. Now processing.");
 
       const file = await fetch(uri);
       const blob = await file.blob();
@@ -77,10 +80,19 @@ export const startSTT = () => {
           // fallback if empty
           if (finalTranscript.length === 0) {
             finalTranscript = "No command given. Please try again.";
+            Alert.alert('Transcription', finalTranscript);
+            performTTS(finalTranscript);
           }
-
-          Alert.alert('Transcription', finalTranscript);
-          performTTS(finalTranscript);
+          // else process command
+          else {
+            processVoiceCommand({
+                transcription: finalTranscript,
+                navigation,
+                onSearch: (query) => {
+                    console.log('Do search with:', query);
+                },
+            });
+          }
           break;
         } else if (data.status === 'error') {
           Alert.alert('Error', data.error || 'Something went wrong');

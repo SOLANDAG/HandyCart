@@ -4,8 +4,11 @@ import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import type { DrawerParamList } from '../types/navigation';
 
+import { startSTT } from './voice_commands/stt';
+
 export default function Header() {
   const navigation = useNavigation<DrawerNavigationProp<DrawerParamList>>();
+  const { isRecording, startRecording, stopRecording } = startSTT();
 
   return (
     <View style={styles.headerWrapper}>
@@ -22,9 +25,24 @@ export default function Header() {
           <Text style={styles.appName}>HandyCart</Text>
         </View>
 
-        <TouchableOpacity onPress={() => navigation.navigate('Favorites')}>
-          <Ionicons name="star" size={28} color="gold" />
-        </TouchableOpacity>
+        <View style={styles.iconGroup}>
+          <TouchableOpacity onPress={() => navigation.navigate('Favorites')} style={{ marginLeft: -33}}>
+            <Ionicons name="star" size={28} color="gold" />
+          </TouchableOpacity>
+
+          {isRecording ? (
+            <TouchableOpacity onPress={ stopRecording }>
+              <Ionicons name="stop" size={28} color="red" />
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity onPress={ startRecording }>
+              <Ionicons name="mic" size={28} color="black" />
+            </TouchableOpacity>
+          )}
+
+          
+        </View>
+        
 
       </View>
     </View>
@@ -73,4 +91,10 @@ const styles = StyleSheet.create({
     color: 'brown',
     fontFamily: 'Playfair-Black',
   },
+
+  iconGroup: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+  }
 });

@@ -4,10 +4,11 @@ import { Audio } from 'expo-av';
 
 import { performTTS } from './tts';
 import { processVoiceCommand } from './voiceCommand';
+import { CartContextProps } from '../context/CartContext';
 
 const ASSEMBLYAI_API_KEY = 'd55f34d3bbbe447e8394ca2e0812ca55';
 
-export const startSTT = (navigation: any) => {
+export const startSTT = (navigation: any, cart: CartContextProps) => {
   const [isRecording, setIsRecording] = useState(false);
   const [recordingObj, setRecordingObj] = useState(null);
 
@@ -82,12 +83,23 @@ export const startSTT = (navigation: any) => {
             finalTranscript = "No command given. Please try again.";
             Alert.alert('Transcription', finalTranscript);
             performTTS(finalTranscript);
+
+            // NOTE: testing
+            processVoiceCommand({
+                transcription: "add 5 banana",
+                navigation,
+                cart,
+                onSearch: (query) => {
+                    console.log('Do search with:', query);
+                },
+            });
           }
           // else process command
           else {
             processVoiceCommand({
                 transcription: finalTranscript,
                 navigation,
+                cart,
                 onSearch: (query) => {
                     console.log('Do search with:', query);
                 },

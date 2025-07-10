@@ -3,22 +3,44 @@ import { Alert } from 'react-native';
 import { performTTS } from './tts';
 import { sendSOS } from '../Footer';
 
+import { productsList } from '../context/Products';
+import { CartContextProps } from '../context/CartContext';
+
 type HandleVoiceCommandOptions = {
   transcription: string;
   navigation?: any;
+  cart?: CartContextProps;
   onSearch?: (query: string) => void;
   onItem?: (query: string) => void;
+};
+
+const wordToNum: { [key: string]: number } = {
+    one: 1,
+    two: 2,
+    three: 3,
+    four: 4,
+    five: 5,
+    six: 6,
+    seven: 7,
+    eight: 8,
+    nine: 9,
+    ten: 10,
 };
 
 export const processVoiceCommand = ({
     transcription,
     navigation,
+    cart,
     onSearch,
     }: HandleVoiceCommandOptions) => {
-    const input = transcription.toLowerCase().trim();
-    console.log(input);
-    console.log(transcription);
+    let input = transcription.toLowerCase().trim();
 
+    // convert words to numbers if it's in input
+    for (const word in wordToNum) {
+        const regex = new RegExp(`\\b${word}\\b`, 'g');
+        input = input.replace(regex, wordToNum[word].toString());
+    }
+    
     // cart commands
     if ((input.includes('go') && input.includes('cart')) ||
         input.includes('open cart')) {
@@ -26,27 +48,33 @@ export const processVoiceCommand = ({
         navigation?.navigate?.('Cart');
     }
     else if (input.includes('add')) {
-        const regex = /add\s+(\d+)?\s*([a-z\s]+?)(?:\s+to cart)?$/i;
+        // regex: match "add" [optional number] [item name] [optional "to cart."]
+        const regex = /add\s+(?:(\d+)\s+)?([\w\s]+?)(?:\s+to\s+cart)?[.!?\s]*$/i;
         const match = input.match(regex);
 
         if (match) {
-            const quantity = parseInt(match[1]) || 1;
+            const amount = parseInt(match[1]) || 1;
             const item = match[2].trim();
 
-            if (!item || item.length === 0) {
-                Alert.alert('Invalid Item', 'Could not recognize the item name.');
-                performTTS('Could not recognize the item name.');
+            const found = productsList.find(
+                p => p.name.toLowerCase() === item.toLowerCase()
+            );
+
+            if (!found) {
+                Alert.alert('Invalid Item', `Item ${item} not found in the catalog.`);
+                performTTS(`Item ${item} not found in the catalog.`);
                 return;
             }
 
-            // onSearch?.(match);
-            performTTS(`Adding ${quantity} ${item}`);
-            Alert.alert('Test', transcription);
-            // performTTS(`Adding to cart`);
-        }
-        else {
-            performTTS(`${match}`);
-            Alert.alert('Test', match);
+            performTTS(`Adding ${amount} ${item} to cart.`);
+            Alert.alert('Test', `Adding ${amount} ${item}`);
+            cart.addToCart({
+                      id: found.id,
+                      name: found.name,
+                      price: found.price,
+                      image: found.image,
+                      quantity: amount,
+                    }, amount);
         }
     }
     

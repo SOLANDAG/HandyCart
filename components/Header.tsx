@@ -5,10 +5,12 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import type { DrawerParamList } from '../types/navigation';
 
 import { startSTT } from './voice_commands/stt';
+import { useCart } from './context/CartContext';
 
 export default function Header() {
   const navigation = useNavigation<DrawerNavigationProp<DrawerParamList>>();
-  const { isRecording, startRecording, stopRecording } = startSTT(navigation);
+  const cart = useCart();
+  const { isRecording, startRecording, stopRecording } = startSTT(navigation, cart);
 
   return (
     <View style={styles.headerWrapper}>

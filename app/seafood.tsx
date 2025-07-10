@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { Dimensions, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useCart } from '../components/context/CartContext';
+import { productsList } from '../components/context/Products';
 
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = width * 0.459;
@@ -11,14 +12,7 @@ export default function Seafood() {
   const [search, setSearch] = useState('');
   const { addToCart, toggleFavorite, isFavorite } = useCart();
 
-  const products = [
-    { id: 4001, name: 'Salmon', description: 'Fresh Atlantic salmon.', price: 700, weight: '1 Kg', rating: 4.8, sold: 800, image: require('../assets/images/img-placeholder.png') },
-    { id: 4002, name: 'Shrimp', description: 'Large tiger shrimp.', price: 550, weight: '1 Kg', rating: 4.5, sold: 600, image: require('../assets/images/img-placeholder.png') },
-    { id: 4003, name: 'Crab', description: 'Fresh blue crabs.', price: 900, weight: '1 Kg', rating: 4.7, sold: 400, image: require('../assets/images/img-placeholder.png') },
-    { id: 4004, name: 'Squid', description: 'Tender squid rings.', price: 400, weight: '1 Kg', rating: 4.3, sold: 500, image: require('../assets/images/img-placeholder.png') },
-    { id: 4005, name: 'Tuna', description: 'Sashimi-grade tuna.', price: 850, weight: '1 Kg', rating: 4.9, sold: 300, image: require('../assets/images/img-placeholder.png') },
-    { id: 4006, name: 'Lobster', description: 'Live whole lobster.', price: 1500, weight: '1 Pc', rating: 4.6, sold: 200, image: require('../assets/images/img-placeholder.png') },
-  ];
+  const products = productsList.filter(p => p.category === 'Seafood');
 
   return (
     <View style={styles.container}>

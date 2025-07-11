@@ -56,7 +56,6 @@ import RegisterScreen from '../app/register';
 import type { DrawerParamList } from '../types/navigation';
 import LayoutWrapper from './LayoutWrapper';
 
-
 const Drawer = createDrawerNavigator<DrawerParamList>();
 
 export default function DrawerNavigator() {

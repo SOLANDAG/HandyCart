@@ -1,7 +1,9 @@
 import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { Dimensions, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+
 import { useCart } from '../components/context/CartContext';
+import { productsList } from '../components/context/Products';
 
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = width * 0.459;
@@ -11,14 +13,7 @@ export default function Vegetables() {
   const [search, setSearch] = useState('');
   const { addToCart, toggleFavorite, isFavorite } = useCart();
 
-  const products = [
-    { id: 1001, name: 'Tomatoes', description: 'Fresh and juicy red tomatoes.', price: 119, weight: '1 Kg', rating: 4.5, sold: 1700, image: require('../assets/images/vegetables/tomato.png') },
-    { id: 1002, name: 'Lettuce', description: 'Crisp green lettuce, perfect for salads.', price: 150, weight: '1 Kg', rating: 4.3, sold: 900, image: require('../assets/images/vegetables/lettuce.png') },
-    { id: 1003, name: 'Carrots', description: 'Sweet orange carrots full of nutrients.', price: 180, weight: '1 Kg', rating: 4.8, sold: 2400, image: require('../assets/images/vegetables/carrot.png') },
-    { id: 1004, name: 'Broccoli', description: 'Fresh green broccoli florets.', price: 320, weight: '1 Kg', rating: 4.2, sold: 600, image: require('../assets/images/vegetables/broccoli.png') },
-    { id: 1005, name: 'Spinach', description: 'Tender spinach leaves, rich in iron.', price: 250, weight: '1 Kg', rating: 4.7, sold: 1100, image: require('../assets/images/vegetables/spinach.png') },
-    { id: 1006, name: 'Cucumbers', description: 'Cool and crunchy cucumbers.', price: 190, weight: '1 Kg', rating: 4.1, sold: 750, image: require('../assets/images/vegetables/cucumber.png') },
-  ];
+  const products = productsList.filter(p => p.category === 'Vegetables');
   
   return (
     <View style={styles.container}>

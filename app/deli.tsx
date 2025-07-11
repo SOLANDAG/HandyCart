@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { Dimensions, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useCart } from '../components/context/CartContext';
+import { productsList } from '../components/context/Products';
 
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = width * 0.459;
@@ -11,14 +12,7 @@ export default function Deli() {
   const [search, setSearch] = useState('');
   const { addToCart, toggleFavorite, isFavorite } = useCart();
 
-  const products = [
-    { id: 8001, name: 'Ham', description: 'Sliced smoked ham.', price: 300, weight: '500 g', rating: 4.8, sold: 700, image: require('../assets/images/img-placeholder.png') },
-    { id: 8002, name: 'Salami', description: 'Dry cured salami slices.', price: 400, weight: '500 g', rating: 4.7, sold: 500, image: require('../assets/images/img-placeholder.png') },
-    { id: 8003, name: 'Roast Beef', description: 'Tender roast beef.', price: 500, weight: '500 g', rating: 4.6, sold: 300, image: require('../assets/images/img-placeholder.png') },
-    { id: 8004, name: 'Turkey Breast', description: 'Lean turkey breast slices.', price: 350, weight: '500 g', rating: 4.5, sold: 400, image: require('../assets/images/img-placeholder.png') },
-    { id: 8005, name: 'Pastrami', description: 'Seasoned pastrami beef.', price: 550, weight: '500 g', rating: 4.4, sold: 250, image: require('../assets/images/img-placeholder.png') },
-    { id: 8006, name: 'Bologna', description: 'Classic bologna sausage.', price: 280, weight: '500 g', rating: 4.3, sold: 600, image: require('../assets/images/img-placeholder.png') },
-  ];
+  const products = productsList.filter(p => p.category === 'Deli');
   
   return (
     <View style={styles.container}>

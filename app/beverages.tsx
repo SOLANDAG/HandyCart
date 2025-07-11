@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { Dimensions, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useCart } from '../components/context/CartContext';
+import { productsList } from '../components/context/Products';
 
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = width * 0.459;
@@ -11,14 +12,7 @@ export default function Beverages() {
   const [search, setSearch] = useState('');
   const { addToCart, toggleFavorite, isFavorite } = useCart();
 
-  const products = [
-    { id: 5001, name: 'Orange Juice', description: 'Fresh squeezed orange juice.', price: 150, weight: '1 L', rating: 4.7, sold: 1000, image: require('../assets/images/img-placeholder.png') },
-    { id: 5002, name: 'Milk Tea', description: 'Sweet and creamy milk tea.', price: 120, weight: '500 ml', rating: 4.5, sold: 850, image: require('../assets/images/img-placeholder.png') },
-    { id: 5003, name: 'Soda', description: 'Refreshing carbonated soda.', price: 50, weight: '1 L', rating: 4.2, sold: 1500, image: require('../assets/images/img-placeholder.png') },
-    { id: 5004, name: 'Coffee', description: 'Freshly brewed coffee.', price: 180, weight: '500 ml', rating: 4.6, sold: 1200, image: require('../assets/images/img-placeholder.png') },
-    { id: 5005, name: 'Iced Tea', description: 'Cool and sweet iced tea.', price: 100, weight: '1 L', rating: 4.3, sold: 900, image: require('../assets/images/img-placeholder.png') },
-    { id: 5006, name: 'Bottled Water', description: 'Pure and refreshing bottled water.', price: 30, weight: '1 L', rating: 4.9, sold: 2000, image: require('../assets/images/img-placeholder.png') },
-  ];
+  const products = productsList.filter(p => p.category === 'Beverages');
   
   return (
     <View style={styles.container}>

@@ -15,12 +15,12 @@ export interface FavoriteItem {
   image: any;
 }
 
-interface CartContextProps {
+export interface CartContextProps {
   cartItems: CartItem[];
   favorites: FavoriteItem[];
-  addToCart: (item: CartItem) => void;
+  addToCart: (item: CartItem, amount?: number) => void;
   removeFromCart: (id: number) => void;
-  decreaseFromCart: (id: number) => void;
+  decreaseFromCart: (id: number, amount?: number) => void;
   toggleFavorite: (item: FavoriteItem) => void;
   isFavorite: (id: number) => boolean;
 }
@@ -31,13 +31,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [favorites, setFavorites] = useState<FavoriteItem[]>([]);
 
-  const addToCart = (item: CartItem) => {
+  const addToCart = (item: CartItem, amount: number = 1) => {
     setCartItems(prev => {
       const existingItem = prev.find(ci => ci.id === item.id);
       if (existingItem) {
-        return prev.map(ci => ci.id === item.id ? { ...ci, quantity: ci.quantity + 1 } : ci);
+        return prev.map(ci => ci.id === item.id ? { ...ci, quantity: ci.quantity + amount } : ci);
       } else {
-        return [...prev, { ...item, quantity: 1 }];
+        return [...prev, { ...item, quantity: amount }];
       }
     });
   };
@@ -46,10 +46,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setCartItems(prev => prev.filter(item => item.id !== id));
   };
 
-  const decreaseFromCart = (id: number) => {
+  const decreaseFromCart = (id: number, amount: number = 1) => {
     setCartItems(prev =>
       prev.map(item =>
-        item.id === id ? { ...item, quantity: item.quantity - 1 } : item
+        item.id === id ? { ...item, quantity: item.quantity - amount } : item
       ).filter(item => item.quantity > 0)
     );
   };

@@ -36,6 +36,11 @@ export type DrawerParamList = {
   Payment: undefined;
   About: undefined;
   Help: undefined;
+
+  ///// USER AUTHENTICATION /////
+  Login: undefined;
+  Logout: undefined;
+  Register: undefined;
 };
 
 ///// HEADER /////
@@ -75,3 +80,8 @@ export type HistoryStackParamList = { HistoryMain: undefined; };
 export type PaymentStackParamList = { PaymentMain: undefined; };
 export type AboutStackParamList = { AboutMain: undefined; };
 export type HelpStackParamList = { HelpMain: undefined; };
+
+///// USER AUTHENTICATION /////
+export type LoginStackParamList = { LoginMain: undefined; };
+export type LogoutStackParamList = { LogoutMain: undefined; };
+export type RegisterStackParamList = { RegisterMain: undefined; };

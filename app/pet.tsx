@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { Dimensions, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useCart } from '../components/context/CartContext';
+import { productsList } from '../components/context/Products';
 
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = width * 0.459;
@@ -11,14 +12,7 @@ export default function Pet() {
   const [search, setSearch] = useState('');
   const { addToCart, toggleFavorite, isFavorite } = useCart();
 
-  const products = [
-    { id: 17001, name: 'Dog Food', description: 'Nutritious dry dog food.', price: 1200, weight: '10 Kg', rating: 4.8, sold: 1000, image: require('../assets/images/img-placeholder.png') },
-    { id: 17002, name: 'Cat Food', description: 'Tasty dry cat food.', price: 900, weight: '8 Kg', rating: 4.7, sold: 800, image: require('../assets/images/img-placeholder.png') },
-    { id: 17003, name: 'Bird Seeds', description: 'High-quality bird seeds.', price: 300, weight: '2 Kg', rating: 4.6, sold: 600, image: require('../assets/images/img-placeholder.png') },
-    { id: 17004, name: 'Dog Shampoo', description: 'Gentle dog shampoo.', price: 250, weight: '500 ml', rating: 4.5, sold: 700, image: require('../assets/images/img-placeholder.png') },
-    { id: 17005, name: 'Cat Litter', description: 'Odor-control cat litter.', price: 450, weight: '10 Kg', rating: 4.4, sold: 500, image: require('../assets/images/img-placeholder.png') },
-    { id: 17006, name: 'Pet Treats', description: 'Delicious pet treats.', price: 150, weight: '500 g', rating: 4.3, sold: 400, image: require('../assets/images/img-placeholder.png') },
-  ];
+  const products = productsList.filter(p => p.category === 'Pet');
 
   return (
     <View style={styles.container}>

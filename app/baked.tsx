@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { Dimensions, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useCart } from '../components/context/CartContext';
+import { productsList } from '../components/context/Products';
 
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = width * 0.459;
@@ -11,14 +12,7 @@ export default function Baked() {
   const [search, setSearch] = useState('');
   const { addToCart, toggleFavorite, isFavorite } = useCart();
 
-  const products = [
-    { id: 11001, name: 'White Bread', description: 'Soft and fluffy white bread.', price: 55, weight: '400 g', rating: 4.6, sold: 1300, image: require('../assets/images/img-placeholder.png') },
-    { id: 11002, name: 'Whole Wheat Bread', description: 'Healthy whole wheat bread.', price: 65, weight: '400 g', rating: 4.8, sold: 900, image: require('../assets/images/img-placeholder.png') },
-    { id: 11003, name: 'Croissant', description: 'Flaky butter croissant.', price: 45, weight: '1 pc', rating: 4.7, sold: 600, image: require('../assets/images/img-placeholder.png') },
-    { id: 11004, name: 'Pandesal', description: 'Classic Filipino breakfast bread.', price: 30, weight: '6 pcs', rating: 4.9, sold: 1500, image: require('../assets/images/img-placeholder.png') },
-    { id: 11005, name: 'Muffins', description: 'Moist and sweet muffins.', price: 75, weight: '2 pcs', rating: 4.4, sold: 700, image: require('../assets/images/img-placeholder.png') },
-    { id: 11006, name: 'Garlic Bread', description: 'Toasted garlic-flavored bread.', price: 60, weight: '250 g', rating: 4.5, sold: 500, image: require('../assets/images/img-placeholder.png') },
-  ];
+  const products = productsList.filter(p => p.category === 'Baked');
   
   return (
     <View style={styles.container}>

@@ -1,7 +1,9 @@
 import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { Dimensions, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+
 import { useCart } from '../components/context/CartContext';
+import { productsList } from '../components/context/Products';
 
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = width * 0.459;
@@ -11,14 +13,7 @@ export default function Fruits() {
   const [search, setSearch] = useState('');
   const { addToCart, toggleFavorite, isFavorite } = useCart();
 
-  const products = [
-    { id: 2001, name: 'Apple', description: 'Crisp and juicy red apples.', price: 120, weight: '1 Kg', rating: 4.7, sold: 1500, image: require('../assets/images/img-placeholder.png') },
-    { id: 2002, name: 'Banana', description: 'Sweet ripe bananas.', price: 80, weight: '1 Kg', rating: 4.5, sold: 1000, image: require('../assets/images/img-placeholder.png') },
-    { id: 2003, name: 'Orange', description: 'Fresh and tangy oranges.', price: 140, weight: '1 Kg', rating: 4.6, sold: 1800, image: require('../assets/images/img-placeholder.png') },
-    { id: 2004, name: 'Grapes', description: 'Sweet seedless grapes.', price: 200, weight: '1 Kg', rating: 4.4, sold: 900, image: require('../assets/images/img-placeholder.png') },
-    { id: 2005, name: 'Mango', description: 'Juicy tropical mangoes.', price: 170, weight: '1 Kg', rating: 4.8, sold: 2200, image: require('../assets/images/img-placeholder.png') },
-    { id: 2006, name: 'Watermelon', description: 'Refreshing and hydrating watermelon.', price: 300, weight: '1 Pc', rating: 4.3, sold: 800, image: require('../assets/images/img-placeholder.png') },
-  ];
+  const products = productsList.filter(p => p.category === 'Fruits');
   
   return (
     <View style={styles.container}>

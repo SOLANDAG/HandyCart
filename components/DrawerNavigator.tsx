@@ -70,6 +70,9 @@ export default function DrawerNavigator() {
       }}
     >
       {[
+        // make login the start screen
+        { name: 'Login', component: LoginScreen },
+
         ///// MAIN SCREEN, WHICH IS THE GROCERY INDEX PAGE /////
         { name: 'Home', component: HomeScreen },
 
@@ -102,8 +105,7 @@ export default function DrawerNavigator() {
         { name: 'Chats', component: ChatsScreen },
         { name: 'Emergency', component: EmergencyScreen },
 
-        ///// USER AUTHENTICATION /////
-        { name: 'Login', component: LoginScreen },
+        ///// USER AUTHENTICATION ////
         { name: 'Register', component: RegisterScreen }
       ].map(({ name, component }) => (
         <Drawer.Screen

@@ -20,7 +20,7 @@ export interface CartContextProps {
   favorites: FavoriteItem[];
   addToCart: (item: CartItem, amount?: number) => void;
   removeFromCart: (id: number) => void;
-  decreaseFromCart: (id: number) => void;
+  decreaseFromCart: (id: number, amount?: number) => void;
   toggleFavorite: (item: FavoriteItem) => void;
   isFavorite: (id: number) => boolean;
 }

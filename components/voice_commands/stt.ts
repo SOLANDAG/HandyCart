@@ -83,16 +83,6 @@ export const startSTT = (navigation: any, cart: CartContextProps) => {
             finalTranscript = "No command given. Please try again.";
             Alert.alert('Transcription', finalTranscript);
             performTTS(finalTranscript);
-
-            // NOTE: testing
-            processVoiceCommand({
-                transcription: "add 5 banana",
-                navigation,
-                cart,
-                onSearch: (query) => {
-                    console.log('Do search with:', query);
-                },
-            });
           }
           // else process command
           else {

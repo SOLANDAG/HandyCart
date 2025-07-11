@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { Dimensions, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useCart } from '../components/context/CartContext';
+import { productsList } from '../components/context/Products';
 
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = width * 0.459;
@@ -11,14 +12,7 @@ export default function Pantry() {
   const [search, setSearch] = useState('');
   const { addToCart, toggleFavorite, isFavorite } = useCart();
 
-  const products = [
-    { id: 18001, name: 'Cooking Oil', description: 'Pure vegetable oil.', price: 200, weight: '1 L', rating: 4.8, sold: 1300, image: require('../assets/images/img-placeholder.png') },
-    { id: 18002, name: 'Sugar', description: 'Refined white sugar.', price: 80, weight: '1 Kg', rating: 4.7, sold: 1200, image: require('../assets/images/img-placeholder.png') },
-    { id: 18003, name: 'Salt', description: 'Iodized cooking salt.', price: 20, weight: '1 Kg', rating: 4.6, sold: 2000, image: require('../assets/images/img-placeholder.png') },
-    { id: 18004, name: 'All-Purpose Flour', description: 'Versatile flour for baking.', price: 90, weight: '1 Kg', rating: 4.5, sold: 900, image: require('../assets/images/img-placeholder.png') },
-    { id: 18005, name: 'Pasta', description: 'Durum wheat pasta.', price: 60, weight: '500 g', rating: 4.4, sold: 1000, image: require('../assets/images/img-placeholder.png') },
-    { id: 18006, name: 'Instant Noodles', description: 'Quick and easy meal.', price: 15, weight: '1 pack', rating: 4.3, sold: 3000, image: require('../assets/images/img-placeholder.png') },
-  ];
+  const products = productsList.filter(p => p.category === 'Pantry');
   
   return (
     <View style={styles.container}>

@@ -67,7 +67,6 @@ export const processVoiceCommand = ({
             }
 
             performTTS(`Adding ${amount} ${item} to cart.`);
-            Alert.alert('Test', `Adding ${amount} ${item}`);
             cart.addToCart({
                       id: found.id,
                       name: found.name,
@@ -75,6 +74,51 @@ export const processVoiceCommand = ({
                       image: found.image,
                       quantity: amount,
                     }, amount);
+        }
+    }
+    else if (input.includes('reduce')) {
+        // regex: match "reduce" [optional number] [item name] [optional "from cart."]
+        const regex = /reduce\s+(?:(\d+)\s+)?([\w\s]+?)(?:\s+from\s+cart)?[.!?\s]*$/i;
+        const match = input.match(regex);
+
+        if (match) {
+            const amount = parseInt(match[1]) || 1;
+            const item = match[2].trim();
+
+            const found = productsList.find(
+                p => p.name.toLowerCase() === item.toLowerCase()
+            );
+
+            if (!found) {
+                Alert.alert('Invalid Item', `Item ${item} not found in the catalog.`);
+                performTTS(`Item ${item} not found in the catalog.`);
+                return;
+            }
+
+            performTTS(`Reduced ${amount} ${item} from cart.`);
+            cart.decreaseFromCart(found.id, amount);
+        }
+    }
+    else if (input.includes('remove')) {
+        // regex: match "remove" [item name] [optional "from cart."]
+        const regex = /remove\s+([\w\s]+?)(?:\s+from\s+cart)?[.!?\s]*$/i;
+        const match = input.match(regex);
+
+        if (match) {
+            const item = match[1].trim();
+
+            const found = productsList.find(
+                p => p.name.toLowerCase() === item.toLowerCase()
+            );
+
+            if (!found) {
+                Alert.alert('Invalid Item', `Item ${item} not found in the catalog.`);
+                performTTS(`Item ${item} not found in the catalog.`);
+                return;
+            }
+
+            performTTS(`Removed ${item} from cart.`);
+            cart.removeFromCart(found.id);
         }
     }
     
@@ -131,12 +175,104 @@ export const processVoiceCommand = ({
         performTTS("Checking Favorites.");
         navigation?.navigate?.('Favorites');
     }
+    // navigation for store pages
+    else if ( (input.includes('go') && input.includes('vegetable')) ||
+        input.includes('vegetable')) {
+        performTTS("Checking Vegetables.");
+        navigation?.navigate?.('Vegetables');
+    }
+    else if ( (input.includes('go') && input.includes('fruit')) ||
+        input.includes('fruit')) {
+        performTTS("Checking Fruits.");
+        navigation?.navigate?.('Fruits');
+    }
+    else if ( (input.includes('go') && input.includes('meat')) ||
+        input.includes('meat')) {
+        performTTS("Checking Meat.");
+        navigation?.navigate?.('Meat');
+    }
+    else if ( (input.includes('go') && input.includes('seafood')) ||
+        input.includes('seafood')) {
+        performTTS("Checking Seafood.");
+        navigation?.navigate?.('Seafood');
+    }
+    else if ( (input.includes('go') && input.includes('beverage')) ||
+        input.includes('beverage')) {
+        performTTS("Checking Beverages.");
+        navigation?.navigate?.('Beverages');
+    }
+    else if ( (input.includes('go') && input.includes('canned good')) ||
+        input.includes('canned good')) {
+        performTTS("Checking Canned Goods.");
+        navigation?.navigate?.('Cannedgoods');
+    }
+    else if ( (input.includes('go') && input.includes('dairy')) ||
+        input.includes('dairy')) {
+        performTTS("Checking Dairy.");
+        navigation?.navigate?.('Dairy');
+    }
+    else if ( (input.includes('go') && input.includes('deli')) ||
+        input.includes('deli')) {
+        performTTS("Checking Deli.");
+        navigation?.navigate?.('Deli');
+    }
+    else if ( (input.includes('go') && input.includes('condiment')) ||
+        input.includes('condiment')) {
+        performTTS("Checking Condiments.");
+        navigation?.navigate?.('Condiments');
+    }
+    else if ( (input.includes('go') && input.includes('snack')) ||
+        input.includes('snack')) {
+        performTTS("Checking Snacks.");
+        navigation?.navigate?.('Snacks');
+    }
+    else if ( (input.includes('go') && input.includes('baked good')) ||
+        input.includes('baked good')) {
+        performTTS("Checking Baked Goods.");
+        navigation?.navigate?.('Bakedgoods');
+    }
+    else if ( (input.includes('go') && input.includes('grain')) ||
+        input.includes('grain')) {
+        performTTS("Checking Grains.");
+        navigation?.navigate?.('Grains');
+    }
+    else if ( (input.includes('go') && input.includes('hygiene')) ||
+        input.includes('hygiene')) {
+        performTTS("Checking Hygiene.");
+        navigation?.navigate?.('Hygiene');
+    }
+    else if ( (input.includes('go') && input.includes('household')) ||
+        input.includes('household')) {
+        performTTS("Checking Household.");
+        navigation?.navigate?.('Household');
+    }
+    else if ( (input.includes('go') && (input.includes('healthcare')) || input.includes('health care')) ||
+        input.includes('healthcare') || input.includes('health care') ) {
+        performTTS("Checking Healthcare.");
+        navigation?.navigate?.('Healthcare');
+    }
+    else if ( (input.includes('go') && (input.includes('babycare')) || input.includes('baby care') || input.includes('baby')) ||
+        input.includes('babycare') || input.includes('baby care') || input.includes('baby')) {
+        performTTS("Checking Baby Care.");
+        navigation?.navigate?.('Babycare');
+    }
+    else if ( (input.includes('go') && (input.includes('petcare')) || input.includes('pet care') || input.includes('pet')) ||
+        input.includes('petcare') || input.includes('pet care') || input.includes('pet')) {
+        performTTS("Checking Pet Care.");
+        navigation?.navigate?.('Petcare');
+    }
+    else if ( (input.includes('go') && input.includes('pantry')) ||
+        input.includes('pantry')) {
+        performTTS("Checking Pantry Staples.");
+        navigation?.navigate?.('Pantrystaples');
+    }
 
     // other features
     else if (input.includes('sos') || input === 'sos') {
         sendSOS();
     }
 
+    // NOTE: This is not fully implemented
     else if (input.startsWith('search for ')) {
         const query = input.replace('search for ', '').trim();
         onSearch?.(query);

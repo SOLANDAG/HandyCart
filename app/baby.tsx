@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { Dimensions, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useCart } from '../components/context/CartContext';
+import { productsList } from '../components/context/Products';
 
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = width * 0.459;
@@ -11,14 +12,7 @@ export default function Baby() {
   const [search, setSearch] = useState('');
   const { addToCart, toggleFavorite, isFavorite } = useCart();
 
-  const products = [
-    { id: 16001, name: 'Baby Diapers', description: 'Soft and absorbent diapers.', price: 450, weight: '40 pcs', rating: 4.8, sold: 1500, image: require('../assets/images/img-placeholder.png') },
-    { id: 16002, name: 'Baby Wipes', description: 'Gentle cleansing baby wipes.', price: 120, weight: '80 sheets', rating: 4.7, sold: 1300, image: require('../assets/images/img-placeholder.png') },
-    { id: 16003, name: 'Baby Lotion', description: 'Moisturizing baby lotion.', price: 180, weight: '400 ml', rating: 4.6, sold: 900, image: require('../assets/images/img-placeholder.png') },
-    { id: 16004, name: 'Baby Shampoo', description: 'Tear-free baby shampoo.', price: 160, weight: '400 ml', rating: 4.5, sold: 1000, image: require('../assets/images/img-placeholder.png') },
-    { id: 16005, name: 'Baby Powder', description: 'Gentle baby powder.', price: 100, weight: '200 g', rating: 4.4, sold: 800, image: require('../assets/images/img-placeholder.png') },
-    { id: 16006, name: 'Baby Formula', description: 'Nutritious infant formula.', price: 700, weight: '900 g', rating: 4.3, sold: 600, image: require('../assets/images/img-placeholder.png') },
-  ];
+  const products = productsList.filter(p => p.category === 'Baby');
   
   return (
     <View style={styles.container}>

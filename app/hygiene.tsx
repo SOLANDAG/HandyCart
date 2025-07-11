@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { Dimensions, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useCart } from '../components/context/CartContext';
+import { productsList } from '../components/context/Products';
 
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = width * 0.459;
@@ -11,14 +12,7 @@ export default function Hygiene() {
   const [search, setSearch] = useState('');
   const { addToCart, toggleFavorite, isFavorite } = useCart();
 
-  const products = [
-    { id: 13001, name: 'Shampoo', description: 'Refreshing hair shampoo.', price: 180, weight: '400 ml', rating: 4.8, sold: 1000, image: require('../assets/images/img-placeholder.png') },
-    { id: 13002, name: 'Body Soap', description: 'Moisturizing body soap.', price: 70, weight: '135 g', rating: 4.7, sold: 900, image: require('../assets/images/img-placeholder.png') },
-    { id: 13003, name: 'Toothpaste', description: 'Whitening toothpaste.', price: 90, weight: '140 g', rating: 4.6, sold: 1100, image: require('../assets/images/img-placeholder.png') },
-    { id: 13004, name: 'Mouthwash', description: 'Fresh mint mouthwash.', price: 150, weight: '500 ml', rating: 4.5, sold: 600, image: require('../assets/images/img-placeholder.png') },
-    { id: 13005, name: 'Deodorant', description: 'Long-lasting deodorant.', price: 100, weight: '50 ml', rating: 4.4, sold: 700, image: require('../assets/images/img-placeholder.png') },
-    { id: 13006, name: 'Facial Cleanser', description: 'Gentle facial cleanser.', price: 200, weight: '150 ml', rating: 4.3, sold: 500, image: require('../assets/images/img-placeholder.png') },
-  ];
+  const products = productsList.filter(p => p.category === 'Hygiene');
   
   return (
     <View style={styles.container}>

@@ -39,6 +39,19 @@ export default function Help() {
         </Text>
       </View>
 
+      <View style={styles.section}>
+        <Text style={styles.title}>🎤 Voice Commands</Text>
+        <Text style={styles.text}>
+          Tap the 🎤 button on the upper right to start a voice command with the following format: {"\n"}
+          - Add to cart: <Text style={styles.bold}>Add [optional amount] [item name]</Text> (Ex: Add apple or Add 2 eggs to cart){"\n"}
+          - Reduce item from cart: <Text style={styles.bold}>Reduce [optional amount] [item name]</Text> (Ex: Reduce apple or Reduce 2 eggs from cart){"\n"}
+          - Remove item: <Text style={styles.bold}>Remove [item name]</Text> (Ex: Remove apple){"\n"}
+          - Navigation: <Text style={styles.bold}>Go [page name]</Text> (Ex: Go Home or Go to Cart){"\n"}
+          - Send SOS: <Text style={styles.bold}>SOS</Text> (Ex: SOS or Send SOS){"\n"}
+          - Logout: <Text style={styles.bold}>Logout</Text>
+        </Text>
+      </View>
+
       <TouchableOpacity style={styles.supportBtn} onPress={handleContactSupport}>
         <Ionicons name="mail-outline" size={20} color="white" />
         <Text style={styles.supportText}>Contact Support</Text>

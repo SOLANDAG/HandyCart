@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { Dimensions, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useCart } from '../components/context/CartContext';
+import { productsList } from '../components/context/Products';
 
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = width * 0.459;
@@ -11,14 +12,7 @@ export default function Household() {
   const [search, setSearch] = useState('');
   const { addToCart, toggleFavorite, isFavorite } = useCart();
 
-  const products = [
-    { id: 14001, name: 'Laundry Detergent', description: 'Powerful stain remover.', price: 300, weight: '2 Kg', rating: 4.8, sold: 1100, image: require('../assets/images/img-placeholder.png') },
-    { id: 14002, name: 'Fabric Softener', description: 'Keeps clothes soft and fresh.', price: 180, weight: '1.5 L', rating: 4.7, sold: 900, image: require('../assets/images/img-placeholder.png') },
-    { id: 14003, name: 'Dishwashing Liquid', description: 'Cuts grease effectively.', price: 100, weight: '800 ml', rating: 4.6, sold: 1300, image: require('../assets/images/img-placeholder.png') },
-    { id: 14004, name: 'Glass Cleaner', description: 'Streak-free window cleaner.', price: 120, weight: '500 ml', rating: 4.5, sold: 700, image: require('../assets/images/img-placeholder.png') },
-    { id: 14005, name: 'Multipurpose Cleaner', description: 'Cleans all surfaces.', price: 200, weight: '1 L', rating: 4.4, sold: 800, image: require('../assets/images/img-placeholder.png') },
-    { id: 14006, name: 'Toilet Cleaner', description: 'Kills germs and removes stains.', price: 90, weight: '500 ml', rating: 4.3, sold: 600, image: require('../assets/images/img-placeholder.png') },
-  ];
+  const products = productsList.filter(p => p.category === 'Household');
   
   return (
     <View style={styles.container}>

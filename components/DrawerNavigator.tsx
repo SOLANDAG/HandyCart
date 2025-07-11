@@ -62,11 +62,18 @@ export default function DrawerNavigator() {
   return (
     <Drawer.Navigator
       drawerContent={(props) => <CustomDrawerContent {...props} />}
-      screenOptions={{
-        headerShown: false,
-        drawerActiveTintColor: 'saddlebrown',
-        drawerLabelStyle: { fontSize: 18 },
-        drawerType: 'front',
+       screenOptions={({ route }) => {
+        const HIDDEN_SCREENS = ['Login', 'Register', 'Logout'];
+        const shouldHideUI = HIDDEN_SCREENS.includes(route.name);
+
+        return {
+          headerShown: false,
+          swipeEnabled:!shouldHideUI,
+          drawerType: shouldHideUI ? 'back' : 'front',
+          drawerActiveTintColor: 'saddlebrown',
+          drawerLabelStyle: { fontSize: 18 },
+        }
+
       }}
     >
       {[

@@ -4,8 +4,8 @@ import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import type { DrawerParamList } from '../types/navigation';
 
-import { startSTT } from './voice_commands/stt';
 import { useCart } from './context/CartContext';
+import { startSTT } from './voice_commands/stt';
 
 export default function Header() {
   const navigation = useNavigation<DrawerNavigationProp<DrawerParamList>>();

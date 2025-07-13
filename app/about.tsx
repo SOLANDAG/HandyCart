@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, ScrollView, Image } from "react-native";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 
 export default function About() {
   return (
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 20,
-    paddingBottom: 40,
+    paddingBottom: 125,
   },
   card: {
     backgroundColor: '#fff',

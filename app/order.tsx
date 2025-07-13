@@ -1,18 +1,17 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import * as Location from 'expo-location';
+import React, { useEffect, useRef, useState } from 'react';
 import {
-  View,
-  StyleSheet,
   Alert,
-  Dimensions,
-  Text,
-  FlatList,
   Button,
+  Dimensions,
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
 } from 'react-native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
-import * as Location from 'expo-location';
-import { useNavigation } from '@react-navigation/native';
 import { useOrder } from '../components/context/OrderContext';
-
 import { performTTS } from '../components/voice_commands/tts';
 
 export default function Order() {
@@ -91,7 +90,6 @@ export default function Order() {
     };
   }, [userLocation, isDelivered, latestOrder]);
 
-  // No current order
   if (!latestOrder) {
     return (
       <View style={styles.emptyWrapper}>
@@ -100,8 +98,6 @@ export default function Order() {
     );
   }
 
-
-  // Main Order Screen
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Order Details</Text>
@@ -109,7 +105,6 @@ export default function Order() {
         Status: <Text style={{ fontWeight: 'bold' }}>{latestOrder.status.toUpperCase()}</Text>
       </Text>
 
-      {/* Cancel order button */}
       {latestOrder.status === 'active' && !isDelivered && (
         <View style={styles.cancelWrapper}>
           <Button
@@ -131,7 +126,6 @@ export default function Order() {
         </View>
       )}
 
-      {/* Order Items */}
       <FlatList
         data={latestOrder.items}
         keyExtractor={(item) => item.id.toString()}
@@ -145,7 +139,6 @@ export default function Order() {
         )}
       />
 
-      {/* Map Section */}
       <Text style={styles.mapTitle}>Delivery Tracker</Text>
 
       <MapView
@@ -174,7 +167,6 @@ export default function Order() {
   );
 }
 
-// Styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -231,17 +223,14 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width - 30,
     height: Dimensions.get('window').height / 2.5,
     marginTop: 10,
+    marginBottom: 120, 
     borderRadius: 20,
     alignSelf: 'center',
     overflow: 'hidden',
-
-    // Shadow for iOS
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 5 },
     shadowOpacity: 0.2,
     shadowRadius: 10,
-
-    // Android elevation
     elevation: 10,
     backgroundColor: '#fff',
   },

@@ -52,10 +52,12 @@ export default function Help() {
         </Text>
       </View>
 
-      <TouchableOpacity style={styles.supportBtn} onPress={handleContactSupport}>
-        <Ionicons name="mail-outline" size={20} color="white" />
-        <Text style={styles.supportText}>Contact Support</Text>
-      </TouchableOpacity>
+      <View style={{ paddingBottom: 125 }}>
+        <TouchableOpacity style={styles.supportBtn} onPress={handleContactSupport}>
+          <Ionicons name="mail-outline" size={20} color="white" />
+          <Text style={styles.supportText}>Contact Support</Text>
+        </TouchableOpacity>
+      </View>
     </ScrollView>
   );
 }
@@ -74,7 +76,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   section: {
-    marginBottom: 25,
+    marginBottom: 18,
     backgroundColor: '#FFFFFF',
     padding: 15,
     borderRadius: 12,
@@ -98,7 +100,7 @@ const styles = StyleSheet.create({
     color: 'saddlebrown',
   },
   supportBtn: {
-    marginTop: 30,
+    marginTop: 5,
     backgroundColor: 'saddlebrown',
     paddingVertical: 12,
     paddingHorizontal: 20,

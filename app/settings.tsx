@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import {
-  View,
+  ScrollView,
+  StyleSheet,
+  Switch,
   Text,
   TextInput,
-  Switch,
   TouchableOpacity,
-  StyleSheet,
-  ScrollView,
+  View,
 } from "react-native";
 
 export default function Settings() {
@@ -53,7 +53,7 @@ export default function Settings() {
   const borderColor = isDarkMode ? "#444" : "#ccc";
 
   return (
-    <ScrollView contentContainerStyle={[styles.container, { backgroundColor }]}>
+    <ScrollView contentContainerStyle={[styles.container, { backgroundColor, paddingBottom: 125 }]}>
       <Text style={[styles.sectionTitle, { color: textColor }]}>Edit Profile</Text>
       <TextInput
         placeholder="Name"

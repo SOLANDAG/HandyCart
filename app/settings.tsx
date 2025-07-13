@@ -10,9 +10,6 @@ import {
 } from "react-native";
 
 export default function Settings() {
-  const [name, setName] = useState("");
-  const [address, setAddress] = useState("");
-  const [contact, setContact] = useState("");
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [linkedAccounts, setLinkedAccounts] = useState({
     google: true,
@@ -32,7 +29,7 @@ export default function Settings() {
   };
 
   const handleDeleteAccount = () => {
-    alert("Account deleted (not really)");
+    alert("Account deleted");
   };
 
   const handlePasswordChange = () => {
@@ -40,7 +37,7 @@ export default function Settings() {
       alert("Passwords do not match!");
       return;
     }
-    alert(`Password changed from "${oldPassword}" to "${newPassword}" (not really)`);
+    alert(`Password changed from "${oldPassword}" to "${newPassword}" `);
     setOldPassword("");
     setNewPassword("");
     setConfirmPassword("");
@@ -53,30 +50,7 @@ export default function Settings() {
   const borderColor = isDarkMode ? "#444" : "#ccc";
 
   return (
-    <ScrollView contentContainerStyle={[styles.container, { backgroundColor, paddingBottom: 125 }]}>
-      <Text style={[styles.sectionTitle, { color: textColor }]}>Edit Profile</Text>
-      <TextInput
-        placeholder="Name"
-        placeholderTextColor={isDarkMode ? "#888" : "#999"}
-        style={[styles.input, { backgroundColor: inputBackground, borderColor, color: textColor }]}
-        value={name}
-        onChangeText={setName}
-      />
-      <TextInput
-        placeholder="Address"
-        placeholderTextColor={isDarkMode ? "#888" : "#999"}
-        style={[styles.input, { backgroundColor: inputBackground, borderColor, color: textColor }]}
-        value={address}
-        onChangeText={setAddress}
-      />
-      <TextInput
-        placeholder="Contact"
-        placeholderTextColor={isDarkMode ? "#888" : "#999"}
-        style={[styles.input, { backgroundColor: inputBackground, borderColor, color: textColor }]}
-        value={contact}
-        onChangeText={setContact}
-      />
-
+    <ScrollView contentContainerStyle={[styles.container, { backgroundColor }]}>
       <Text style={[styles.sectionTitle, { color: textColor }]}>Theme</Text>
       <View style={styles.switchRow}>
         <Text style={{ color: textColor }}>Dark Mode</Text>

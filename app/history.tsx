@@ -1,14 +1,14 @@
-import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import {
   FlatList,
-  Image,
   SafeAreaView,
   StyleSheet,
   Text,
   View,
+  Image,
 } from 'react-native';
 import { useOrder } from '../components/context/OrderContext';
+import { Ionicons } from '@expo/vector-icons';
 
 // Displays a list of past orders, including status and items.
 export default function History() {
@@ -86,7 +86,6 @@ const styles = StyleSheet.create({
     fontSize: 26,
     fontWeight: 'bold',
     marginBottom: 20,
-    marginTop: 20,
     fontFamily: 'Playfair-BoldItalic',
   },
   emptyWrapper: {
@@ -101,7 +100,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Quicksand-Medium',
   },
   list: {
-    paddingBottom: 70,
+    paddingBottom: 100,
   },
   orderCard: {
     backgroundColor: '#fdfdfd',

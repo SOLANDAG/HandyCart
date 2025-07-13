@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { Dimensions, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useCart } from '../components/context/CartContext';
+import { productsList } from '../components/context/Products';
 
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = width * 0.459;
@@ -12,14 +13,7 @@ export default function Dairy() {
   //const [favorites, setFavorites] = useState<number[]>([]);
   const { addToCart, toggleFavorite, isFavorite } = useCart();
 
-  const products = [
-    { id: 7001, name: 'Milk', description: 'Fresh whole milk.', price: 90, weight: '1 L', rating: 4.8, sold: 1300, image: require('../assets/images/img-placeholder.png') },
-    { id: 7002, name: 'Cheese', description: 'Rich cheddar cheese.', price: 250, weight: '500 g', rating: 4.7, sold: 800, image: require('../assets/images/img-placeholder.png') },
-    { id: 7003, name: 'Butter', description: 'Creamy salted butter.', price: 180, weight: '250 g', rating: 4.6, sold: 900, image: require('../assets/images/img-placeholder.png') },
-    { id: 7004, name: 'Yogurt', description: 'Fresh fruit yogurt.', price: 60, weight: '150 g', rating: 4.5, sold: 700, image: require('../assets/images/img-placeholder.png') },
-    { id: 7005, name: 'Cream', description: 'Rich heavy cream.', price: 100, weight: '250 ml', rating: 4.4, sold: 500, image: require('../assets/images/img-placeholder.png') },
-    { id: 7006, name: 'Eggs', description: 'Farm fresh eggs.', price: 70, weight: '12 pcs', rating: 4.9, sold: 2000, image: require('../assets/images/img-placeholder.png') },
-  ];
+  const products = productsList.filter(p => p.category === 'Dairy');
 
   return (
     <View style={styles.container}>

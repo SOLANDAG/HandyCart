@@ -13,33 +13,30 @@ import * as Location from 'expo-location';
 import { useNavigation } from '@react-navigation/native';
 import { useOrder } from '../components/context/OrderContext';
 
+import { performTTS } from '../components/voice_commands/tts';
+
 export default function Order() {
   const navigation = useNavigation();
   const { orders, cancelOrder, markOrderDelivered } = useOrder();
 
-  // Get the latest order (regardless of status)
   const latestOrder = orders.length > 0 ? orders[orders.length - 1] : null;
 
-  // User's current location
   const [userLocation, setUserLocation] = useState<Location.LocationObjectCoords | null>(null);
-
-  // Driver's simulated starting point
   const [originLocation, setOriginLocation] = useState({
     latitude: 14.566457,
     longitude: 121.01505,
   });
-
   const [isDelivered, setIsDelivered] = useState(false);
 
   const map = useRef<MapView>(null);
   const interval = useRef<number | null>(null);
 
-  // Get & Watch user's location
   useEffect(() => {
     (async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         Alert.alert('Location Error', 'Permission to access location was denied.');
+        performTTS("Location access was denied. Please try again");
         return;
       }
 
@@ -57,7 +54,6 @@ export default function Order() {
     })();
   }, []);
 
-  // Simulate driver delivery
   useEffect(() => {
     if (!userLocation || isDelivered || !latestOrder || latestOrder.status !== 'active') return;
 
@@ -74,6 +70,7 @@ export default function Order() {
           setIsDelivered(true);
           markOrderDelivered(latestOrder.id);
 
+          performTTS("Your delivery is here!");
           Alert.alert('Delivered!', 'Your delivery has arrived.', [
             { text: 'OK', onPress: () => navigation.navigate('index' as never) },
           ]);
@@ -93,7 +90,6 @@ export default function Order() {
       if (interval.current) clearInterval(interval.current);
     };
   }, [userLocation, isDelivered, latestOrder]);
-
 
   // No current order
   if (!latestOrder) {

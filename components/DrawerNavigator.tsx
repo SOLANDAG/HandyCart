@@ -56,21 +56,30 @@ import RegisterScreen from '../app/register';
 import type { DrawerParamList } from '../types/navigation';
 import LayoutWrapper from './LayoutWrapper';
 
-
 const Drawer = createDrawerNavigator<DrawerParamList>();
 
 export default function DrawerNavigator() {
   return (
     <Drawer.Navigator
       drawerContent={(props) => <CustomDrawerContent {...props} />}
-      screenOptions={{
-        headerShown: false,
-        drawerActiveTintColor: 'saddlebrown',
-        drawerLabelStyle: { fontSize: 18 },
-        drawerType: 'front',
+       screenOptions={({ route }) => {
+        const HIDDEN_SCREENS = ['Login', 'Register', 'Logout'];
+        const shouldHideUI = HIDDEN_SCREENS.includes(route.name);
+
+        return {
+          headerShown: false,
+          swipeEnabled:!shouldHideUI,
+          drawerType: shouldHideUI ? 'back' : 'front',
+          drawerActiveTintColor: 'saddlebrown',
+          drawerLabelStyle: { fontSize: 18 },
+        }
+
       }}
     >
       {[
+        // make login the start screen
+        { name: 'Login', component: LoginScreen },
+
         ///// MAIN SCREEN, WHICH IS THE GROCERY INDEX PAGE /////
         { name: 'Home', component: HomeScreen },
 
@@ -103,8 +112,7 @@ export default function DrawerNavigator() {
         { name: 'Chats', component: ChatsScreen },
         { name: 'Emergency', component: EmergencyScreen },
 
-        ///// USER AUTHENTICATION /////
-        { name: 'Login', component: LoginScreen },
+        ///// USER AUTHENTICATION ////
         { name: 'Register', component: RegisterScreen }
       ].map(({ name, component }) => (
         <Drawer.Screen

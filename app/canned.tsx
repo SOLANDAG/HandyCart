@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { Dimensions, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useCart } from '../components/context/CartContext';
+import { productsList } from '../components/context/Products';
 
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = width * 0.459;
@@ -11,14 +12,7 @@ export default function Canned() {
   const [search, setSearch] = useState('');
   const { addToCart, toggleFavorite, isFavorite } = useCart();
 
-  const products = [
-    { id: 6001, name: 'Canned Tuna', description: 'Premium canned tuna in oil.', price: 80, weight: '155 g', rating: 4.7, sold: 900, image: require('../assets/images/img-placeholder.png') },
-    { id: 6002, name: 'Corned Beef', description: 'Juicy canned corned beef.', price: 95, weight: '210 g', rating: 4.6, sold: 1100, image: require('../assets/images/img-placeholder.png') },
-    { id: 6003, name: 'Sardines', description: 'Canned sardines in tomato sauce.', price: 30, weight: '155 g', rating: 4.4, sold: 1500, image: require('../assets/images/img-placeholder.png') },
-    { id: 6004, name: 'Baked Beans', description: 'Sweet canned baked beans.', price: 60, weight: '220 g', rating: 4.5, sold: 800, image: require('../assets/images/img-placeholder.png') },
-    { id: 6005, name: 'Canned Mushrooms', description: 'Whole button mushrooms.', price: 70, weight: '400 g', rating: 4.3, sold: 500, image: require('../assets/images/img-placeholder.png') },
-    { id: 6006, name: 'Canned Peaches', description: 'Sweet canned peach slices.', price: 110, weight: '425 g', rating: 4.8, sold: 600, image: require('../assets/images/img-placeholder.png') },
-  ];
+  const products = productsList.filter(p => p.category === 'Canned');
   
   return (
     <View style={styles.container}>

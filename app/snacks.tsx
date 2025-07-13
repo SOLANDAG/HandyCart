@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { Dimensions, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useCart } from '../components/context/CartContext';
+import { productsList } from '../components/context/Products';
 
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = width * 0.459;
@@ -11,14 +12,7 @@ export default function Snacks() {
   const [search, setSearch] = useState('');
   const { addToCart, toggleFavorite, isFavorite } = useCart();
 
-  const products = [
-    { id: 10001, name: 'Potato Chips', description: 'Crispy potato chips.', price: 50, weight: '150 g', rating: 4.8, sold: 1400, image: require('../assets/images/img-placeholder.png') },
-    { id: 10002, name: 'Chocolate Bar', description: 'Smooth milk chocolate.', price: 80, weight: '100 g', rating: 4.7, sold: 1200, image: require('../assets/images/img-placeholder.png') },
-    { id: 10003, name: 'Popcorn', description: 'Buttery microwave popcorn.', price: 45, weight: '3 bags', rating: 4.6, sold: 1000, image: require('../assets/images/img-placeholder.png') },
-    { id: 10004, name: 'Cookies', description: 'Fresh baked cookies.', price: 90, weight: '300 g', rating: 4.5, sold: 900, image: require('../assets/images/img-placeholder.png') },
-    { id: 10005, name: 'Gummy Bears', description: 'Sweet gummy candies.', price: 60, weight: '200 g', rating: 4.4, sold: 800, image: require('../assets/images/img-placeholder.png') },
-    { id: 10006, name: 'Pretzels', description: 'Crunchy salted pretzels.', price: 70, weight: '250 g', rating: 4.3, sold: 600, image: require('../assets/images/img-placeholder.png') },
-  ];
+  const products = productsList.filter(p => p.category === 'Snacks');
 
   return (
     <View style={styles.container}>

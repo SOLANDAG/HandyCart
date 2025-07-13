@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { Dimensions, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useCart } from '../components/context/CartContext';
+import { productsList } from '../components/context/Products';
 
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = width * 0.459;
@@ -11,14 +12,7 @@ export default function Healthcare() {
   const [search, setSearch] = useState('');
   const { addToCart, toggleFavorite, isFavorite } = useCart();
 
-  const products = [
-    { id: 15001, name: 'Vitamin C', description: 'Immune support supplement.', price: 250, weight: '100 tablets', rating: 4.8, sold: 900, image: require('../assets/images/img-placeholder.png') },
-    { id: 15002, name: 'Pain Reliever', description: 'Fast-acting pain relief.', price: 150, weight: '50 tablets', rating: 4.7, sold: 800, image: require('../assets/images/img-placeholder.png') },
-    { id: 15003, name: 'Antacid', description: 'Relieves heartburn quickly.', price: 120, weight: '40 tablets', rating: 4.6, sold: 700, image: require('../assets/images/img-placeholder.png') },
-    { id: 15004, name: 'Cough Syrup', description: 'Soothes sore throat and cough.', price: 180, weight: '120 ml', rating: 4.5, sold: 600, image: require('../assets/images/img-placeholder.png') },
-    { id: 15005, name: 'Bandages', description: 'Adhesive bandages for wounds.', price: 90, weight: '20 pcs', rating: 4.4, sold: 500, image: require('../assets/images/img-placeholder.png') },
-    { id: 15006, name: 'Thermometer', description: 'Digital body thermometer.', price: 350, weight: '1 unit', rating: 4.3, sold: 400, image: require('../assets/images/img-placeholder.png') },
-  ];
+  const products = productsList.filter(p => p.category === 'Healthcare');
 
   return (
     <View style={styles.container}>

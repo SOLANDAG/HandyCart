@@ -1,7 +1,9 @@
 import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { Dimensions, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+
 import { useCart } from '../components/context/CartContext';
+import { productsList } from '../components/context/Products';
 
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = width * 0.459;
@@ -11,14 +13,7 @@ export default function Meat() {
   const [search, setSearch] = useState('');
   const { addToCart, toggleFavorite, isFavorite } = useCart();
 
-  const products = [
-    { id: 3001, name: 'Chicken', description: 'Fresh whole chicken.', price: 250, weight: '1 Kg', rating: 4.6, sold: 1200, image: require('../assets/images/img-placeholder.png') },
-    { id: 3002, name: 'Beef', description: 'Tender beef cuts.', price: 450, weight: '1 Kg', rating: 4.7, sold: 950, image: require('../assets/images/img-placeholder.png') },
-    { id: 3003, name: 'Pork', description: 'Juicy pork slices.', price: 320, weight: '1 Kg', rating: 4.5, sold: 1400, image: require('../assets/images/img-placeholder.png') },
-    { id: 3004, name: 'Lamb', description: 'Premium lamb meat.', price: 600, weight: '1 Kg', rating: 4.4, sold: 600, image: require('../assets/images/img-placeholder.png') },
-    { id: 3005, name: 'Bacon', description: 'Crispy smoked bacon.', price: 280, weight: '1 Kg', rating: 4.8, sold: 800, image: require('../assets/images/img-placeholder.png') },
-    { id: 3006, name: 'Sausage', description: 'Tasty homemade sausage.', price: 300, weight: '1 Kg', rating: 4.3, sold: 700, image: require('../assets/images/img-placeholder.png') },
-  ];
+  const products = productsList.filter(p => p.category === 'Meat');
   
   return (
     <View style={styles.container}>

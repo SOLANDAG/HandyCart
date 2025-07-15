@@ -1,41 +1,38 @@
 import { Ionicons } from '@expo/vector-icons';
-import * as Location from 'expo-location';
 import * as SMS from 'expo-sms';
 import React from 'react';
 import { Alert, StyleSheet, TouchableOpacity } from 'react-native';
 
-export default function SOSButton() {
-  const handleSOS = async () => {
-    try {
-      // 1. Request location permissions
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        Alert.alert('Permission denied', 'Location access is required to send your location.');
-        return;
-      }
+import { performTTS } from '../components/voice_commands/tts';
+import { requestLocationPermission } from './locationPermission';
 
-      // 2. Get current location
-      const location = await Location.getCurrentPositionAsync({});
-      const { latitude, longitude } = location.coords;
-      const locationUrl = `https://www.google.com/maps?q=${latitude},${longitude}`;
+export const handleSOS = async () => {
+  try {
+    const coords = await requestLocationPermission();
+    if (!coords) return;
 
-      // 3. Send SMS
-      const isAvailable = await SMS.isAvailableAsync();
-      if (isAvailable) {
-        await SMS.sendSMSAsync(
-          ['09171234567'], // <- Replace with your emergency contact number
-          `🚨 HELP!!! SOS Alert!!!\nI need help. Here's my location: ${locationUrl}`
-        );
-        Alert.alert('SOS Sent', 'Emergency SMS sent successfully.');
-      } else {
-        Alert.alert('SMS not available on this device');
-      }
-    } catch (error) {
-      console.error('SOS error:', error);
-      Alert.alert('Error', 'Failed to send SOS message.');
+    const { latitude, longitude } = coords;
+    const locationUrl = `https://www.google.com/maps?q=${latitude},${longitude}`;
+    const message = `🚨 HELP!!! SOS Alert!!!\nI need help. Here's my location: ${locationUrl}`;
+
+    const isAvailable = await SMS.isAvailableAsync();
+    if (isAvailable) {
+      const contact = '09171234567'; // replace with chosen contacts once in the SMS
+      performTTS(`Sending SOS to ${contact}.`); // change this to contact name
+      await SMS.sendSMSAsync([contact], message); 
+    } else {
+      performTTS("SMS not available on this device.");
+      Alert.alert('SMS Not Available', 'SMS not available on this device.');
     }
-  };
+  } catch (error) {
+    console.error('SOS error:', error);
+    performTTS(`Error Sending SOS: ${error}`);
+    Alert.alert('Error', 'Failed to send SOS message.');
+  }
+};
 
+export default function SOSButton() {
+  
   return (
     <TouchableOpacity style={styles.sosButton} onPress={handleSOS}>
       <Ionicons name="alert-circle" size={40} color="white" />

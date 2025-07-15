@@ -13,6 +13,11 @@ import {
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import { useOrder } from '../components/context/OrderContext';
 import { performTTS } from '../components/voice_commands/tts';
+import { requestLocationPermission } from '../components/locationPermission';
+
+// default location set to Mapua Makati
+const default_latitude = 14.566457;
+const default_longitude = 121.01505;
 
 export default function Order() {
   const navigation = useNavigation();
@@ -22,25 +27,21 @@ export default function Order() {
 
   const [userLocation, setUserLocation] = useState<Location.LocationObjectCoords | null>(null);
   const [originLocation, setOriginLocation] = useState({
-    latitude: 14.566457,
-    longitude: 121.01505,
+    latitude: default_latitude,
+    longitude: default_longitude,
   });
   const [isDelivered, setIsDelivered] = useState(false);
+  const [fiveMinLeft, setFiveMinLeft] = useState(false);
 
   const map = useRef<MapView>(null);
   const interval = useRef<number | null>(null);
 
   useEffect(() => {
     (async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        Alert.alert('Location Error', 'Permission to access location was denied.');
-        performTTS("Location access was denied. Please try again");
-        return;
-      }
+      const coords = await requestLocationPermission();
+      if (!coords) return;
 
-      const location = await Location.getCurrentPositionAsync({});
-      setUserLocation(location.coords);
+      setUserLocation(coords);
 
       await Location.watchPositionAsync(
         {
@@ -53,6 +54,28 @@ export default function Order() {
     })();
   }, []);
 
+  // reset origin location when there's new order
+  useEffect(() => {
+    if (latestOrder?.status === 'active') {
+      setOriginLocation({
+        latitude: default_latitude,
+        longitude: default_longitude,
+      });
+      setIsDelivered(false);
+
+      // send delivery estimate
+      const latDiff = userLocation.latitude - default_latitude;
+      const longDiff = userLocation.longitude - default_longitude;
+      const dist = Math.sqrt(latDiff * latDiff + longDiff * longDiff);
+
+      const mins = Math.round(dist * 500);
+
+      Alert.alert('Delivery Status', `Delivery started. Estimate to arrive in ${mins} minutes.`);
+      performTTS(`Delivery started. Estimate to arrive in ${mins} minutes.`);
+      setFiveMinLeft(false);
+    }
+  }, [latestOrder]);
+
   useEffect(() => {
     if (!userLocation || isDelivered || !latestOrder || latestOrder.status !== 'active') return;
 
@@ -64,6 +87,13 @@ export default function Order() {
         const longDiff = userLocation.longitude - prev.longitude;
         const dist = Math.sqrt(latDiff * latDiff + longDiff * longDiff);
 
+        if (!fiveMinLeft && dist < 0.01) {
+          setFiveMinLeft(true);
+          const mins = Math.round(dist * 500);
+          Alert.alert('Delivery Status', `Delivery will arrive in ${mins} minutes.`);
+          performTTS(`Delivery will arrive in ${mins} minutes.`);
+        }
+
         if (dist < 0.00015) {
           clearInterval(interval.current!);
           setIsDelivered(true);
@@ -73,6 +103,7 @@ export default function Order() {
           Alert.alert('Delivered!', 'Your delivery has arrived.', [
             { text: 'OK', onPress: () => navigation.navigate('Home' as never) },
           ]);
+          
           return prev;
         }
 
@@ -88,7 +119,7 @@ export default function Order() {
     return () => {
       if (interval.current) clearInterval(interval.current);
     };
-  }, [userLocation, isDelivered, latestOrder, navigation, markOrderDelivered]);
+  }, [userLocation, isDelivered, latestOrder, navigation, markOrderDelivered, fiveMinLeft]);
 
   if (!latestOrder) {
     return (
@@ -118,6 +149,7 @@ export default function Order() {
                   onPress: () => {
                     cancelOrder(latestOrder.id);
                     Alert.alert('Order Cancelled', 'Your order has been cancelled.');
+                    performTTS('Your order has been cancelled.');
                   },
                 },
               ])

@@ -66,6 +66,7 @@ export default function Cart() {
         })
       });
       const data = await response.json();
+      console.log(data);
 
       const checkoutUrl = data?.data?.attributes?.checkout_url;
       if (checkoutUrl) {

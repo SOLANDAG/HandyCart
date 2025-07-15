@@ -39,13 +39,16 @@ export default function Cart() {
   };
 
   const handleGCash = async () => {
+    // const key = 'pk_test_4nhMC5cR5qkf78qvws33AmWp';
+    const key = 'sk_test_SGehaWybQHpsrou4QSKfn1PY';
+    const encodedKey = btoa(key + ':');
     try {
       const response = await fetch('https://api.paymongo.com/v1/links', {
         method: 'POST',
         headers: {
           accept: 'application/json',
           'content-type': 'application/json',
-          authorization: 'Basic aGFuZHljYXJ0Ok9jdDIwMjIyODAwMjZtb25nbyE='
+          authorization: `Basic ${encodedKey}`,
         },
         body: JSON.stringify({
           data: {
@@ -63,12 +66,13 @@ export default function Cart() {
         })
       });
       const data = await response.json();
+
       const checkoutUrl = data?.data?.attributes?.checkout_url;
       if (checkoutUrl) {
         Linking.openURL(checkoutUrl);
-        clearCart();
-        addOrder(cartItems);
-        navigation.navigate('Order' as never);
+        clearCart?.();
+        addOrder?.(cartItems);
+        navigation?.navigate?.('Order' as never);
       } else {
         Alert.alert('Error', 'No checkout link received.');
       }

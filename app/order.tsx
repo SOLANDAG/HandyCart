@@ -71,7 +71,7 @@ export default function Order() {
 
           performTTS("Your delivery is here!");
           Alert.alert('Delivered!', 'Your delivery has arrived.', [
-            { text: 'OK', onPress: () => navigation.navigate('index' as never) },
+            { text: 'OK', onPress: () => navigation.navigate('Home' as never) },
           ]);
           return prev;
         }
@@ -88,7 +88,7 @@ export default function Order() {
     return () => {
       if (interval.current) clearInterval(interval.current);
     };
-  }, [userLocation, isDelivered, latestOrder]);
+  }, [userLocation, isDelivered, latestOrder, navigation, markOrderDelivered]);
 
   if (!latestOrder) {
     return (

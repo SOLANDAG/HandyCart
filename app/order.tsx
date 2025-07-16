@@ -1,6 +1,6 @@
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import * as Location from 'expo-location';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import {
   Alert,
   Button,
@@ -36,27 +36,42 @@ export default function Order() {
   const map = useRef<MapView>(null);
   const interval = useRef<number | null>(null);
 
-  useEffect(() => {
-    (async () => {
-      const coords = await requestLocationPermission();
-      if (!coords) return;
+  const checkUserLocation = async () => {
+    const coords = await requestLocationPermission();
+    if (!coords) {
+      setUserLocation(null);
+      return;
+    }
 
-      setUserLocation(coords);
+    setUserLocation(coords);
 
-      await Location.watchPositionAsync(
-        {
-          accuracy: Location.Accuracy.High,
-          timeInterval: 3000,
-          distanceInterval: 5,
-        },
-        (loc) => setUserLocation(loc.coords)
-      );
-    })();
-  }, []);
+    await Location.watchPositionAsync(
+      {
+        accuracy: Location.Accuracy.High,
+        timeInterval: 3000,
+        distanceInterval: 5,
+      },
+      (loc) => setUserLocation(loc.coords)
+    );
+  };
+
+  // recheck userlocation when reopening order tab
+  // it will start tracking if successful
+  // this works but need to refresh page
+  useFocusEffect(
+    useCallback(() => {
+      if (userLocation) return;
+      checkUserLocation();
+    }, [userLocation])
+  );
 
   // reset origin location when there's new order
   useEffect(() => {
     if (latestOrder?.status === 'active') {
+      if (!userLocation) {
+        return;
+      }
+
       setOriginLocation({
         latitude: default_latitude,
         longitude: default_longitude,
@@ -74,7 +89,7 @@ export default function Order() {
       performTTS(`Delivery started. Estimate to arrive in ${mins} minutes.`);
       setFiveMinLeft(false);
     }
-  }, [latestOrder]);
+  }, [latestOrder, userLocation]);
 
   useEffect(() => {
     if (!userLocation || isDelivered || !latestOrder || latestOrder.status !== 'active') return;

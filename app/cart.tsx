@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import React, { useCallback} from 'react';
 import {
   Alert,
   FlatList,
@@ -14,6 +14,8 @@ import {
 } from 'react-native';
 import { CartItem, useCart } from '../components/context/CartContext';
 import { useOrder } from '../components/context/OrderContext';
+
+import { performTTS } from '../components/voice_commands/tts';
 
 export default function Cart() {
   const { cartItems, addToCart, removeFromCart, decreaseFromCart, clearCart } = useCart();
@@ -30,6 +32,22 @@ export default function Cart() {
 
   const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
 
+  // read cart contents to user when viewing cart
+  // also auto reads when changes are made on cart
+  useFocusEffect(
+    useCallback(() => {
+      if (cartItems.length > 0) {
+        performTTS(`Current Items on Cart.`);
+        for ( const item of cartItems) {
+          performTTS(`${item.quantity} ${item.name} for ${item.price} pesos each.`);
+        }
+        performTTS(`Total Price: ${totalPrice} pesos.`);
+      } else {
+        performTTS('Cart is Empty.');
+      }
+    }, [cartItems, totalPrice])
+  );
+  
   const handleCOD = () => {
     if (cartItems.length === 0) return;
     addOrder(cartItems);
@@ -66,17 +84,55 @@ export default function Cart() {
         })
       });
       const data = await response.json();
-      console.log(data);
-
       const checkoutUrl = data?.data?.attributes?.checkout_url;
-      if (checkoutUrl) {
-        Linking.openURL(checkoutUrl);
+      const paymentId = data?.data?.id;
+
+      if (!checkoutUrl || !paymentId) {
+        Alert.alert('Error', 'No checkout link received.');
+        return;
+      }
+
+      await Linking.openURL(checkoutUrl);
+
+      // monitor payment status every 5 secs, max 30 seconds
+      let attempts = 0;
+      const maxAttempts = 3;
+      const interval = 5000;
+
+      const checkPaymentStatus = async () => {
+      const res = await fetch(`https://api.paymongo.com/v1/links/${paymentId}`, {
+        headers: {
+          accept: 'application/json',
+          authorization: `Basic ${encodedKey}`,
+        },
+      });
+
+      const statusData = await res.json();
+      const status = statusData?.data?.attributes?.status;
+
+      if (status === 'paid') {
         clearCart?.();
         addOrder?.(cartItems);
         navigation?.navigate?.('Order' as never);
+        Alert.alert('Payment Successful', 'Your order has been placed.');
+      } else if (status === 'unpaid' && attempts < maxAttempts) {
+        attempts++;
+        setTimeout(checkPaymentStatus, interval);
       } else {
-        Alert.alert('Error', 'No checkout link received.');
+        Alert.alert('Payment Failed', 'Payment was unsuccessful. Please try again.');
       }
+    };
+
+    setTimeout(checkPaymentStatus, interval);
+
+      // if (checkoutUrl) {
+        
+      //   clearCart?.();
+      //   addOrder?.(cartItems);
+      //   navigation?.navigate?.('Order' as never);
+      // } else {
+        
+      // }
     } catch (error) {
       console.error('GCash Error:', error);
       Alert.alert('Error', 'Something went wrong with GCash payment.');

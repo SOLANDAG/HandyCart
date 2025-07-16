@@ -1,13 +1,32 @@
 import * as Location from 'expo-location';
-import { Alert } from 'react-native';
+import * as Linking from 'expo-linking';
+import { Alert, Platform } from 'react-native';
 import { performTTS } from '../components/voice_commands/tts';
 
-export async function requestLocationPermission(): Promise<Location.LocationObjectCoords | null> {
+export async function requestLocationPermission()  {
   const { status } = await Location.requestForegroundPermissionsAsync();
 
   if (status !== 'granted') {
-    Alert.alert('Location Error', 'Permission to access location was denied.');
-    performTTS('Location access was denied. Please enable location access in settings to continue.');
+    Alert.alert('Permission Error', 'Permission to access location was denied. Tracking and SOS services are disabled.',
+        [
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+          {
+            // redirect to settings
+            text: 'Open Settings',
+            onPress: () => {
+              if (Platform.OS === 'ios') {
+                Linking.openURL('app-settings:');
+              } else {
+                Linking.openSettings();
+              }
+            },
+          },
+        ]
+      );
+    performTTS('Location access was denied. Please enable in settings to use tracking and SOS.');
     return null;
   }
 

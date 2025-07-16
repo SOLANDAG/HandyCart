@@ -11,6 +11,8 @@ export const handleSOS = async () => {
     const coords = await requestLocationPermission();
     if (!coords) return;
 
+    console.log(coords);
+
     const { latitude, longitude } = coords;
     const locationUrl = `https://www.google.com/maps?q=${latitude},${longitude}`;
     const message = `🚨 HELP!!! SOS Alert!!!\nI need help. Here's my location: ${locationUrl}`;

@@ -2,18 +2,24 @@ import { Ionicons } from '@expo/vector-icons';
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
-  DrawerItemList
+  DrawerItemList,
 } from '@react-navigation/drawer';
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 
-// test for usercred
-import { useUser } from './context/UserContext';
-
-///// HEADER /////
+import AboutScreen from '../app/about';
 import FavoritesScreen from '../app/favorites';
+import HelpScreen from '../app/help';
+import HistoryScreen from '../app/history';
+import HomeScreen from '../app/index';
+import LoginScreen from '../app/login';
+import LogoutScreen from '../app/logout';
+import OTPScreen from '../app/otp';
+import PaymentScreen from '../app/payment';
+import ProfileScreen from '../app/profile';
+import RegisterScreen from '../app/register';
+import SettingsScreen from '../app/settings';
 
-///// GROCERY ITEMS /////
 import BabycareScreen from '../app/baby';
 import BakedgoodsScreen from '../app/baked';
 import BeveragesScreen from '../app/beverages';
@@ -33,60 +39,55 @@ import SeafoodScreen from '../app/seafood';
 import SnacksScreen from '../app/snacks';
 import VegetablesScreen from '../app/vegetables';
 
-///// FOOTER /////
 import CartScreen from '../app/cart';
 import ChatsScreen from '../app/chats';
 import EmergencyScreen from '../app/emergency';
-import HomeScreen from '../app/index';
 import OrderScreen from '../app/order';
 
-///// SIDEBAR /////
-import AboutScreen from '../app/about';
-import HelpScreen from '../app/help';
-import HistoryScreen from '../app/history';
-import LogoutScreen from '../app/logout';
-import PaymentScreen from '../app/payment';
-import ProfileScreen from '../app/profile';
-import SettingsScreen from '../app/settings';
-
-///// USER AUTHENTICATION /////
-import LoginScreen from '../app/login';
-import RegisterScreen from '../app/register';
-
-import type { DrawerParamList } from '../types/navigation';
+import { useUser } from '../components/context/UserContext';
 import LayoutWrapper from './LayoutWrapper';
 
+import type { DrawerParamList } from '../types/navigation';
+
 const Drawer = createDrawerNavigator<DrawerParamList>();
+
+const HIDDEN_SCREENS = ['Login', 'Register', 'OTP'];
 
 export default function DrawerNavigator() {
   return (
     <Drawer.Navigator
       drawerContent={(props) => <CustomDrawerContent {...props} />}
-       screenOptions={({ route }) => {
-        const HIDDEN_SCREENS = ['Login', 'Register', 'Logout'];
+      screenOptions={({ route }) => {
         const shouldHideUI = HIDDEN_SCREENS.includes(route.name);
-
         return {
           headerShown: false,
-          swipeEnabled:!shouldHideUI,
+          swipeEnabled: !shouldHideUI,
           drawerType: shouldHideUI ? 'back' : 'front',
           drawerActiveTintColor: 'saddlebrown',
           drawerLabelStyle: { fontSize: 18 },
-        }
-
+        };
       }}
     >
+      <Drawer.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{ drawerItemStyle: { display: 'none' } }}
+      />
+      <Drawer.Screen
+        name="Register"
+        component={RegisterScreen}
+        options={{ drawerItemStyle: { display: 'none' } }}
+      />
+      <Drawer.Screen
+        name="OTP"
+        component={OTPScreen}
+        options={{ drawerItemStyle: { display: 'none' } }}
+      />
+
       {[
-        // make login the start screen
-        // { name: 'Login', component: LoginScreen },
-
-        ///// MAIN SCREEN, WHICH IS THE GROCERY INDEX PAGE /////
         { name: 'Home', component: HomeScreen },
-
-        ///// HEADER /////
         { name: 'Favorites', component: FavoritesScreen },
 
-        ///// GROCERY ITEMS /////
         { name: 'Fruits', component: FruitsScreen },
         { name: 'Vegetables', component: VegetablesScreen },
         { name: 'Cannedgoods', component: CannedgoodsScreen },
@@ -106,14 +107,10 @@ export default function DrawerNavigator() {
         { name: 'Petcare', component: PetcareScreen },
         { name: 'Pantrystaples', component: PantrystaplesScreen },
 
-        ///// FOOTER /////
         { name: 'Order', component: OrderScreen },
         { name: 'Cart', component: CartScreen },
         { name: 'Chats', component: ChatsScreen },
         { name: 'Emergency', component: EmergencyScreen },
-
-        ///// USER AUTHENTICATION ////
-        { name: 'Register', component: RegisterScreen }
       ].map(({ name, component }) => (
         <Drawer.Screen
           key={name}
@@ -124,55 +121,54 @@ export default function DrawerNavigator() {
       ))}
 
       <Drawer.Screen
-        name ="Profile"
+        name="Profile"
         options={{
-          drawerIcon: ({ color, size }) => <Ionicons name="person-outline" size={size} color={color} />
+          drawerIcon: ({ color, size }) => <Ionicons name="person-outline" size={size} color={color} />,
         }}
         children={() => <LayoutWrapper><ProfileScreen /></LayoutWrapper>}
       />
       <Drawer.Screen
         name="Settings"
         options={{
-          drawerIcon: ({ color, size }) => <Ionicons name="settings-outline" size={size} color={color} />
+          drawerIcon: ({ color, size }) => <Ionicons name="settings-outline" size={size} color={color} />,
         }}
         children={() => <LayoutWrapper><SettingsScreen /></LayoutWrapper>}
       />
       <Drawer.Screen
         name="History"
         options={{
-          drawerIcon: ({ color, size }) => <Ionicons name="time-outline" size={size} color={color} />
+          drawerIcon: ({ color, size }) => <Ionicons name="time-outline" size={size} color={color} />,
         }}
         children={() => <LayoutWrapper><HistoryScreen /></LayoutWrapper>}
       />
       <Drawer.Screen
         name="Payment"
         options={{
-          drawerIcon: ({ color, size }) => <Ionicons name="card-outline" size={size} color={color} />
+          drawerIcon: ({ color, size }) => <Ionicons name="card-outline" size={size} color={color} />,
         }}
         children={() => <LayoutWrapper><PaymentScreen /></LayoutWrapper>}
       />
       <Drawer.Screen
         name="About"
         options={{
-          drawerIcon: ({ color, size }) => <Ionicons name="information-circle-outline" size={size} color={color} />
+          drawerIcon: ({ color, size }) => <Ionicons name="information-circle-outline" size={size} color={color} />,
         }}
         children={() => <LayoutWrapper><AboutScreen /></LayoutWrapper>}
       />
       <Drawer.Screen
         name="Help"
         options={{
-          drawerIcon: ({ color, size }) => <Ionicons name="help-circle-outline" size={size} color={color} />
+          drawerIcon: ({ color, size }) => <Ionicons name="help-circle-outline" size={size} color={color} />,
         }}
         children={() => <LayoutWrapper><HelpScreen /></LayoutWrapper>}
       />
       <Drawer.Screen
         name="Logout"
         options={{
-          drawerIcon: ({ size }) => <Ionicons name="log-out-outline" size={size} color="saddlebrown" />
+          drawerIcon: ({ size }) => <Ionicons name="log-out-outline" size={size} color="saddlebrown" />,
         }}
         children={() => <LayoutWrapper><LogoutScreen /></LayoutWrapper>}
       />
-
     </Drawer.Navigator>
   );
 }
@@ -183,12 +179,13 @@ function CustomDrawerContent(props: any) {
   return (
     <DrawerContentScrollView {...props} contentContainerStyle={styles.drawerContent}>
       <View style={styles.profileSection}>
-        <Image source={require('../assets/images/profile-placeholder.png')} style={styles.profileImage} />
-        <Text style={styles.username}>{profile?.username || 'Guest'}</Text> 
+        <Image
+          source={require('../assets/images/profile-placeholder.png')}
+          style={styles.profileImage}
+        />
+        <Text style={styles.username}>{profile?.username || 'Guest'}</Text>
       </View>
-
       <DrawerItemList {...props} />
-
     </DrawerContentScrollView>
   );
 }
@@ -198,5 +195,4 @@ const styles = StyleSheet.create({
   profileSection: { alignItems: 'center', marginVertical: 30 },
   profileImage: { width: 80, height: 80, borderRadius: 40, marginBottom: 10 },
   username: { fontSize: 18, fontWeight: 'bold', color: 'saddlebrown' },
-  logoutLabel: { fontSize: 18, color: 'saddlebrown' }
 });

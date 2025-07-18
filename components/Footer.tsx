@@ -1,59 +1,54 @@
 import { Ionicons } from '@expo/vector-icons';
-import type { DrawerNavigationProp } from '@react-navigation/drawer';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { useNavigation, useNavigationState } from '@react-navigation/native';
-
-import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import type { DrawerParamList } from '../types/navigation';
-
+import { DrawerParamList } from '../types/navigation';
+import { useTheme } from './context/ThemeContext';
 import { handleSOS } from './SOSButton';
 
 export default function Footer() {
+  const { theme } = useTheme();
   const navigation = useNavigation<DrawerNavigationProp<DrawerParamList>>();
   const state = useNavigationState(state => state);
   const currentRouteName = state.routes[state.index].name;
 
-  const isHome = currentRouteName === 'Home';
-  const isOrder = currentRouteName === 'Order';
-  const isCart = currentRouteName === 'Cart';
-  const isChats = currentRouteName === 'Chats';
-  const isEmergency = currentRouteName === 'Emergency';
-
   return (
-    <View style={styles.footerContainer}>
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Order')}>
-        <Ionicons name={isOrder ? 'cube' : 'cube-outline'} size={32} color="saddlebrown" />
-        <Text style={styles.label}>Order</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Cart')}>
-        <Ionicons name={isCart ? 'cart' : 'cart-outline'} size={32} color="saddlebrown" />
-        <Text style={styles.label}>Cart</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Home')}>
-        <Ionicons name={isHome ? 'home' : 'home-outline'} size={32} color="saddlebrown" />
-        <Text style={styles.label}>Home</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Chats')}>
-        <Ionicons name={isChats ? 'chatbubble' : 'chatbubble-outline'} size={32} color="saddlebrown" />
-        <Text style={styles.label}>Chats</Text>
-      </TouchableOpacity>
+    <View style={[styles.footerContainer, { backgroundColor: theme.background, shadowColor: theme.icon }]}>
+      {['Order', 'Cart', 'Home', 'Chats'].map((route) => (
+        <TouchableOpacity key={route} style={styles.button} onPress={() => navigation.navigate(route as keyof DrawerParamList)}>
+          <Ionicons
+            name={currentRouteName === route ? getIcon(route, true) : getIcon(route, false)}
+            size={32}
+            color={theme.icon}
+          />
+          <Text style={[styles.label, { color: theme.text }]}>{route}</Text>
+        </TouchableOpacity>
+      ))}
 
       <TouchableOpacity style={styles.button} onPress={handleSOS}>
-        <Ionicons name={isEmergency ? 'warning' : 'warning-outline'} size={32} color="crimson" />
-        <Text style={styles.label}>SOS</Text>
+        <Ionicons name="warning-outline" size={32} color="crimson" />
+        <Text style={[styles.label, { color: theme.text }]}>SOS</Text>
       </TouchableOpacity>
     </View>
   );
 }
 
+const getIcon = (route: string, active: boolean) => {
+  const icons: Record<string, [string, string]> = {
+    Order: ['cube-outline', 'cube'],
+    Cart: ['cart-outline', 'cart'],
+    Home: ['home-outline', 'home'],
+    Chats: ['chatbubble-outline', 'chatbubble'],
+  };
+  return active ? icons[route][1] : icons[route][0];
+};
+
 const styles = StyleSheet.create({
   footerContainer: {
     position: 'absolute',
-    bottom: 0, left: 0, right: 0,
-    backgroundColor: 'white',
+    bottom: 0,
+    left: 0,
+    right: 0,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
@@ -62,19 +57,17 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     elevation: 5,
-    shadowColor: '#000',
     shadowOffset: { width: 0, height: -2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
   },
   button: {
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   label: {
     fontSize: 12,
-    color: 'saddlebrown',
     marginTop: 5,
-    fontWeight: '600'
+    fontWeight: '600',
   },
 });

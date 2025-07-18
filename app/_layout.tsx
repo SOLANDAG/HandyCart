@@ -4,20 +4,21 @@ import { ActivityIndicator, View } from 'react-native';
 
 import DrawerNavigator from '../components/DrawerNavigator';
 import { CartProvider } from '../components/context/CartContext';
-import { UserProvider } from '../components/context/UserContext';
 import { OrderProvider } from '../components/context/OrderContext';
+import { ThemeProvider } from '../components/context/ThemeContext';
+import { UserProvider } from '../components/context/UserContext';
 
 import { requestLocationPermission } from '../components/locationPermission';
 
 export default function RootLayout() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
 
-    useEffect(() => {
-      const checkLocation = async () => {
-        await requestLocationPermission();
-      };
-      checkLocation();
-    }, []);
+  useEffect(() => {
+    const checkLocation = async () => {
+      await requestLocationPermission();
+    };
+    checkLocation();
+  }, []);
 
   useEffect(() => {
     async function loadFonts() {
@@ -53,12 +54,14 @@ export default function RootLayout() {
   }
 
   return (
-    <UserProvider>
-      <CartProvider>
-        <OrderProvider>
-          <DrawerNavigator />
-        </OrderProvider>
-      </CartProvider>
-    </UserProvider>
+    <ThemeProvider>
+      <UserProvider>
+        <CartProvider>
+          <OrderProvider>
+            <DrawerNavigator />
+          </OrderProvider>
+        </CartProvider>
+      </UserProvider>
+    </ThemeProvider>
   );
 }

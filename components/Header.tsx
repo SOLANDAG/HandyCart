@@ -1,48 +1,43 @@
 import { Ionicons } from '@expo/vector-icons';
-import type { DrawerNavigationProp } from '@react-navigation/drawer';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import type { DrawerParamList } from '../types/navigation';
-
-import { startSTT } from './voice_commands/stt';
 import { useCart } from './context/CartContext';
+import { useTheme } from './context/ThemeContext';
+import { startSTT } from './voice_commands/stt';
 
 export default function Header() {
-  const navigation = useNavigation<DrawerNavigationProp<DrawerParamList>>();
+  const { theme } = useTheme();
+  const navigation = useNavigation();
   const cart = useCart();
   const { isRecording, startRecording, stopRecording } = startSTT(navigation, cart);
 
   return (
-    <View style={styles.headerWrapper}>
-      <View style={styles.header}>
+    <View style={[styles.headerWrapper, { backgroundColor: theme.background }]}> 
+      <View style={[styles.header, { backgroundColor: theme.background, shadowColor: theme.icon }]}> 
         <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
-          <Ionicons name="menu" size={28} color="saddlebrown" />
+          <Ionicons name="menu" size={28} color={theme.icon} />
         </TouchableOpacity>
 
         <View style={styles.logoContainer}>
-          <Image
-            source={require('../assets/images/handyCart1.png')}
-            style={styles.logo}
-          />
-          <Text style={styles.appName}>HandyCart</Text>
+          <Image source={require('../assets/images/handyCart1.png')} style={styles.logo} />
+          <Text style={[styles.appName, { color: theme.text }]}>HandyCart</Text>
         </View>
 
         <View style={styles.iconGroup}>
-          <TouchableOpacity onPress={() => navigation.navigate('Favorites')} style={{ marginLeft: -33}}>
+          <TouchableOpacity onPress={() => navigation.navigate('Favorites' as never)} style={{ marginLeft: -33 }}>
             <Ionicons name="star" size={28} color="gold" />
           </TouchableOpacity>
 
           {isRecording ? (
-            <TouchableOpacity onPress={ stopRecording }>
+            <TouchableOpacity onPress={stopRecording}>
               <Ionicons name="stop" size={28} color="red" />
             </TouchableOpacity>
           ) : (
-            <TouchableOpacity onPress={ startRecording }>
-              <Ionicons name="mic" size={28} color="black" />
+            <TouchableOpacity onPress={startRecording}>
+              <Ionicons name="mic" size={28} color={theme.icon} />
             </TouchableOpacity>
           )}
         </View>
-        
       </View>
     </View>
   );
@@ -50,16 +45,13 @@ export default function Header() {
 
 const styles = StyleSheet.create({
   headerWrapper: {
-    backgroundColor: 'transparent',
     paddingHorizontal: 0,
     paddingTop: 0,
     paddingBottom: 0,
     zIndex: 5,
     marginBottom: -10,
   },
-
   header: {
-    backgroundColor: 'white',
     borderRadius: 10,
     paddingHorizontal: 20,
     paddingTop: 40,
@@ -67,33 +59,27 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 5,
     elevation: 5,
   },
-
   logoContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
   },
-
   logo: {
     width: 30,
     height: 30,
   },
-
   appName: {
     fontSize: 20,
-    color: 'brown',
     fontFamily: 'Playfair-Black',
   },
-
   iconGroup: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 5,
-  }
+  },
 });

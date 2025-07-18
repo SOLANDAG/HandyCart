@@ -1,11 +1,10 @@
+// DrawerNavigator.tsx
 import { Ionicons } from '@expo/vector-icons';
-import {
-  createDrawerNavigator,
-  DrawerContentScrollView,
-  DrawerItemList,
-} from '@react-navigation/drawer';
+import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
+import { useTheme } from '../components/context/ThemeContext';
+import { useUser } from '../components/context/UserContext';
 
 import AboutScreen from '../app/about';
 import FavoritesScreen from '../app/favorites';
@@ -44,16 +43,16 @@ import ChatsScreen from '../app/chats';
 import EmergencyScreen from '../app/emergency';
 import OrderScreen from '../app/order';
 
-import { useUser } from '../components/context/UserContext';
-import LayoutWrapper from './LayoutWrapper';
-
 import type { DrawerParamList } from '../types/navigation';
+import LayoutWrapper from './LayoutWrapper';
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
 
 const HIDDEN_SCREENS = ['Login', 'Register', 'OTP'];
 
 export default function DrawerNavigator() {
+  const { theme } = useTheme();
+
   return (
     <Drawer.Navigator
       drawerContent={(props) => <CustomDrawerContent {...props} />}
@@ -63,31 +62,19 @@ export default function DrawerNavigator() {
           headerShown: false,
           swipeEnabled: !shouldHideUI,
           drawerType: shouldHideUI ? 'back' : 'front',
-          drawerActiveTintColor: 'saddlebrown',
+          drawerActiveTintColor: theme.sidebarActiveIconColor,
+          drawerInactiveTintColor: theme.sidebarIconColor,
           drawerLabelStyle: { fontSize: 18 },
         };
       }}
     >
-      <Drawer.Screen
-        name="Login"
-        component={LoginScreen}
-        options={{ drawerItemStyle: { display: 'none' } }}
-      />
-      <Drawer.Screen
-        name="Register"
-        component={RegisterScreen}
-        options={{ drawerItemStyle: { display: 'none' } }}
-      />
-      <Drawer.Screen
-        name="OTP"
-        component={OTPScreen}
-        options={{ drawerItemStyle: { display: 'none' } }}
-      />
+      <Drawer.Screen name="Login" component={LoginScreen} options={{ drawerItemStyle: { display: 'none' } }} />
+      <Drawer.Screen name="Register" component={RegisterScreen} options={{ drawerItemStyle: { display: 'none' } }} />
+      <Drawer.Screen name="OTP" component={OTPScreen} options={{ drawerItemStyle: { display: 'none' } }} />
 
-      {[
+      {[ // Hidden product screens
         { name: 'Home', component: HomeScreen },
         { name: 'Favorites', component: FavoritesScreen },
-
         { name: 'Fruits', component: FruitsScreen },
         { name: 'Vegetables', component: VegetablesScreen },
         { name: 'Cannedgoods', component: CannedgoodsScreen },
@@ -106,7 +93,6 @@ export default function DrawerNavigator() {
         { name: 'Babycare', component: BabycareScreen },
         { name: 'Petcare', component: PetcareScreen },
         { name: 'Pantrystaples', component: PantrystaplesScreen },
-
         { name: 'Order', component: OrderScreen },
         { name: 'Cart', component: CartScreen },
         { name: 'Chats', component: ChatsScreen },
@@ -120,70 +106,40 @@ export default function DrawerNavigator() {
         />
       ))}
 
-      <Drawer.Screen
-        name="Profile"
-        options={{
-          drawerIcon: ({ color, size }) => <Ionicons name="person-outline" size={size} color={color} />,
-        }}
-        children={() => <LayoutWrapper><ProfileScreen /></LayoutWrapper>}
-      />
-      <Drawer.Screen
-        name="Settings"
-        options={{
-          drawerIcon: ({ color, size }) => <Ionicons name="settings-outline" size={size} color={color} />,
-        }}
-        children={() => <LayoutWrapper><SettingsScreen /></LayoutWrapper>}
-      />
-      <Drawer.Screen
-        name="History"
-        options={{
-          drawerIcon: ({ color, size }) => <Ionicons name="time-outline" size={size} color={color} />,
-        }}
-        children={() => <LayoutWrapper><HistoryScreen /></LayoutWrapper>}
-      />
-      <Drawer.Screen
-        name="Payment"
-        options={{
-          drawerIcon: ({ color, size }) => <Ionicons name="card-outline" size={size} color={color} />,
-        }}
-        children={() => <LayoutWrapper><PaymentScreen /></LayoutWrapper>}
-      />
-      <Drawer.Screen
-        name="About"
-        options={{
-          drawerIcon: ({ color, size }) => <Ionicons name="information-circle-outline" size={size} color={color} />,
-        }}
-        children={() => <LayoutWrapper><AboutScreen /></LayoutWrapper>}
-      />
-      <Drawer.Screen
-        name="Help"
-        options={{
-          drawerIcon: ({ color, size }) => <Ionicons name="help-circle-outline" size={size} color={color} />,
-        }}
-        children={() => <LayoutWrapper><HelpScreen /></LayoutWrapper>}
-      />
-      <Drawer.Screen
-        name="Logout"
-        options={{
-          drawerIcon: ({ size }) => <Ionicons name="log-out-outline" size={size} color="saddlebrown" />,
-        }}
-        children={() => <LayoutWrapper><LogoutScreen /></LayoutWrapper>}
-      />
+      <Drawer.Screen name="Profile" options={{ drawerIcon: ({ focused, size }) => <Ionicons name="person-outline" size={size} color={focused ? theme.sidebarActiveIconColor : theme.sidebarIconColor} />, }}>
+        {() => <LayoutWrapper><ProfileScreen /></LayoutWrapper>}
+      </Drawer.Screen>
+      <Drawer.Screen name="Settings" options={{ drawerIcon: ({ focused, size }) => <Ionicons name="settings-outline" size={size} color={focused ? theme.sidebarActiveIconColor : theme.sidebarIconColor} />, }}>
+        {() => <LayoutWrapper><SettingsScreen /></LayoutWrapper>}
+      </Drawer.Screen>
+      <Drawer.Screen name="History" options={{ drawerIcon: ({ focused, size }) => <Ionicons name="time-outline" size={size} color={focused ? theme.sidebarActiveIconColor : theme.sidebarIconColor} />, }}>
+        {() => <LayoutWrapper><HistoryScreen /></LayoutWrapper>}
+      </Drawer.Screen>
+      <Drawer.Screen name="Payment" options={{ drawerIcon: ({ focused, size }) => <Ionicons name="card-outline" size={size} color={focused ? theme.sidebarActiveIconColor : theme.sidebarIconColor} />, }}>
+        {() => <LayoutWrapper><PaymentScreen /></LayoutWrapper>}
+      </Drawer.Screen>
+      <Drawer.Screen name="About" options={{ drawerIcon: ({ focused, size }) => <Ionicons name="information-circle-outline" size={size} color={focused ? theme.sidebarActiveIconColor : theme.sidebarIconColor} />, }}>
+        {() => <LayoutWrapper><AboutScreen /></LayoutWrapper>}
+      </Drawer.Screen>
+      <Drawer.Screen name="Help" options={{ drawerIcon: ({ focused, size }) => <Ionicons name="help-circle-outline" size={size} color={focused ? theme.sidebarActiveIconColor : theme.sidebarIconColor} />, }}>
+        {() => <LayoutWrapper><HelpScreen /></LayoutWrapper>}
+      </Drawer.Screen>
+      <Drawer.Screen name="Logout" options={{ drawerIcon: ({ focused, size }) => <Ionicons name="log-out-outline" size={size} color={focused ? theme.sidebarActiveIconColor : theme.sidebarIconColor} />, }}>
+        {() => <LayoutWrapper><LogoutScreen /></LayoutWrapper>}
+      </Drawer.Screen>
     </Drawer.Navigator>
   );
 }
 
 function CustomDrawerContent(props: any) {
   const { profile } = useUser();
+  const { theme } = useTheme();
 
   return (
-    <DrawerContentScrollView {...props} contentContainerStyle={styles.drawerContent}>
+    <DrawerContentScrollView {...props} contentContainerStyle={[styles.drawerContent, { backgroundColor: theme.background }]}> 
       <View style={styles.profileSection}>
-        <Image
-          source={require('../assets/images/profile-placeholder.png')}
-          style={styles.profileImage}
-        />
-        <Text style={styles.username}>{profile?.username || 'Guest'}</Text>
+        <Image source={require('../assets/images/profile-placeholder.png')} style={styles.profileImage} />
+        <Text style={[styles.username, { color: theme.text }]}> {profile?.username || 'Guest'} </Text>
       </View>
       <DrawerItemList {...props} />
     </DrawerContentScrollView>
@@ -194,5 +150,5 @@ const styles = StyleSheet.create({
   drawerContent: { flex: 1 },
   profileSection: { alignItems: 'center', marginVertical: 30 },
   profileImage: { width: 80, height: 80, borderRadius: 40, marginBottom: 10 },
-  username: { fontSize: 18, fontWeight: 'bold', color: 'saddlebrown' },
+  username: { fontSize: 18, fontWeight: 'bold' },
 });

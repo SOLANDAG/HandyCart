@@ -1,17 +1,18 @@
+// index.tsx
 import { Ionicons } from '@expo/vector-icons';
-import type { DrawerNavigationProp } from '@react-navigation/drawer';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Dimensions, Image, ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import type { DrawerParamList } from '../types/navigation';
+import { DrawerParamList } from '../types/navigation';
 
+import { useTheme } from '../components/context/ThemeContext';
 import { useUser } from '../components/context/UserContext';
 
 const { width } = Dimensions.get('window');
 const BUTTON_WIDTH = width * 0.445;
 const BUTTON_HEIGHT = width * 0.52;
-
 
 export default function Index() {
   const navigation = useNavigation<DrawerNavigationProp<DrawerParamList>>();
@@ -23,6 +24,7 @@ export default function Index() {
   const [query, setQuery] = useState("");
 
   const { profile } = useUser();
+  const { theme } = useTheme();
 
   useEffect(() => {
     let timeout: ReturnType<typeof setTimeout>;
@@ -55,6 +57,7 @@ export default function Index() {
     outputRange: [220, 120],
     extrapolate: 'clamp',
   });
+
   const greetingOpacity = scrollY.interpolate({
     inputRange: [0, 60],
     outputRange: [1, 0],
@@ -62,7 +65,7 @@ export default function Index() {
   });
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.pageBackground }]}> 
       <View style={styles.shadowWrapper}>
         <Animated.View style={{ height: headerHeight, overflow: 'hidden' }}>
           <ImageBackground
@@ -108,113 +111,53 @@ export default function Index() {
         scrollEventThrottle={16}
       >
         <View style={styles.gridContainer}>
-          <CategoryButton
-            label="Vegetables"
-            image={require('../assets/images/groceryitems/vegetables.png')}
-            onPress={() => navigation.navigate('Vegetables')}
-          />
-          <CategoryButton
-            label="Fruits"
-            image={require('../assets/images/groceryitems/fruits.png')}
-            onPress={() => navigation.navigate('Fruits')}
-          />
-          <CategoryButton
-            label="Meat"
-            image={require('../assets/images/groceryitems/meat.png')}
-            onPress={() => navigation.navigate('Meat')}
-          />
-          <CategoryButton
-            label="Seafood"
-            image={require('../assets/images/groceryitems/seafood.png')}
-            onPress={() => navigation.navigate('Seafood')}
-          />
-          <CategoryButton
-            label="Beverages"
-            image={require('../assets/images/groceryitems/beverages.png')}
-            onPress={() => navigation.navigate('Beverages')}
-          />
-          <CategoryButton
-            label="Canned Goods"
-            image={require('../assets/images/groceryitems/canned.png')}
-            onPress={() => navigation.navigate('Cannedgoods')}
-          />
-          <CategoryButton
-            label="Dairy"
-            image={require('../assets/images/groceryitems/dairy.png')}
-            onPress={() => navigation.navigate('Dairy')}
-          />
-          <CategoryButton
-            label="Deli"
-            image={require('../assets/images/groceryitems/deli.png')}
-            onPress={() => navigation.navigate('Deli')}
-          />
-          <CategoryButton
-            label="Condiments"
-            image={require('../assets/images/groceryitems/condiments.png')}
-            onPress={() => navigation.navigate('Condiments')}
-          />
-          <CategoryButton
-            label="Snacks"
-            image={require('../assets/images/groceryitems/snacks.png')}
-            onPress={() => navigation.navigate('Snacks')}
-          />
-          <CategoryButton
-            label="Baked Goods"
-            image={require('../assets/images/groceryitems/baked.png')}
-            onPress={() => navigation.navigate('Bakedgoods')}
-          />
-          <CategoryButton
-            label="Grains"
-            image={require('../assets/images/groceryitems/grains.png')}
-            onPress={() => navigation.navigate('Grains')}
-          />
-          <CategoryButton
-            label="Hygiene"
-            image={require('../assets/images/groceryitems/hygiene.png')}
-            onPress={() => navigation.navigate('Hygiene')}
-          />
-          <CategoryButton
-            label="Household"
-            image={require('../assets/images/groceryitems/household.png')}
-            onPress={() => navigation.navigate('Household')}
-          />
-          <CategoryButton
-            label="Healthcare"
-            image={require('../assets/images/groceryitems/healthcare.png')}
-            onPress={() => navigation.navigate('Healthcare')}
-          />
-          <CategoryButton
-            label="Baby Care"
-            image={require('../assets/images/groceryitems/baby.png')}
-            onPress={() => navigation.navigate('Babycare')}
-          />
-          <CategoryButton
-            label="Pet Care"
-            image={require('../assets/images/groceryitems/pet.png')}
-            onPress={() => navigation.navigate('Petcare')}
-          />
-          <CategoryButton
-            label="Pantry Staples"
-            image={require('../assets/images/groceryitems/pantry.png')}
-            onPress={() => navigation.navigate('Pantrystaples')}
-          />
+          {categories.map((category) => (
+            <CategoryButton
+              key={category.label}
+              label={category.label}
+              image={category.image}
+              onPress={() => navigation.navigate(category.route as keyof DrawerParamList)}
+              theme={theme}
+            />
+          ))}
         </View>
       </Animated.ScrollView>
     </View>
   );
 }
 
-function CategoryButton({ image, label, onPress }: any) {
+const categories = [
+  { label: 'Vegetables', image: require('../assets/images/groceryitems/vegetables.png'), route: 'Vegetables' },
+  { label: 'Fruits', image: require('../assets/images/groceryitems/fruits.png'), route: 'Fruits' },
+  { label: 'Meat', image: require('../assets/images/groceryitems/meat.png'), route: 'Meat' },
+  { label: 'Seafood', image: require('../assets/images/groceryitems/seafood.png'), route: 'Seafood' },
+  { label: 'Beverages', image: require('../assets/images/groceryitems/beverages.png'), route: 'Beverages' },
+  { label: 'Canned Goods', image: require('../assets/images/groceryitems/canned.png'), route: 'Cannedgoods' },
+  { label: 'Dairy', image: require('../assets/images/groceryitems/dairy.png'), route: 'Dairy' },
+  { label: 'Deli', image: require('../assets/images/groceryitems/deli.png'), route: 'Deli' },
+  { label: 'Condiments', image: require('../assets/images/groceryitems/condiments.png'), route: 'Condiments' },
+  { label: 'Snacks', image: require('../assets/images/groceryitems/snacks.png'), route: 'Snacks' },
+  { label: 'Baked Goods', image: require('../assets/images/groceryitems/baked.png'), route: 'Bakedgoods' },
+  { label: 'Grains', image: require('../assets/images/groceryitems/grains.png'), route: 'Grains' },
+  { label: 'Hygiene', image: require('../assets/images/groceryitems/hygiene.png'), route: 'Hygiene' },
+  { label: 'Household', image: require('../assets/images/groceryitems/household.png'), route: 'Household' },
+  { label: 'Healthcare', image: require('../assets/images/groceryitems/healthcare.png'), route: 'Healthcare' },
+  { label: 'Baby Care', image: require('../assets/images/groceryitems/baby.png'), route: 'Babycare' },
+  { label: 'Pet Care', image: require('../assets/images/groceryitems/pet.png'), route: 'Petcare' },
+  { label: 'Pantry Staples', image: require('../assets/images/groceryitems/pantry.png'), route: 'Pantrystaples' },
+];
+
+function CategoryButton({ image, label, onPress, theme }: any) {
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.8} style={styles.categoryButton}>
+    <TouchableOpacity onPress={onPress} activeOpacity={0.8} style={[styles.categoryButton, { backgroundColor: theme.card }]}> 
       <Image source={image} style={styles.categoryImage} resizeMode="contain" />
-      <Text style={styles.categoryLabel}>{label}</Text>
+      <Text style={[styles.categoryLabel, { color: theme.gridText }]}>{label}</Text>
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: 'beige' },
+  container: { flex: 1 },
 
   imageBackground: { flex: 1, justifyContent: 'center', paddingHorizontal: 20 },
   gradientOverlay: { position: 'absolute', top: 0, bottom: 0, right: 0, left: 0 },
@@ -247,12 +190,10 @@ const styles = StyleSheet.create({
     width: BUTTON_WIDTH,
     height: BUTTON_HEIGHT,
     borderRadius: 5,
-    backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 10,
     elevation: 3,
-
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.2,
@@ -267,7 +208,6 @@ const styles = StyleSheet.create({
 
   categoryLabel: {
     fontSize: 16,
-    color: 'saddlebrown',
     fontFamily: 'Quicksand-Bold'
-  }
+  },
 });

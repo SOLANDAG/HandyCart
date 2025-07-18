@@ -14,7 +14,7 @@ export default function RegisterScreen() {
 
     const navigation = useNavigation<DrawerNavigationProp<DrawerParamList>>();
 
-    const isAlphanumeric = (str : string) => /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/.test(str);
+    const isAlphanumeric = (str : string) => /^(?=.*[A-Za-z])(?=.*\d).+$/.test(str);
 
     const handleRegister = async () => {
         if (!email || !username || !password || !confirmPassword) {

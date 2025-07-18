@@ -1,75 +1,65 @@
-import React, { useState } from 'react';
-import { View, TextInput, Button, Text, Alert, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import type { DrawerNavigationProp } from '@react-navigation/drawer';
+import { useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react';
+import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
 import type { DrawerParamList } from '../types/navigation';
 
 import { login } from '../components/registration/auth_service';
 
 export default function LoginScreen() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const navigation = useNavigation<DrawerNavigationProp<DrawerParamList>>();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigation = useNavigation<DrawerNavigationProp<DrawerParamList>>();
 
-    const handleLogin = async () => {
-        try {
-            const { profile } = await login(email, password);
-            Alert.alert('Success', `You are logged in! Welcome ${profile?.username || 'Guest'}`);
-            
-            // move to home
-            navigation.navigate('Home');
-        
-        } catch (error: any) {
-            Alert.alert('Login failed', error.message);
-        }
-    
-    };
+  const handleLogin = async () => {
+    try {
+      await login(email, password);
 
-    return (
+      const otp = Math.floor(100000 + Math.random() * 900000).toString();
+      console.log('Generated OTP:', otp);
+
+      navigation.navigate('OTP', { otp });
+    } catch (error: any) {
+      alert(`Login failed: ${error.message}`);
+    }
+  };
+
+  return (
     <View style={styles.container}>
-        <Text style={styles.title}>Login</Text>
+      <Text style={styles.title}>Login</Text>
 
-        <TextInput
-            style={styles.input}
-            placeholder="Email"
-            autoCapitalize="none"
-            keyboardType="email-address"
-            value={email}
-            onChangeText={setEmail}
-        />
+      <TextInput
+        style={styles.input}
+        placeholder="Email"
+        autoCapitalize="none"
+        keyboardType="email-address"
+        value={email}
+        onChangeText={setEmail}
+      />
 
-        <TextInput
-            style={styles.input}
-            placeholder="Password"
-            secureTextEntry
-            value={password}
-            onChangeText={setPassword}
-        />
+      <TextInput
+        style={styles.input}
+        placeholder="Password"
+        secureTextEntry
+        value={password}
+        onChangeText={setPassword}
+      />
 
-        <Button title="Login" onPress={handleLogin} />
-
-        <Button title="Register" onPress={() => navigation.navigate('Register')} />
-
+      <Button title="Login" onPress={handleLogin} />
+      <Button title="Register" onPress={() => navigation.navigate('Register')} />
     </View>
-    );
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        padding: 20,
-        marginTop: 100,
-    },
-    title: {
-        fontSize: 24,
-        marginBottom: 20,
-        textAlign: 'center',
-    },
-    input: {
-        height: 48,
-        borderColor: '#ccc',
-        borderWidth: 1,
-        marginBottom: 12,
-        paddingHorizontal: 12,
-        borderRadius: 6,
-    },
+  container: { padding: 20, marginTop: 100 },
+  title: { fontSize: 24, marginBottom: 20, textAlign: 'center' },
+  input: {
+    height: 48,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    marginBottom: 12,
+    paddingHorizontal: 12,
+    borderRadius: 6,
+  },
 });

@@ -1,6 +1,6 @@
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import * as Location from 'expo-location';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import {
   Alert,
   Button,
@@ -13,6 +13,11 @@ import {
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import { useOrder } from '../components/context/OrderContext';
 import { performTTS } from '../components/voice_commands/tts';
+import { requestLocationPermission } from '../components/locationPermission';
+
+// default location set to Mapua Makati
+const default_latitude = 14.566457;
+const default_longitude = 121.01505;
 
 export default function Order() {
   const navigation = useNavigation();
@@ -22,36 +27,69 @@ export default function Order() {
 
   const [userLocation, setUserLocation] = useState<Location.LocationObjectCoords | null>(null);
   const [originLocation, setOriginLocation] = useState({
-    latitude: 14.566457,
-    longitude: 121.01505,
+    latitude: default_latitude,
+    longitude: default_longitude,
   });
   const [isDelivered, setIsDelivered] = useState(false);
+  const [fiveMinLeft, setFiveMinLeft] = useState(false);
 
   const map = useRef<MapView>(null);
   const interval = useRef<number | null>(null);
 
+  const checkUserLocation = async () => {
+    const coords = await requestLocationPermission();
+    if (!coords) {
+      setUserLocation(null);
+      return;
+    }
+
+    setUserLocation(coords);
+
+    await Location.watchPositionAsync(
+      {
+        accuracy: Location.Accuracy.High,
+        timeInterval: 3000,
+        distanceInterval: 5,
+      },
+      (loc) => setUserLocation(loc.coords)
+    );
+  };
+
+  // recheck userlocation when reopening order tab
+  // it will start tracking if successful
+  // this works but need to refresh page
+  useFocusEffect(
+    useCallback(() => {
+      if (userLocation) return;
+      checkUserLocation();
+    }, [userLocation])
+  );
+
+  // reset origin location when there's new order
   useEffect(() => {
-    (async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        Alert.alert('Location Error', 'Permission to access location was denied.');
-        performTTS("Location access was denied. Please try again");
+    if (latestOrder?.status === 'active') {
+      if (!userLocation) {
         return;
       }
 
-      const location = await Location.getCurrentPositionAsync({});
-      setUserLocation(location.coords);
+      setOriginLocation({
+        latitude: default_latitude,
+        longitude: default_longitude,
+      });
+      setIsDelivered(false);
 
-      await Location.watchPositionAsync(
-        {
-          accuracy: Location.Accuracy.High,
-          timeInterval: 3000,
-          distanceInterval: 5,
-        },
-        (loc) => setUserLocation(loc.coords)
-      );
-    })();
-  }, []);
+      // send delivery estimate
+      const latDiff = userLocation.latitude - default_latitude;
+      const longDiff = userLocation.longitude - default_longitude;
+      const dist = Math.sqrt(latDiff * latDiff + longDiff * longDiff);
+
+      const mins = Math.round(dist * 500);
+
+      Alert.alert('Delivery Status', `Delivery started. Estimate to arrive in ${mins} minutes.`);
+      performTTS(`Delivery started. Estimate to arrive in ${mins} minutes.`);
+      setFiveMinLeft(false);
+    }
+  }, [latestOrder, userLocation]);
 
   useEffect(() => {
     if (!userLocation || isDelivered || !latestOrder || latestOrder.status !== 'active') return;
@@ -64,6 +102,13 @@ export default function Order() {
         const longDiff = userLocation.longitude - prev.longitude;
         const dist = Math.sqrt(latDiff * latDiff + longDiff * longDiff);
 
+        if (!fiveMinLeft && dist < 0.01) {
+          setFiveMinLeft(true);
+          const mins = Math.round(dist * 500);
+          Alert.alert('Delivery Status', `Delivery will arrive in ${mins} minutes.`);
+          performTTS(`Delivery will arrive in ${mins} minutes.`);
+        }
+
         if (dist < 0.00015) {
           clearInterval(interval.current!);
           setIsDelivered(true);
@@ -71,8 +116,9 @@ export default function Order() {
 
           performTTS("Your delivery is here!");
           Alert.alert('Delivered!', 'Your delivery has arrived.', [
-            { text: 'OK', onPress: () => navigation.navigate('index' as never) },
+            { text: 'OK', onPress: () => navigation.navigate('Home' as never) },
           ]);
+          
           return prev;
         }
 
@@ -88,7 +134,7 @@ export default function Order() {
     return () => {
       if (interval.current) clearInterval(interval.current);
     };
-  }, [userLocation, isDelivered, latestOrder]);
+  }, [userLocation, isDelivered, latestOrder, navigation, markOrderDelivered, fiveMinLeft]);
 
   if (!latestOrder) {
     return (
@@ -118,6 +164,7 @@ export default function Order() {
                   onPress: () => {
                     cancelOrder(latestOrder.id);
                     Alert.alert('Order Cancelled', 'Your order has been cancelled.');
+                    performTTS('Your order has been cancelled.');
                   },
                 },
               ])

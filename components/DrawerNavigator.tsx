@@ -44,10 +44,10 @@ import OrderScreen from '../app/order';
 import AboutScreen from '../app/about';
 import HelpScreen from '../app/help';
 import HistoryScreen from '../app/history';
+import LogoutScreen from '../app/logout';
 import PaymentScreen from '../app/payment';
 import ProfileScreen from '../app/profile';
 import SettingsScreen from '../app/settings';
-import LogoutScreen from '../app/logout';
 
 ///// USER AUTHENTICATION /////
 import LoginScreen from '../app/login';
@@ -78,7 +78,7 @@ export default function DrawerNavigator() {
     >
       {[
         // make login the start screen
-        { name: 'Login', component: LoginScreen },
+        // { name: 'Login', component: LoginScreen },
 
         ///// MAIN SCREEN, WHICH IS THE GROCERY INDEX PAGE /////
         { name: 'Home', component: HomeScreen },
@@ -124,7 +124,7 @@ export default function DrawerNavigator() {
       ))}
 
       <Drawer.Screen
-        name="Profile"
+        name ="Profile"
         options={{
           drawerIcon: ({ color, size }) => <Ionicons name="person-outline" size={size} color={color} />
         }}

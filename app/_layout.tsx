@@ -7,8 +7,17 @@ import { CartProvider } from '../components/context/CartContext';
 import { UserProvider } from '../components/context/UserContext';
 import { OrderProvider } from '../components/context/OrderContext';
 
+import { requestLocationPermission } from '../components/locationPermission';
+
 export default function RootLayout() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
+
+    useEffect(() => {
+      const checkLocation = async () => {
+        await requestLocationPermission();
+      };
+      checkLocation();
+    }, []);
 
   useEffect(() => {
     async function loadFonts() {

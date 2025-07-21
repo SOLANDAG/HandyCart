@@ -39,9 +39,13 @@ export default function ChatScreen() {
 
   const { profile } = useUser();
   const user = profile?.username || 'Guest';
-  const filteredMessages = messages.filter(
+  let filteredMessages = messages.filter(
     (msg) => msg.sender === user || msg.receiver === user || msg.receiver === 'all'
   );
+
+  if (user === 'Guest') {
+    filteredMessages = messages;
+  }
 
   // get chat history
   useEffect(() => {
@@ -61,29 +65,39 @@ export default function ChatScreen() {
 
   const handleSend = async () => {
     if (!newMessage.trim()) return;
+    
+    let target = 'HandyCart Support';
+    // NOTE: For testing only
+    // use Guest as HandyCart Support substitute
+    if (user === 'Guest') {
+      target = 'all';
+    }
+    const actualSender = (user === 'Guest') ? 'HandyCart Support' : user;
 
     await addDoc(collection(db, 'messages'), {
       text: newMessage,
-      sender: user,
-      receiver: 'HandyCart Support',
+      sender: actualSender,
+      receiver: target,
       createdAt: serverTimestamp(),
     });
 
     setNewMessage('');
 
-    // auto-generate reply after delay
-    setTimeout(async () => {
-      const supportReply = {
-        text: "Thank you for reaching out! We apologize for the issue you're having, we'll assist you shortly.",
-        sender: 'HandyCart Support',
-        receiver: user,
-        createdAt: serverTimestamp(),
-      };
+    if (user !== 'Guest') {
+      // auto-generate reply after delay
+      setTimeout(async () => {
+        const supportReply = {
+          text: "Thank you for reaching out! We apologize for the issue you're having, we'll assist you shortly.",
+          sender: 'HandyCart Support',
+          receiver: user,
+          createdAt: serverTimestamp(),
+        };
 
-      await addDoc(collection(db, 'messages'), supportReply);
-    }, 1500);
+        await addDoc(collection(db, 'messages'), supportReply);
+      }, 1500);
+    }
+    
   };
-
 
 
   const renderItem = ({ item }: { item: Message }) => (

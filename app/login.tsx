@@ -44,9 +44,11 @@ export default function LoginScreen() {
         value={password}
         onChangeText={setPassword}
       />
-
-      <Button title="Login" onPress={handleLogin} />
-      <Button title="Register" onPress={() => navigation.navigate('Register')} />
+      
+      <View style={styles.buttonContainer}>
+        <Button title="Login" onPress={handleLogin} />
+        <Button title="Register" onPress={() => navigation.navigate('Register')} />
+      </View>
     </View>
   );
 }
@@ -62,4 +64,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     borderRadius: 6,
   },
+  buttonContainer: {
+    marginTop: 10,
+    gap: 10,
+  }
 });

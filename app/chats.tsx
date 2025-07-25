@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Button,
   FlatList,
@@ -8,40 +8,103 @@ import {
   Text,
   TextInput,
   View,
+  Keyboard,
+  TouchableWithoutFeedback,
+  SafeAreaView,
 } from 'react-native';
+
+import { db } from '../firebase_config';
+import { 
+  collection, 
+  addDoc, 
+  onSnapshot, 
+  query, 
+  orderBy, 
+  serverTimestamp 
+} from 'firebase/firestore';
+import { useUser } from '../components/context/UserContext';
 
 interface Message {
   id: string;
   text: string;
   sender: string;
+  receiver: string;
+  createdAt?: any;
 }
 
 export default function ChatScreen() {
-  const [messages, setMessages] = useState<Message[]>([
-    { id: '1', text: 'Hello! This is HandyCart support 💬', sender: 'Support' },
-    { id: '2', text: 'Hi! I need help with my order.', sender: 'You' },
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
 
   const [newMessage, setNewMessage] = useState('');
 
-  const handleSend = () => {
+  const { profile } = useUser();
+  const user = profile?.username || 'Guest';
+  let filteredMessages = messages.filter(
+    (msg) => msg.sender === user || msg.receiver === user || msg.receiver === 'all'
+  );
+
+  if (user === 'Guest') {
+    filteredMessages = messages;
+  }
+
+  // get chat history
+  useEffect(() => {
+    const q = query(collection(db, 'messages'), orderBy('createdAt', 'asc'));
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const loadedMessages: Message[] = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as Message[];
+
+      setMessages(loadedMessages);
+    });
+
+    return unsubscribe;
+  }, []);
+
+  const handleSend = async () => {
     if (!newMessage.trim()) return;
+    
+    let target = 'HandyCart Support';
+    // NOTE: For testing only
+    // use Guest as HandyCart Support substitute
+    if (user === 'Guest') {
+      target = 'all';
+    }
+    const actualSender = (user === 'Guest') ? 'HandyCart Support' : user;
 
-    const message: Message = {
-      id: Date.now().toString(),
+    await addDoc(collection(db, 'messages'), {
       text: newMessage,
-      sender: 'You',
-    };
+      sender: actualSender,
+      receiver: target,
+      createdAt: serverTimestamp(),
+    });
 
-    setMessages((prev) => [...prev, message]);
     setNewMessage('');
+
+    if (user !== 'Guest') {
+      // auto-generate reply after delay
+      setTimeout(async () => {
+        const supportReply = {
+          text: "Thank you for reaching out! We apologize for the issue you're having, we'll assist you shortly.",
+          sender: 'HandyCart Support',
+          receiver: user,
+          createdAt: serverTimestamp(),
+        };
+
+        await addDoc(collection(db, 'messages'), supportReply);
+      }, 1500);
+    }
+    
   };
+
 
   const renderItem = ({ item }: { item: Message }) => (
     <View
       style={[
         styles.messageBubble,
-        item.sender === 'You' ? styles.myMessage : styles.supportMessage,
+        item.sender === user ? styles.myMessage : styles.supportMessage,
       ]}
     >
       <Text style={styles.sender}>{item.sender}</Text>
@@ -50,32 +113,48 @@ export default function ChatScreen() {
   );
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      keyboardVerticalOffset={100}
-    >
-      <FlatList
-        data={messages}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={{ padding: 10 }}
-      />
-      <View style={styles.inputContainer}>
-        <TextInput
-          value={newMessage}
-          onChangeText={setNewMessage}
-          placeholder="Type a message..."
-          style={styles.input}
-        />
-        <Button title="Send" onPress={handleSend} />
-      </View>
-    </KeyboardAvoidingView>
+    <SafeAreaView style={{ flex: 1 }}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
+      >
+        <View style={styles.container}>
+          <FlatList
+            data={filteredMessages}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={{ padding: 10 }}
+            style={{ flex: 1 }}
+            keyboardShouldPersistTaps="handled"
+          />
+
+          <View style={styles.inputContainer}>
+            <TextInput
+              value={newMessage}
+              onChangeText={setNewMessage}
+              placeholder="Type a message..."
+              style={styles.input}
+              onSubmitEditing={handleSend}
+              returnKeyType="send"
+            />
+            <Button title="Send" onPress={handleSend} />
+          </View>
+        </View>
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
+  </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
+  container: { 
+    flex: 1, 
+    backgroundColor: '#fff',
+    marginTop: 20,
+    marginBottom: 110, 
+   },
   messageBubble: {
     marginBottom: 10,
     padding: 10,
